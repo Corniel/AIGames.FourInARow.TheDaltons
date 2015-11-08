@@ -12,7 +12,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests.Communication
 		[Test]
 		public void Parse_RequestMoveInstruction_12345ms()
 		{
-			var act = Instruction.Parse("action moves 12345");
+			var act = Instruction.Parse("action move 12345");
 			var exp = new RequestMoveInstruction(TimeSpan.FromMilliseconds(12345));
 
 			Assert.AreEqual(exp, act);
