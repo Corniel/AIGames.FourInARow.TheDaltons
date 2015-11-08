@@ -24,7 +24,11 @@ namespace AIGames.FourInARow.TheDaltons
 			yel = y;
 		}
 
+		/// <summary>Gets the mask for the occupied cells.</summary>
 		public ulong Occupied { get { return red | yel; } }
+		
+		/// <summary>Get the count of played discs.</summary>
+		public int Count { get { return Bits.Count(Occupied); } }
 
 		public Field MoveRed(ulong move)
 		{
