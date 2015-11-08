@@ -6,7 +6,8 @@ namespace AIGames.FourInARow.TheDaltons.Communication
 	{
 		public MoveInstruction(byte colomn)
 		{
-			Column = colomn;
+			// The internal representation is mirrored to the of the challenge.
+			Column = (byte)(6 - colomn);
 		}
 
 		private readonly Byte Column;
