@@ -19,6 +19,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			CollectionAssert.AllItemsAreUnique(actual.Values, "All values should be unique.");
 			Assert.IsTrue(actual.Keys.All(key =>keyPattern.IsMatch(key)), "All keys should match the pattern.");
 		}
+		
 		[Test]
 		public void GetScores_None_AllUnique()
 		{
@@ -31,6 +32,39 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				Console.WriteLine(Field.ToString(score));
 				Console.WriteLine();
 			}
+		}
+
+		[Test]
+		public void IsScoreRed_FieldWithScore_IsTrue()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,1,0,0,0;
+				0,0,0,1,0,0,0;
+				0,0,0,1,2,0,0;
+				0,0,2,1,2,0,0");
+
+			var act = field.IsScoreRed();
+			var exp = true;
+
+			Assert.AreEqual(exp, act);
+		}
+		[Test]
+		public void IsScoreYellow_FieldWithScore_IsTrue()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,2,0,0,0;
+				0,0,0,1,2,0,0;
+				0,0,1,1,2,2,1;
+				0,0,2,1,2,1,2");
+
+			var act = field.IsScoreYellow();
+			var exp = true;
+
+			Assert.AreEqual(exp, act);
 		}
 
 		[Test]
