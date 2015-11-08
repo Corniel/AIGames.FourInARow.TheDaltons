@@ -43,7 +43,7 @@ namespace AIGames.FourInARow.TheDaltons
 			var response = new BotResponse()
 			{
 				Move = move,
-				Log = "",
+				Log = Tree.Logger.ToString(),
 			};
 			return response;
 		}

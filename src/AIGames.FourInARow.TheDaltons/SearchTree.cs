@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 
 namespace AIGames.FourInARow.TheDaltons
 {
@@ -9,6 +10,7 @@ namespace AIGames.FourInARow.TheDaltons
 		public SearchTree()
 		{
 			Sw = new Stopwatch();
+			Logger = new StringBuilder();
 			Generator = new MoveGenerator();
 		}
 
@@ -17,25 +19,29 @@ namespace AIGames.FourInARow.TheDaltons
 		protected TimeSpan Max { get; set; }
 
 		public Stopwatch Sw { get; protected set; }
+		public StringBuilder Logger { get; protected set; }
 
 		public byte GetMove(Field field, int ply, TimeSpan min, TimeSpan max)
 		{
 			if (ply == 1) { return 3; }
 			Sw.Restart();
+			Logger.Clear();
 			Max = max;
 
 			var moves = Generator.GetMoves(field, (ply & 1) == 1);
 			var root = GetNode(field, (byte)ply);
 
-			for (byte i = (byte)(ply + 1); TimeLeft && i < 43; i++)
+			for (byte depth = (byte)(ply + 1); TimeLeft && depth < 43; depth++)
 			{
-				root.Apply(i, this, int.MinValue, int.MaxValue);
-				//Console.WriteLine("{0} {1}, Nodes: {2} ({3:0.00}k/s), Trans: {4}",
-				//	Sw.Elapsed,
-				//	i,
-				//	Count,
-				//	(Count + Transpositions) / (Sw.Elapsed.TotalMilliseconds),
-				//	Transpositions);
+				root.Apply(depth, this, int.MinValue, int.MaxValue);
+				Logger.AppendFormat("{1} {2}, Score: {0}, Nodes: {3} ({4:0.00}k/s), Trans: {5}",
+					root.Score,
+					Sw.Elapsed,
+					depth - ply,
+					Count,
+					(Count + Transpositions) / (Sw.Elapsed.TotalMilliseconds),
+					Transpositions).AppendLine();
+
 				if (Sw.Elapsed > min) { break; }
 			}
 			for (byte col = 0; col < moves.Length; col++)
