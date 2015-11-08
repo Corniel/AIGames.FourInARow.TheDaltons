@@ -30,12 +30,12 @@ namespace AIGames.FourInARow.TheDaltons
 			for (byte i = (byte)(turn + 1); TimeLeft && i < 43; i++)
 			{
 				root.Apply(i, this, int.MinValue, int.MaxValue);
-				Console.WriteLine("{0} {1}, Nodes: {2} ({3:0.00}k/s), Trans: {4}",
-					Sw.Elapsed,
-					i,
-					Count,
-					(Count + Transpositions) / (Sw.Elapsed.TotalMilliseconds),
-					Transpositions);
+				//Console.WriteLine("{0} {1}, Nodes: {2} ({3:0.00}k/s), Trans: {4}",
+				//	Sw.Elapsed,
+				//	i,
+				//	Count,
+				//	(Count + Transpositions) / (Sw.Elapsed.TotalMilliseconds),
+				//	Transpositions);
 				if (Sw.Elapsed > min) { break; }
 			}
 			for (byte col = 0; col < moves.Length; col++)
