@@ -7,7 +7,22 @@ namespace AIGames.FourInARow.TheDaltons.Communication
 	public class GameState
 	{
 		public int Round { get; set; }
+		
+		/// <summary>Get the ply count.</summary>
+		/// <remarks>
+		/// 1 for Round, player 1 et cetera.
+		/// 
+		/// Maximum for this game is 42 as there are 42 fields.
+		/// </remarks>
+		public int Ply
+		{
+			get
+			{
+				return (Round << 1) - (YourBot == PlayerName.Player1 ? 1 : 0);
+			}
+		}
 		public Field Field { get; set; }
+		public PlayerName YourBot { get; set; }
 
 		public bool Apply(IInstruction instruction)
 		{

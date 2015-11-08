@@ -18,16 +18,16 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public Stopwatch Sw { get; protected set; }
 
-		public byte GetMove(Field field, int turn, TimeSpan min, TimeSpan max)
+		public byte GetMove(Field field, int ply, TimeSpan min, TimeSpan max)
 		{
-			if (turn == 1) { return 3; }
+			if (ply == 1) { return 3; }
 			Sw.Restart();
 			Max = max;
 
-			var moves = Generator.GetMoves(field, (turn & 1) == 1);
-			var root = GetNode(field, (byte)turn);
+			var moves = Generator.GetMoves(field, (ply & 1) == 1);
+			var root = GetNode(field, (byte)ply);
 
-			for (byte i = (byte)(turn + 1); TimeLeft && i < 43; i++)
+			for (byte i = (byte)(ply + 1); TimeLeft && i < 43; i++)
 			{
 				root.Apply(i, this, int.MinValue, int.MaxValue);
 				//Console.WriteLine("{0} {1}, Nodes: {2} ({3:0.00}k/s), Trans: {4}",
@@ -57,27 +57,27 @@ namespace AIGames.FourInARow.TheDaltons
 			}
 		}
 
-		public SearchTreeNode GetNode(Field search, byte turn)
+		public SearchTreeNode GetNode(Field search, byte ply)
 		{
 			SearchTreeNode node;
 
-			var odd = (turn & 1) == 1;
+			var odd = (ply & 1) == 1;
 
-			if (!tree[turn].TryGetValue(search, out node))
+			if (!tree[ply].TryGetValue(search, out node))
 			{
-				if (turn > 7 && odd ? search.IsScoreRed() : search.IsScoreYellow())
+				if (ply > 7 && odd ? search.IsScoreRed() : search.IsScoreYellow())
 				{
-					node = new SearchTreeEndNode(search, turn, odd);
+					node = new SearchTreeEndNode(search, ply, odd);
 				}
 				else if (odd)
 				{
-					node = new SearchTreeRedNode(search, turn);
+					node = new SearchTreeRedNode(search, ply);
 				}
 				else
 				{
-					node = new SearchTreeYellowNode(search, turn);
+					node = new SearchTreeYellowNode(search, ply);
 				}
-				tree[turn][search] = node;
+				tree[ply][search] = node;
 				Count++;
 			}
 			else
@@ -91,9 +91,9 @@ namespace AIGames.FourInARow.TheDaltons
 		private static Dictionary<Field, SearchTreeNode>[] GetTree()
 		{
 			var tree = new Dictionary<Field, SearchTreeNode>[43];
-			for (var round = 1; round < 43; round++)
+			for (var ply = 1; ply < 43; ply++)
 			{
-				tree[round] = new Dictionary<Field, SearchTreeNode>();
+				tree[ply] = new Dictionary<Field, SearchTreeNode>();
 			}
 			return tree;
 		}

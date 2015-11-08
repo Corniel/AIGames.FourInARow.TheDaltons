@@ -34,9 +34,9 @@ namespace AIGames.FourInARow.TheDaltons
 			// Take 500 ms or if you're really getting out of time 3/4 of the max.
 			var min = Math.Min(500, (max * 3) / 4);
 			
-			Tree.Clear(State.Round);
+			Tree.Clear(State.Ply);
 
-			var col = Tree.GetMove(State.Field, State.Round, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
+			var col = Tree.GetMove(State.Field, State.Ply, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
 
 			var move = new MoveInstruction(col);
 
@@ -53,7 +53,7 @@ namespace AIGames.FourInARow.TheDaltons
 		{
 			get
 			{
-				return string.Format("{0:00} Current: {1}, Next: {2}");
+				return string.Format("Round {0} ({1}): {2}", State.Round, State.Ply, State.Field);
 			}
 		}
 	}

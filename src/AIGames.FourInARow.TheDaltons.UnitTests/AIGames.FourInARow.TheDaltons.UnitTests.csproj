@@ -43,6 +43,7 @@
     <Compile Include="Category.cs" />
     <Compile Include="Communication\ConsolePlatformTest.cs" />
     <Compile Include="Communication\ConsolePlatformTester.cs" />
+    <Compile Include="Communication\GameStateTest.cs" />
     <Compile Include="Communication\InstructionTest.cs" />
     <Compile Include="Communication\MoveInstructionTest.cs" />
     <Compile Include="Deployoment\Deployer.cs" />
@@ -68,11 +69,4 @@
     <EmbeddedResource Include="Communication\input.simple.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
