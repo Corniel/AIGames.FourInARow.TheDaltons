@@ -62,24 +62,20 @@ namespace AIGames.FourInARow.TheDaltons.Communication
 				else if (instruction is RequestMoveInstruction)
 				{
 					bot.Update(state);
-#if !DEBUG
 					try
 					{
-#endif
 						var response = bot.GetResponse(((RequestMoveInstruction)instruction).Time);
 						Writer.WriteLine(response.Move);
 						if (!String.IsNullOrEmpty(response.Log))
 						{
 							Logger.WriteLine(response.Log);
 						}
-#if !DEBUG
 					}
 					catch (Exception x)
 					{
 						Writer.WriteLine(new MoveInstruction(4));
 						Logger.WriteLine(x);
 					}
-#endif
 				}
 			}
 		}

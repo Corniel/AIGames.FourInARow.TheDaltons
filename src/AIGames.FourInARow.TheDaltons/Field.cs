@@ -88,7 +88,7 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public static Field Parse(String str)
 		{
-			var stripped = str.Replace(",", "");
+			var stripped = str.Replace(",", "").Replace(";", "");
 			var r = ToColored(stripped, 2);
 			var y = ToColored(stripped, 1);
 
@@ -96,13 +96,14 @@ namespace AIGames.FourInARow.TheDaltons
 		}
 		private static ulong ToColored(string str, int remove)
 		{
-			var color = str.Replace(remove.ToString(), "0").Replace("2", "1");
+			var lines = str.Replace(remove.ToString(), "0").Replace("2", "1");
 			var field = 0UL;
-			var rows = color.Split(';').Select(line => ParseRows[line]).ToArray();
 
-			for (var r = 0; r < 6; r++)
+			for (var r = 5; r >= 0; r--)
 			{
-				field |= rows[5 - r] << r;
+				var line = lines.Substring(r * 7, 7);
+				var row = ParseRows[line];
+				field |= row << (5 - r);
 			}
 			return field;
 		}

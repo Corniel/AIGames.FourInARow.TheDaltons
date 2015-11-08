@@ -13,13 +13,13 @@ namespace AIGames.FourInARow.TheDaltons.Communication
 
 		public override string ToString()
 		{
-			return String.Format("action moves {0:0}", Time.TotalMilliseconds);
+			return String.Format("action move {0:0}", Time.TotalMilliseconds);
 		}
 
 		internal static IInstruction Parse(string[] splited)
 		{
 			int ms;
-			if (splited[1] == "moves" && splited.Length == 3 && Int32.TryParse(splited[2], out ms))
+			if (splited[1] == "move" && splited.Length == 3 && Int32.TryParse(splited[2], out ms))
 			{
 				return new RequestMoveInstruction(TimeSpan.FromMilliseconds(ms));
 			}
