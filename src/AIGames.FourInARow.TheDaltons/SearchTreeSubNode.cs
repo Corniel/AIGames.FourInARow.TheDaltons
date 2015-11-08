@@ -17,10 +17,10 @@ namespace AIGames.FourInARow.TheDaltons
 				return children == null || children.Count == 0 ? Field.Empty : children[0].Field;
 			}
 		}
-		
-		protected List<T> children;
 
-		protected int GrandChildrenCount { get; set; }
+		public override int Count { get { return children == null ? -1 : children.Count; } }
+
+		protected List<T> children;
 
 		public override int Apply(byte depth, SearchTree tree, int alpha, int beta)
 		{
@@ -50,28 +50,31 @@ namespace AIGames.FourInARow.TheDaltons
 					}
 				}
 			}
+			// This node is final. return its score.
 			if (children.Count == 0) { return Score; }
+
+			if (Score == 0 && (Depth + 2) == depth)
+			{
+				if (IsMax)
+				{
+					Score = children.Count(ch => ch.Count == 0);
+				}
+				else
+				{
+					Score = -children.Count(ch => ch.Count == 0);
+				}
+			}
+
 			if (ApplyChildren(depth, tree, alpha, beta))
 			{
 				children.Clear();
 				return Score;
 			}
 			children.Sort();
-			Score = children[0].Score;
-			if (GrandChildrenCount == 0)
+			var test = children[0].Score;
+			if(test != 0)
 			{
-				GrandChildrenCount = children.Sum(ch => children.Count);
-			}
-			if (GrandChildrenCount != 49)
-			{
-			}
-			if (IsMax)
-			{
-				Score += 49 - GrandChildrenCount;
-			}
-			else
-			{
-				Score -= 49 - GrandChildrenCount;
+				Score = test;
 			}
 			return Score;
 		}

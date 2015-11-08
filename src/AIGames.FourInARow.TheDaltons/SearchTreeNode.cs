@@ -12,6 +12,7 @@ namespace AIGames.FourInARow.TheDaltons
 		public readonly Field Field;
 		public readonly byte Depth;
 
+		public abstract int Count { get; }
 		public int Score { get; protected set; }
 
 		public abstract Field Best { get; }

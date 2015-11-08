@@ -9,6 +9,7 @@ namespace AIGames.FourInARow.TheDaltons
 			Score = odd ? Scores.Red : Scores.Yel;
 		}
 
+		public override int Count { get { return 0; } }
 		public override Field Best { get { return Field; } }
 
 		public override int Apply(byte depth, SearchTree tree, int alpha, int beta) { return Score; }
