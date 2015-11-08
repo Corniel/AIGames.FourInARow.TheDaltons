@@ -49,6 +49,7 @@
     <Compile Include="Deployoment\Deployer.cs" />
     <Compile Include="Deployoment\DeployerTest.cs" />
     <Compile Include="FieldTest.cs" />
+    <Compile Include="MoveGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchTreeTest.cs" />
   </ItemGroup>
@@ -67,6 +68,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Communication\input.simple.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Communication\input.0004.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

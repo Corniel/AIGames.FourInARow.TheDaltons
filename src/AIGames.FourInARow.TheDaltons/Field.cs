@@ -136,7 +136,15 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public static Field Parse(String str)
 		{
-			var stripped = str.Replace(",", "").Replace(";", "");
+			var sb = new StringBuilder(7 * 6);
+			foreach (var ch in str)
+			{
+				if ("012".Contains(ch))
+				{
+					sb.Append(ch);
+				}
+			}
+			var stripped = sb.ToString();
 			var r = ToColored(stripped, 2);
 			var y = ToColored(stripped, 1);
 
@@ -151,7 +159,7 @@ namespace AIGames.FourInARow.TheDaltons
 			{
 				var line = lines.Substring(r * 7, 7);
 				var row = ParseRows[line];
-				field |= row << (5 - r);
+				field |= row << ((5 - r) << 3);
 			}
 			return field;
 		}
