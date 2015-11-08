@@ -46,6 +46,45 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		}
 
 		[Test]
+		public void GetHashCode_Empty_0()
+		{
+			var field = Field.Empty;
+			var act = field.GetHashCode();
+			var exp = 0;
+			Assert.AreEqual(exp, act);
+		}
+
+		[Test]
+		public void GetHashCode_SomeField_134225928()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,1,0,0,0;
+				0,0,0,1,0,0,0;
+				0,0,0,1,2,0,0;
+				0,0,2,1,2,0,0");
+			var act = field.GetHashCode();
+			var exp = 134225928;
+			Assert.AreEqual(exp, act);
+		}
+
+		[Test]
+		public void GetHashCode_SomeFieldSlightlyDifferent_270344()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,1,1,0,0;
+				0,0,0,1,2,0,0;
+				0,0,2,1,2,0,0");
+			var act = field.GetHashCode();
+			var exp = 270344;
+			Assert.AreEqual(exp, act);
+		}
+
+		[Test]
 		public void GetScores_None_AllUnique()
 		{
 			var actual = Field.GetScores();

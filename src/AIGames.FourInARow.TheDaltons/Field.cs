@@ -68,7 +68,30 @@ namespace AIGames.FourInARow.TheDaltons
 			return false;
 		}
 
-		public override int GetHashCode() { return (red ^ (yel << (64 - 41))).GetHashCode(); }
+		/// <summary>Gets the hash code for the field.</summary>
+		/// <remarks>
+		/// The idea is to prevent collisions from happening.
+		/// 
+		/// -3        -2     -1            00000000001111111111222222222233
+		///  09876543210987654321098765432101234567890123456789012345678901
+		///  |                |            ================================
+		///  |                |            xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx.......... red
+		///  |                |            .........xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx. yel << 9
+		///  xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx........................................ red >> 30
+		///                   xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx.xxxxxxx....................... yel >> 13
+		///                                --------------------------------
+		///                                31233332333444433323333323233323
+		/// </remarks>
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hash = red ^ (yel << 9);
+				hash ^= red >> 30;
+				hash ^= yel >> 13;
+				return (int)hash;
+			}
+		}
 		public override bool Equals(object obj) { return Equals((Field)obj); }
 		public bool Equals(Field other)
 		{
