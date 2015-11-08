@@ -1,0 +1,123 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace AIGames.FourInARow.TheDaltons
+{
+	public partial struct Field : IEquatable<Field>, IComparable<Field>
+	{
+		public static readonly Field Empty = default(Field);
+
+		private readonly ulong red;
+		private readonly ulong yel;
+
+		public Field(ulong r, ulong y)
+		{
+#if DEBUG
+			if ((r & y) != 0)
+			{
+				throw new ArgumentException("Not exclusive.");
+			}
+#endif
+			red = r;
+			yel = y;
+		}
+
+		public ulong Occupied { get { return red | yel; } }
+
+		public Field MoveRed(ulong move)
+		{
+			return new Field(red | move, yel);
+		}
+		public Field MoveYellow(ulong move)
+		{
+			return new Field(red, yel | move);
+		}
+
+		public Field Flip()
+		{
+			return new Field(Flip(red), Flip(yel));
+		}
+		public static ulong Flip(ulong color)
+		{
+			var flipped =
+				((color & 0x010101010101) << 6) |
+				((color & 0x020202020202) << 4) |
+				((color & 0x040404040404) << 2) |
+				((color & 0x080808080808) << 0) |
+				((color & 0x101010101010) >> 2) |
+				((color & 0x202020202020) >> 4) |
+				((color & 0x404040404040) >> 6);
+			return flipped;
+		}
+
+		public bool IsScoreRed() { return IsScore(red); }
+		public bool IsScoreYellow() { return IsScore(yel); }
+
+		private static bool IsScore(ulong color)
+		{
+			foreach (var mask in Scores)
+			{
+				if ((mask & color) == mask) { return true; }
+			}
+			return false;
+		}
+
+		public override int GetHashCode() { return (red ^ (yel << (64 - 41))).GetHashCode(); }
+		public override bool Equals(object obj) { return Equals((Field)obj); }
+		public bool Equals(Field other)
+		{
+			return red == other.red && yel == other.yel;
+		}
+		public static bool operator ==(Field l, Field r) { return l.Equals(r); }
+		public static bool operator !=(Field l, Field r) { return !(l == r); }
+
+		public int CompareTo(Field other)
+		{
+			var c = red.CompareTo(other.red);
+			if (c == 0)
+			{
+				c = yel.CompareTo(other.yel);
+			}
+			return c;
+		}
+		public static bool operator <(Field l, Field r) { return l.CompareTo(r) < 0; }
+		public static bool operator >(Field l, Field r) { return l.CompareTo(r) > 0; }
+		public static bool operator <=(Field l, Field r) { return l.CompareTo(r) <= 0; }
+		public static bool operator >=(Field l, Field r) { return l.CompareTo(r) >= 0; }
+
+		public static Field Parse(String str)
+		{
+			var stripped = str.Replace(",", "");
+			var r = ToColored(stripped, 2);
+			var y = ToColored(stripped, 1);
+
+			return new Field(r, y);
+		}
+		private static ulong ToColored(string str, int remove)
+		{
+			var color = str.Replace(remove.ToString(), "0").Replace("2", "1");
+			var field = 0UL;
+			var rows = color.Split(';').Select(line => ParseRows[line]).ToArray();
+
+			for (var r = 0; r < 6; r++)
+			{
+				field |= rows[5 - r] << r;
+			}
+			return field;
+		}
+
+		private static readonly Dictionary<string, ulong> ParseRows = GetParseRows();
+		public static Dictionary<string, ulong> GetParseRows()
+		{
+			var dict = new Dictionary<string, ulong>();
+			for (var i = 0; i < 128; i++)
+			{
+				var key = "000000" + Convert.ToString(i, 2);
+				key = key.Substring(key.Length - 7);
+				dict[key] = (ulong)i;
+			}
+			return dict;
+		}
+	}
+}
