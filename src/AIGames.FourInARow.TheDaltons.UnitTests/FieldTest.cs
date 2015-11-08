@@ -41,6 +41,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			var exp = new Field(0x40, 0x01);
 
 			Assert.AreEqual(exp, act);
+			Assert.AreEqual(str, exp.ToString(), "ToString() should be equal to the input.");
 		}
 	}
 }

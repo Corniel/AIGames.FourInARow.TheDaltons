@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace AIGames.FourInARow.TheDaltons
 {
@@ -85,6 +86,53 @@ namespace AIGames.FourInARow.TheDaltons
 		public static bool operator >(Field l, Field r) { return l.CompareTo(r) > 0; }
 		public static bool operator <=(Field l, Field r) { return l.CompareTo(r) <= 0; }
 		public static bool operator >=(Field l, Field r) { return l.CompareTo(r) >= 0; }
+
+		public override string ToString()
+		{
+			var sb = new StringBuilder((7 + 6) * 6 + 6);
+
+			for (var row = 5; row >= 0; row--)
+			{
+				var r = red >> (row << 3);
+				var y = yel >> (row << 3);
+
+				for (var col = 6; col >= 0; col--)
+				{
+					if ((r & (1UL << col)) != 0)
+					{
+						sb.Append('1');
+					}
+					else if ((y & (1UL << col)) != 0)
+					{
+						sb.Append('2');
+					}
+					else { sb.Append('0'); }
+
+					if (col > 0)
+					{
+						sb.Append(',');
+					}
+				}
+				if (row > 0)
+				{
+					sb.Append(';');
+				}
+			}
+
+			return sb.ToString();
+		}
+		
+		/// <summary>Debugger helper to read the field.</summary>
+		private string[] Rows
+		{
+			get
+			{
+				return ToString()
+					.Split(';')
+					.Select(row => row.Replace(",", ""))
+					.ToArray();
+			}
+		}
 
 		public static Field Parse(String str)
 		{
