@@ -50,20 +50,14 @@ namespace AIGames.FourInARow.TheDaltons
 			var root = GetNode(field, (byte)ply);
 			var count = Count;
 
-			for (byte depth = (byte)(ply); TimeLeft && depth < 43; depth++)
+			for (byte depth = (byte)(ply + 1); TimeLeft && depth < 43; depth++)
 			{
 				root.Apply(depth, this, int.MinValue, int.MaxValue);
 
 				move = GetMove(root, lookup);
 
-				Logger.AppendFormat("{2} {3}, Move: {0}, Score: {1}, Nodes: {4} ({5:0.00}k/s), Trans: {6}",
-					move,
-					root.Score,
-					Sw.Elapsed,
-					depth - ply,
-					NodeCount,
-					Count / (Sw.Elapsed.TotalMilliseconds),
-					Transpositions).AppendLine();
+				var log = new PlyLog(ply, move, root.Score, depth, Sw.Elapsed);
+				Logger.Append(log).AppendLine();
 
 				// Don't spoil time.
 				if (Sw.Elapsed > min || Count == count) { break; }
@@ -137,7 +131,7 @@ namespace AIGames.FourInARow.TheDaltons
 				var score = Evaluator.GetScore(search, ply);
 
 				// If the node is final for the other color, no need to search deeper.
-				if (score > Scores.Red - 42 || score < Scores.Yel + 42)
+				if (score >= Scores.RedMin || score <= Scores.YelMin)
 				{
 					node = new SearchTreeEndNode(search, ply, score);
 				}

@@ -57,6 +57,7 @@
     <Compile Include="Field.cs" />
     <Compile Include="Field.Masks.cs" />
     <Compile Include="MoveGenerator.cs" />
+    <Compile Include="PlyLog.cs" />
     <Compile Include="Scores.cs" />
     <Compile Include="SearchTree.cs" />
     <Compile Include="SearchTreeEndNode.cs" />
