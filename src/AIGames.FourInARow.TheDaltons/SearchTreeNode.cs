@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AIGames.FourInARow.TheDaltons
 {
@@ -15,9 +16,9 @@ namespace AIGames.FourInARow.TheDaltons
 		public abstract int Count { get; }
 		public int Score { get; protected set; }
 
-		public abstract Field Best { get; }
-
 		public abstract int Apply(byte depth, SearchTree tree, int alpha, int beta);
+
+		public abstract IEnumerable<SearchTreeNode> GetChildren();
 
 		public override int GetHashCode() { return Field.GetHashCode(); }
 		public override bool Equals(object obj) { return Equals((SearchTreeNode)obj); }

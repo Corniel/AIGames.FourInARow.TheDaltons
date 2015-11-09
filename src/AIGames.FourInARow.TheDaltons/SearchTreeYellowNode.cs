@@ -7,11 +7,13 @@ namespace AIGames.FourInARow.TheDaltons
 		public SearchTreeYellowNode(Field field, byte depth) : base(field, depth) { }
 
 		public override bool IsMax { get { return false; } }
+		public override int LosingScore { get { return Scores.Red; } }
+		public override int WinningScore { get { return Scores.Yel; } }
 
 		public int CompareTo(SearchTreeYellowNode other)
 		{
-			// lower scores first.
-			return -Score.CompareTo(other.Score);
+			// Higher scores first, it is Red that may choose.
+			return other.Score.CompareTo(Score);
 		}
 
 		protected override bool ApplyChildren(byte depth, SearchTree tree, int alpha, int beta)

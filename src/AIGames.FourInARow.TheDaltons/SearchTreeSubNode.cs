@@ -10,17 +10,17 @@ namespace AIGames.FourInARow.TheDaltons
 		public SearchTreeSubNode(Field field, byte depth) : base(field, depth) { }
 
 		public abstract bool IsMax { get; }
-		public override Field Best
-		{
-			get
-			{
-				return children == null || children.Count == 0 ? Field.Empty : children[0].Field;
-			}
-		}
-
+		public abstract int LosingScore { get; }
+		public abstract int WinningScore { get; }
 		public override int Count { get { return children == null ? -1 : children.Count; } }
 
+		public override IEnumerable<SearchTreeNode> GetChildren() 
+		{
+			return children == null ? Enumerable.Empty<SearchTreeNode>() : children;
+		}
 		protected List<T> children;
+		
+		protected int InitialScore { get; set; }
 
 		public override int Apply(byte depth, SearchTree tree, int alpha, int beta)
 		{
@@ -50,31 +50,74 @@ namespace AIGames.FourInARow.TheDaltons
 					}
 				}
 			}
+			
 			// This node is final. return its score.
-			if (children.Count == 0) { return Score; }
-
-			if (Score == 0 && (Depth + 2) == depth)
+			if (children.Count < 2) 
 			{
-				if (IsMax)
-				{
-					Score = children.Count(ch => ch.Count == 0);
-				}
-				else
-				{
-					Score = -children.Count(ch => ch.Count == 0);
-				}
+				return Score; 
 			}
-
+			
 			if (ApplyChildren(depth, tree, alpha, beta))
 			{
 				children.Clear();
 				return Score;
 			}
 			children.Sort();
+
+			// If No score is found so far, try to set.
+			if (InitialScore == 0 && (Depth + 2) == depth)
+			{
+				if (IsMax)
+				{
+					InitialScore = children.Sum(ch => ch.GetChildren().Count(c => c.Count == 0));
+				}
+				else
+				{
+					InitialScore = -children.Sum(ch => ch.GetChildren().Count(c => c.Count == 0));
+				}
+			}
+			
+			// only update if the test <> 0.
+			// Otherwise the 'options score' is best.
 			var test = children[0].Score;
-			if(test != 0)
+			if (test != 0)
 			{
 				Score = test;
+			}
+			else
+			{
+				Score = InitialScore;
+			}
+			
+			if (Score == WinningScore)
+			{
+				for (var i = children.Count - 1; i > 0; i--)
+				{
+					var child = children[i];
+					if (child.Score != WinningScore)
+					{
+						children.Remove(child);
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+			else if (Score != LosingScore)
+			{
+				for (var i = children.Count - 1; i > 0; i--)
+				{
+					var child = children[i];
+					if (child.Score == LosingScore)
+					{
+						children.Remove(child);
+					}
+					else
+					{
+						break;
+					}
+				}
 			}
 			return Score;
 		}
@@ -85,8 +128,12 @@ namespace AIGames.FourInARow.TheDaltons
 		{
 			get
 			{
-				return string.Format("Depth: {0}, Score: {1}, Children: {2}",
-					Depth, Score, children == null ? 0 : children.Count);
+				return string.Format("{3} Depth: {0}, Score: {1}, Children: {2}, {4}",
+					Depth, 
+					Score, 
+					children == null ? 0 : children.Count,
+					IsMax ? "Red": "Yellow",
+					Field);
 			}
 		}
 	}
