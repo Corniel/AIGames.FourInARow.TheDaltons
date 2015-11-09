@@ -10,10 +10,22 @@ namespace AIGames.FourInARow.TheDaltons
 		public override int LosingScore { get { return Scores.Yel; } }
 		public override int WinningScore { get { return Scores.Red; } }
 
+		/// <summary>Sort nodes on score.</summary>
 		public int CompareTo(SearchTreeRedNode other)
 		{
 			// Lower scores first, it is Yellow that may choose.
-			return Score.CompareTo(other.Score);
+			var compare = Score.CompareTo(other.Score);
+			if (compare == 0)
+			{
+				// Less children first. More forcing.			
+				compare = Count.CompareTo(other.Count);
+			}
+			// lower discs first.
+			if (compare == 0)
+			{
+				compare = Field.Occupied.CompareTo(other.Field.Occupied);
+			}
+			return compare;
 		}
 
 		protected override bool ApplyChildren(byte depth, SearchTree tree, int alpha, int beta)

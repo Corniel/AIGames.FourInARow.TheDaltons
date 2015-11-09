@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Linq;
+using System.Text;
 
 namespace AIGames.FourInARow.TheDaltons
 {
@@ -13,18 +13,25 @@ namespace AIGames.FourInARow.TheDaltons
 			Sw = new Stopwatch();
 			Logger = new StringBuilder();
 			Generator = new MoveGenerator();
+			var seed = DateTime.Now.Millisecond;
+			Console.Error.WriteLine("Seed: {0}", seed);
+			Rnd = new Random(seed);
 		}
 
 		public MoveGenerator Generator { get; set; }
 		public bool TimeLeft { get { return Sw.Elapsed < Max; } }
 		protected TimeSpan Max { get; set; }
+		protected Random Rnd { get; set; }
 
 		public Stopwatch Sw { get; protected set; }
 		public StringBuilder Logger { get; protected set; }
 
 		public byte GetMove(Field field, int ply, TimeSpan min, TimeSpan max)
 		{
+			// Premature book.
 			if (ply == 1) { return 3; }
+			if (ply < 4) { return Rnd.Next(0, 2) == 0 ? (byte)2 : (byte)4; }
+
 			var redToMove = (ply & 1) == 1;
 
 			Sw.Restart();

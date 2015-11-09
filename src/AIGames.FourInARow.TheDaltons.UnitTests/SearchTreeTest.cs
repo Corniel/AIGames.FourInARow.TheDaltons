@@ -50,5 +50,23 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			var exp = (byte)1;
 			Assert.AreEqual(exp, act);
 		}
+
+		[Test]
+		public void GetMove_ForcingMovePossible_4()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,2,0,0,0;
+				0,0,0,1,1,0,0;
+				0,2,1,1,2,0,2");
+			var tree = new SearchTree();
+			var act = tree.GetMove(field, 9, TimeSpan.MaxValue, TimeSpan.FromSeconds(2));
+			Console.WriteLine(tree.Logger);
+
+			var exp = (byte)4;
+			Assert.AreEqual(exp, act);
+		}
 	}
 }

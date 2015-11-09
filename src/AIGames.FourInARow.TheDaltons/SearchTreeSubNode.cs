@@ -19,9 +19,7 @@ namespace AIGames.FourInARow.TheDaltons
 			return children == null ? Enumerable.Empty<SearchTreeNode>() : children;
 		}
 		protected List<T> children;
-		
-		protected int InitialScore { get; set; }
-
+	
 		public override int Apply(byte depth, SearchTree tree, int alpha, int beta)
 		{
 			if (depth < Depth || !tree.TimeLeft) { return Score; }
@@ -49,6 +47,7 @@ namespace AIGames.FourInARow.TheDaltons
 						return Score;
 					}
 				}
+				Score = 7-children.Count;
 			}
 			
 			// This node is final. return its score.
@@ -64,29 +63,14 @@ namespace AIGames.FourInARow.TheDaltons
 			}
 			children.Sort();
 
-			// If No score is found so far, try to set.
-			if (InitialScore == 0 && (Depth + 2) == depth)
-			{
-				if (IsMax)
-				{
-					InitialScore = children.Sum(ch => ch.GetChildren().Count(c => c.Count == 0));
-				}
-				else
-				{
-					InitialScore = -children.Sum(ch => ch.GetChildren().Count(c => c.Count == 0));
-				}
-			}
+			
 			
 			// only update if the test <> 0.
 			// Otherwise the 'options score' is best.
 			var test = children[0].Score;
-			if (test != 0)
+			if(test != 0)
 			{
 				Score = test;
-			}
-			else
-			{
-				Score = InitialScore;
 			}
 			
 			if (Score == WinningScore)
