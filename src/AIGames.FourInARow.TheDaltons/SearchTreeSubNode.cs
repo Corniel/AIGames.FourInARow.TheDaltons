@@ -57,37 +57,6 @@ namespace AIGames.FourInARow.TheDaltons
 			}
 			
 			Score = ApplyChildren(depth, tree, alpha, beta);
-			
-			//if (Score == WinningScore)
-			//{
-			//	for (var i = children.Count - 1; i > 0; i--)
-			//	{
-			//		var child = children[i];
-			//		if (child.Score != WinningScore)
-			//		{
-			//			children.Remove(child);
-			//		}
-			//		else
-			//		{
-			//			break;
-			//		}
-			//	}
-			//}
-			//else if (Score != LosingScore)
-			//{
-			//	for (var i = children.Count - 1; i > 0; i--)
-			//	{
-			//		var child = children[i];
-			//		if (child.Score == LosingScore)
-			//		{
-			//			children.Remove(child);
-			//		}
-			//		else
-			//		{
-			//			break;
-			//		}
-			//	}
-			//}
 			return Score;
 		}
 		protected abstract int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta);
