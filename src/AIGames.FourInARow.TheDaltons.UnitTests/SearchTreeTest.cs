@@ -26,10 +26,10 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				0,0,0,0,0,0,0;
 				0,0,0,1,2,0,0");
 			var tree = new SearchTree();
-			var act = tree.GetMove(field, 3, TimeSpan.MaxValue, TimeSpan.FromSeconds(8));
+			var act = tree.GetMove(field, 3, TimeSpan.MaxValue, TimeSpan.FromSeconds(40));
 			Console.WriteLine(tree.Logger);
 
-			var exp = (byte)5;
+			var exp = (byte)1;
 			Assert.AreNotEqual(exp, act);
 		}
 

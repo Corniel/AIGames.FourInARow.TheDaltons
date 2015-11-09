@@ -19,7 +19,7 @@ namespace AIGames.FourInARow.TheDaltons
 			return children == null ? Enumerable.Empty<SearchTreeNode>() : children;
 		}
 		protected List<T> children;
-	
+
 		public override int Apply(byte depth, SearchTree tree, int alpha, int beta)
 		{
 			if (depth < Depth || !tree.TimeLeft) { return Score; }
@@ -60,6 +60,23 @@ namespace AIGames.FourInARow.TheDaltons
 			return Score;
 		}
 		protected abstract int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta);
+		protected IEnumerable<SearchTreeNode> LoopChildren()
+		{
+			var prev = int.MinValue;
+			var count = 0;
+			foreach (var child in children)
+			{
+				if (count++ < 3 || child.Score == prev)
+				{
+					yield return child;
+					prev = child.Score;
+				}
+				else
+				{
+					yield break;
+				}
+			}
+		}
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay

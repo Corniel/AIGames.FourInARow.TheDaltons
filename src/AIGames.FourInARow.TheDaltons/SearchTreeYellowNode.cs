@@ -31,7 +31,7 @@ namespace AIGames.FourInARow.TheDaltons
 		protected override int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta)
 		{
 			Score = int.MaxValue;
-			foreach (var child in children)
+			foreach (var child in LoopChildren())
 			{
 				var test = child.Apply(depth, tree, alpha, beta);
 				if (test < Score)
