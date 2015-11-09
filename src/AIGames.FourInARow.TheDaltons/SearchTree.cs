@@ -115,6 +115,12 @@ namespace AIGames.FourInARow.TheDaltons
 			{
 				tree[i] = null;
 			}
+			for (var i = round; round < 43; i++)
+			{
+				tree[i].Clear();
+			}
+			NodeCount = 0;
+			Transpositions = 0;
 		}
 
 		/// <summary>Gets a node with the field to search for.</summary>

@@ -68,5 +68,24 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			var exp = (byte)4;
 			Assert.AreEqual(exp, act);
 		}
+
+		[Test]
+		public void GetMove_NotInstantLosing_Not5()
+		{
+			var field = Field.Parse(@"
+				0,0,1,2,1,0,0;
+				0,0,1,1,2,0,0;
+				0,0,2,1,2,0,0;
+				2,0,2,1,2,2,0;
+				1,2,2,2,1,1,0;
+				2,1,1,1,2,1,0");
+			var tree = new SearchTree();
+			var act = tree.GetMove(field, 27, TimeSpan.MaxValue, TimeSpan.FromSeconds(4000));
+			Console.WriteLine(tree.Logger);
+
+			var exp = (byte)5;
+			Assert.AreNotEqual(exp, act);
+		}
+
 	}
 }
