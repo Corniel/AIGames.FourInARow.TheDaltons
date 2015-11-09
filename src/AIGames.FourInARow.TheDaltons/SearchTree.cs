@@ -13,9 +13,7 @@ namespace AIGames.FourInARow.TheDaltons
 			Sw = new Stopwatch();
 			Logger = new StringBuilder();
 			Generator = new MoveGenerator();
-			var seed = DateTime.Now.Millisecond;
-			Console.Error.WriteLine("Seed: {0}", seed);
-			Rnd = new Random(seed);
+			Rnd = new Random();
 		}
 
 		public MoveGenerator Generator { get; set; }
@@ -113,14 +111,9 @@ namespace AIGames.FourInARow.TheDaltons
 		{
 			for (var i = 1; i < round; i++)
 			{
-				tree[i] = null;
-			}
-			for (var i = round; round < 43; i++)
-			{
 				tree[i].Clear();
+				trans[i] = 0;
 			}
-			NodeCount = 0;
-			Transpositions = 0;
 		}
 
 		/// <summary>Gets a node with the field to search for.</summary>
@@ -155,27 +148,27 @@ namespace AIGames.FourInARow.TheDaltons
 					node = new SearchTreeYellowNode(search, ply);
 				}
 				tree[ply][search] = node;
-				NodeCount++;
 			}
 			else
 			{
-				Transpositions++;
+				trans[ply]++;
 			}
 			return node;
 		}
 
 		private Dictionary<Field, SearchTreeNode>[] tree = GetTree();
+		private int[] trans = new int[43];
 		private static Dictionary<Field, SearchTreeNode>[] GetTree()
 		{
 			var tree = new Dictionary<Field, SearchTreeNode>[43];
-			for (var ply = 1; ply < 43; ply++)
+			for (var ply = 0; ply < 43; ply++)
 			{
 				tree[ply] = new Dictionary<Field, SearchTreeNode>();
 			}
 			return tree;
 		}
-		public int Transpositions { get; protected set; }
-		public int NodeCount { get; protected set; }
+		public int Transpositions { get { return trans.Sum(); } }
+		public int NodeCount { get { return tree.Sum(item => item.Count); } }
 		public int Count { get { return NodeCount + Transpositions; } }
 	}
 }
