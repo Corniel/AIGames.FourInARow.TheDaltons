@@ -11,10 +11,12 @@ namespace AIGames.FourInARow.TheDaltons
 		public Settings Settings { get; set; }
 		public GameState State { get; set; }
 		public SearchTree Tree { get; set; }
+		public Book Book { get; set; }
 
 		public TheDaltonsBot()
 		{
 			Tree = new SearchTree();
+			Book = new Book();
 		}
 
 		public void ApplySettings(Settings settings)
@@ -29,6 +31,15 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public BotResponse GetResponse(TimeSpan time)
 		{
+			var col = Book.GetMove(State.Field, State.Ply);
+			if (col != Book.NoMove)
+			{
+				return new BotResponse()
+				{
+					Move = new MoveInstruction(col),
+				};
+			}
+
 			// Take 1/3 of the thinking time up to 1.2 seconds.
 			var max = Math.Min(time.TotalMilliseconds / 3, 1200);
 			// Take 500 ms or if you're really getting out of time 3/4 of the max.
@@ -36,7 +47,7 @@ namespace AIGames.FourInARow.TheDaltons
 			
 			Tree.Clear(State.Ply);
 
-			var col = Tree.GetMove(State.Field, State.Ply, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
+			col = Tree.GetMove(State.Field, State.Ply, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
 
 			var move = new MoveInstruction(col);
 

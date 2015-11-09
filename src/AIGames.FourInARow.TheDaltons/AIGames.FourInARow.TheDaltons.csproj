@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bits.cs" />
+    <Compile Include="Book.cs" />
     <Compile Include="Communication\BotResponse.cs" />
     <Compile Include="Communication\ConsolePlatform.cs" />
     <Compile Include="Communication\GameState.cs" />

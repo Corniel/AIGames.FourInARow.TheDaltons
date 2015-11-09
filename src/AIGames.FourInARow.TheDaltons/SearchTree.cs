@@ -26,10 +26,6 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public byte GetMove(Field field, int ply, TimeSpan min, TimeSpan max)
 		{
-			// Premature book.
-			if (ply == 1) { return 3; }
-			if (ply < 4) { return Rnd.Next(0, 2) == 0 ? (byte)2 : (byte)4; }
-
 			var redToMove = (ply & 1) == 1;
 
 			Sw.Restart();
