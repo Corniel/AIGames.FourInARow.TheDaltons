@@ -3,6 +3,10 @@ The Daltons
 
 The Daltons is an AI trying to play Four-in-a-Row.
 
+Version 13
+----------
+Time fix, and fix for forced moves because of single open column.
+
 Version 12
 ----------
 Tweaked and improved evaluation. Branching restriction. More time-consuming to
