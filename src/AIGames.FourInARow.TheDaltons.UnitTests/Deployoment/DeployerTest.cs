@@ -8,7 +8,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests.Deployoment
 	public class DeployerTest
 	{
 		[Test]
-		public void Deploy_Cubism_CompileAndZip()
+		public void Deploy_Bot_CompileAndZip()
 		{
 			var collectDir = new DirectoryInfo(@"..\..\..\AIGames.FourInARow.TheDaltons");
 			var full = collectDir.FullName;
