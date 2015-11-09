@@ -98,7 +98,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				1,2,2,2,1,1,0;
 				2,1,1,1,2,1,0");
 			var tree = new SearchTree();
-			var act = tree.GetMove(field, 27, TimeSpan.MaxValue, TimeSpan.FromSeconds(1));
+			var act = tree.GetMove(field, 27, TimeSpan.MaxValue, TimeSpan.FromSeconds(1000));
 			Console.WriteLine(tree.Logger);
 
 			var exp = (byte)5;
