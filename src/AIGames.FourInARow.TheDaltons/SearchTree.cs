@@ -40,11 +40,12 @@ namespace AIGames.FourInARow.TheDaltons
 			// Instant winning is not handled properly eslewhere.
 			foreach (var key in lookup.Keys)
 			{
-				if(redToMove ? key.IsScoreRed() : key.IsScoreYellow())
+				if(lookup.Count == 1 || (redToMove ? key.IsScoreRed() : key.IsScoreYellow()))
 				{
 					return lookup[key];
 				}
 			}
+
 			Root = GetNode(field, (byte)ply);
 			var count = Count;
 
