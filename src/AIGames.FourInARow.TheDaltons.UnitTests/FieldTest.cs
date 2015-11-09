@@ -55,7 +55,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		}
 
 		[Test]
-		public void GetHashCode_SomeField_134225928()
+		public void GetHashCode_SomeField_68422170()
 		{
 			var field = Field.Parse(@"
 				0,0,0,0,0,0,0;
@@ -65,12 +65,12 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				0,0,0,1,2,0,0;
 				0,0,2,1,2,0,0");
 			var act = field.GetHashCode();
-			var exp = 134225928;
+			var exp = 68422170;
 			Assert.AreEqual(exp, act);
 		}
 
 		[Test]
-		public void GetHashCode_SomeFieldSlightlyDifferent_270344()
+		public void GetHashCode_SomeFieldSlightlyDifferent_68421643()
 		{
 			var field = Field.Parse(@"
 				0,0,0,0,0,0,0;
@@ -80,7 +80,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				0,0,0,1,2,0,0;
 				0,0,2,1,2,0,0");
 			var act = field.GetHashCode();
-			var exp = 270344;
+			var exp = 68421643;
 			Assert.AreEqual(exp, act);
 		}
 
@@ -134,12 +134,10 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		[Test]
 		public void Parse_FirsRow_AreEqual()
 		{
-			var str = "0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;1,0,0,0,0,0,2";
-			var act = Field.Parse(str);
-			var exp = new Field(0x40, 0x01);
-
-			Assert.AreEqual(exp, act);
-			Assert.AreEqual(str, exp.ToString(), "ToString() should be equal to the input.");
+			var exp = "0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;1,0,0,0,0,0,2";
+			var act = Field.Parse(exp);
+			
+			Assert.AreEqual(exp, act.ToString());
 		}
 	}
 }
