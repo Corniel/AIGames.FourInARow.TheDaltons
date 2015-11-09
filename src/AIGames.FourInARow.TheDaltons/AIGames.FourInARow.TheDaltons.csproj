@@ -53,6 +53,7 @@
     <Compile Include="Communication\Instruction.Update.Field.cs" />
     <Compile Include="Communication\PlayerName.cs" />
     <Compile Include="Communication\Settings.cs" />
+    <Compile Include="Evaluator.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Field.Masks.cs" />
     <Compile Include="MoveGenerator.cs" />

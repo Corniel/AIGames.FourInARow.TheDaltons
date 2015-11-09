@@ -15,6 +15,24 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			Assert.AreEqual(exp, act);
 		}
 
+		[Test, Category(Category.IntegrationTest)]
+		public void GetMove_AlmostInitial_()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,1,2,0,0");
+			var tree = new SearchTree();
+			var act = tree.GetMove(field, 3, TimeSpan.MaxValue, TimeSpan.FromSeconds(8));
+			Console.WriteLine(tree.Logger);
+
+			var exp = (byte)5;
+			Assert.AreNotEqual(exp, act);
+		}
+
 		[Test]
 		public void GetMove_OneOption_3()
 		{
@@ -26,7 +44,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				0,0,0,1,0,0,0;
 				0,0,2,1,2,0,0");
 			var tree = new SearchTree();
-			var act = tree.GetMove(field, 6, TimeSpan.MaxValue, TimeSpan.FromSeconds(2000));
+			var act = tree.GetMove(field, 6, TimeSpan.MaxValue, TimeSpan.FromSeconds(1));
 			Console.WriteLine(tree.Logger);
 
 			var exp = (byte)3;
@@ -80,7 +98,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				1,2,2,2,1,1,0;
 				2,1,1,1,2,1,0");
 			var tree = new SearchTree();
-			var act = tree.GetMove(field, 27, TimeSpan.MaxValue, TimeSpan.FromSeconds(4000));
+			var act = tree.GetMove(field, 27, TimeSpan.MaxValue, TimeSpan.FromSeconds(1));
 			Console.WriteLine(tree.Logger);
 
 			var exp = (byte)5;

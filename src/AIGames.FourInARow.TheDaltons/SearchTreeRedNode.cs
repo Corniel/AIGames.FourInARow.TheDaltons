@@ -4,7 +4,7 @@ namespace AIGames.FourInARow.TheDaltons
 {
 	public class SearchTreeRedNode : SearchTreeSubNode<SearchTreeYellowNode>, IComparable<SearchTreeRedNode>
 	{
-		public SearchTreeRedNode(Field field, byte depth) : base(field, depth) { }
+		public SearchTreeRedNode(Field field, byte depth, int value) : base(field, depth, value) { }
 
 		public override bool IsMax { get { return true; } }
 		public override int LosingScore { get { return Scores.Yel; } }
@@ -28,7 +28,7 @@ namespace AIGames.FourInARow.TheDaltons
 			return compare;
 		}
 
-		protected override bool ApplyChildren(byte depth, SearchTree tree, int alpha, int beta)
+		protected override int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta)
 		{
 			Score = int.MinValue;
 			foreach (var child in children)
@@ -41,17 +41,13 @@ namespace AIGames.FourInARow.TheDaltons
 					{
 						alpha = Score;
 					}
-					if (test == Scores.Red)
-					{
-						return true;
-					}
 				}
 				else if (beta <= alpha)
 				{
 					break;
 				}
 			}
-			return false;
+			return Score;
 		}
 	}
 }

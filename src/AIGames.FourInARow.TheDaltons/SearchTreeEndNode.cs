@@ -7,10 +7,7 @@ namespace AIGames.FourInARow.TheDaltons
 	[DebuggerDisplay("{DebuggerDisplay}")]
 	public class SearchTreeEndNode : SearchTreeNode
 	{
-		public SearchTreeEndNode(Field field, byte depth, bool redToMove) : base(field, depth) 
-		{
-			Score = redToMove ? Scores.Yel : Scores.Red;
-		}
+		public SearchTreeEndNode(Field field, byte depth, int value) : base(field, depth, value) { }
 
 		public override int Count { get { return 0; } }
 	

@@ -7,7 +7,7 @@ namespace AIGames.FourInARow.TheDaltons
 	[DebuggerDisplay("{DebuggerDisplay}")]
 	public abstract class SearchTreeSubNode<T> : SearchTreeNode where T : SearchTreeNode
 	{
-		public SearchTreeSubNode(Field field, byte depth) : base(field, depth) { }
+		public SearchTreeSubNode(Field field, byte depth, int value) : base(field, depth, value) { }
 
 		public abstract bool IsMax { get; }
 		public abstract int LosingScore { get; }
@@ -56,56 +56,41 @@ namespace AIGames.FourInARow.TheDaltons
 				return Score; 
 			}
 			
-			if (ApplyChildren(depth, tree, alpha, beta))
-			{
-				children.Clear();
-				return Score;
-			}
-			children.Sort();
-
+			Score = ApplyChildren(depth, tree, alpha, beta);
 			
-			
-			// only update if the test <> 0.
-			// Otherwise the 'options score' is best.
-			var test = children[0].Score;
-			if(test != 0)
-			{
-				Score = test;
-			}
-			
-			if (Score == WinningScore)
-			{
-				for (var i = children.Count - 1; i > 0; i--)
-				{
-					var child = children[i];
-					if (child.Score != WinningScore)
-					{
-						children.Remove(child);
-					}
-					else
-					{
-						break;
-					}
-				}
-			}
-			else if (Score != LosingScore)
-			{
-				for (var i = children.Count - 1; i > 0; i--)
-				{
-					var child = children[i];
-					if (child.Score == LosingScore)
-					{
-						children.Remove(child);
-					}
-					else
-					{
-						break;
-					}
-				}
-			}
+			//if (Score == WinningScore)
+			//{
+			//	for (var i = children.Count - 1; i > 0; i--)
+			//	{
+			//		var child = children[i];
+			//		if (child.Score != WinningScore)
+			//		{
+			//			children.Remove(child);
+			//		}
+			//		else
+			//		{
+			//			break;
+			//		}
+			//	}
+			//}
+			//else if (Score != LosingScore)
+			//{
+			//	for (var i = children.Count - 1; i > 0; i--)
+			//	{
+			//		var child = children[i];
+			//		if (child.Score == LosingScore)
+			//		{
+			//			children.Remove(child);
+			//		}
+			//		else
+			//		{
+			//			break;
+			//		}
+			//	}
+			//}
 			return Score;
 		}
-		protected abstract bool ApplyChildren(byte depth, SearchTree tree, int alpha, int beta);
+		protected abstract int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta);
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay

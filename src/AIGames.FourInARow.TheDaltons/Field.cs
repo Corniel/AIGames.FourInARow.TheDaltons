@@ -34,7 +34,10 @@ namespace AIGames.FourInARow.TheDaltons
 			var update = (yel | move) & Mask;
 			return new Field(red, update | GetHashCode(update));
 		}
-			
+
+		public ulong GetRed() { return red & Mask; }
+		public ulong GetYellow() { return yel & Mask; }
+
 		public bool IsScoreRed() { return IsScore(red); }
 		public bool IsScoreYellow() { return IsScore(yel); }
 

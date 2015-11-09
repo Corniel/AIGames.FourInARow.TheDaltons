@@ -134,18 +134,28 @@ namespace AIGames.FourInARow.TheDaltons
 
 			if (!tree[ply].TryGetValue(search, out node))
 			{
+				var color0 = redToMove ? search.GetYellow() : search.GetRed();
+				var color1 = redToMove ? search.GetRed() : search.GetYellow();
+
+				var score = Evaluator.GetScore(color0, color1);
+
 				// If the node is final for the other color, no need to search deeper.
-				if (ply > 7 && redToMove ? search.IsScoreYellow() : search.IsScoreRed())
+				if (score == Scores.Red)
 				{
-					node = new SearchTreeEndNode(search, ply, redToMove);
+					score -= ply;
+					node = new SearchTreeEndNode(search, ply, redToMove ? -score: score);
+				}
+				else if (ply == 42)
+				{
+					node = new SearchTreeEndNode(search, 42, 0);
 				}
 				else if (redToMove)
 				{
-					node = new SearchTreeRedNode(search, ply);
+					node = new SearchTreeRedNode(search, ply, -score);
 				}
 				else
 				{
-					node = new SearchTreeYellowNode(search, ply);
+					node = new SearchTreeYellowNode(search, ply, score);
 				}
 				tree[ply][search] = node;
 			}
