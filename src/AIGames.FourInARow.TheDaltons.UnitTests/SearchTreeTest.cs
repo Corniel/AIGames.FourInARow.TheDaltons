@@ -34,17 +34,21 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		}
 
 		[Test]
-		public void GetMove_FieldWith_()
+		public void GetMove_WinningOption_1()
 		{
 			var field = Field.Parse(@"
-				0,0,0,1,1,0,0;
-				2,0,0,2,1,0,0;
-				2,0,0,1,2,0,0;
-				1,0,0,1,1,0,0;
-				2,0,0,2,1,0,0;
-				2,0,0,1,2,0,0");
+				0,0,0,1,0,0,0;
+				0,0,2,1,0,0,0;
+				0,0,2,1,0,0,0;
+				0,0,1,2,0,0,0;
+				0,0,1,1,1,0,0;
+				2,0,2,1,2,2,2");
 			var tree = new SearchTree();
-			var act = tree.GetMove(field, 18, TimeSpan.MaxValue, TimeSpan.MaxValue);
+			var act = tree.GetMove(field, 19, TimeSpan.MaxValue, TimeSpan.FromSeconds(2000));
+			Console.WriteLine(tree.Logger);
+
+			var exp = (byte)1;
+			Assert.AreEqual(exp, act);
 		}
 	}
 }

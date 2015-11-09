@@ -25,6 +25,7 @@ namespace AIGames.FourInARow.TheDaltons
 		public byte GetMove(Field field, int ply, TimeSpan min, TimeSpan max)
 		{
 			if (ply == 1) { return 3; }
+			var redToMove = (ply & 1) == 1;
 
 			Sw.Restart();
 			Logger.Clear();
@@ -33,6 +34,14 @@ namespace AIGames.FourInARow.TheDaltons
 			byte move = 3;
 
 			var lookup = CreateLookup(field, ply);
+			// Instant winning is not handled properly eslewhere.
+			foreach (var key in lookup.Keys)
+			{
+				if(redToMove ? key.IsScoreRed() : key.IsScoreYellow())
+				{
+					return lookup[key];
+				}
+			}
 			var root = GetNode(field, (byte)ply);
 			var count = Count;
 
