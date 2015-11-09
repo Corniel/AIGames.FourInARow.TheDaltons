@@ -40,8 +40,8 @@ namespace AIGames.FourInARow.TheDaltons
 				};
 			}
 
-			// Take 1/3 of the thinking time up to 1.2 seconds.
-			var max = Math.Min(time.TotalMilliseconds / 3, 1200);
+			// Take 2/3 of the thinking time up to 6 seconds.
+			var max = Math.Min(2 * time.TotalMilliseconds / 3, 6000);
 			// Take 500 ms or if you're really getting out of time 3/4 of the max.
 			var min = Math.Min(500, (max * 3) / 4);
 			
