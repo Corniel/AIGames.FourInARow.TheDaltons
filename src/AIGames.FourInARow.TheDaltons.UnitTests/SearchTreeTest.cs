@@ -6,17 +6,16 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 	[TestFixture]
 	public class SearchTreeTest
 	{
-		[Test]
-		public void GetMove_Initial_3()
+		[Test, Category(Category.IntegrationTest)]
+		public void GetMove_Initial_Performance()
 		{
 			var tree = new SearchTree();
-			var act = tree.GetMove(Field.Empty, 1, TimeSpan.MaxValue, TimeSpan.FromSeconds(2000));
-			var exp = (byte)3;
-			Assert.AreEqual(exp, act);
+			var act = tree.GetMove(Field.Empty, 1, TimeSpan.MaxValue, TimeSpan.FromSeconds(40));
+			Console.WriteLine(tree.Logger);
 		}
 
 		[Test, Category(Category.IntegrationTest)]
-		public void GetMove_AlmostInitial_()
+		public void GetMove_AlmostInitial_Performance()
 		{
 			var field = Field.Parse(@"
 				0,0,0,0,0,0,0;
@@ -28,9 +27,6 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			var tree = new SearchTree();
 			var act = tree.GetMove(field, 3, TimeSpan.MaxValue, TimeSpan.FromSeconds(40));
 			Console.WriteLine(tree.Logger);
-
-			var exp = (byte)1;
-			Assert.AreNotEqual(exp, act);
 		}
 
 		[Test]
@@ -66,24 +62,6 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			Console.WriteLine(tree.Logger);
 
 			var exp = (byte)1;
-			Assert.AreEqual(exp, act);
-		}
-
-		[Test]
-		public void GetMove_ForcingMovePossible_4()
-		{
-			var field = Field.Parse(@"
-				0,0,0,0,0,0,0;
-				0,0,0,0,0,0,0;
-				0,0,0,0,0,0,0;
-				0,0,0,2,0,0,0;
-				0,0,0,1,1,0,0;
-				0,2,1,1,2,0,2");
-			var tree = new SearchTree();
-			var act = tree.GetMove(field, 9, TimeSpan.MaxValue, TimeSpan.FromSeconds(2));
-			Console.WriteLine(tree.Logger);
-
-			var exp = (byte)4;
 			Assert.AreEqual(exp, act);
 		}
 

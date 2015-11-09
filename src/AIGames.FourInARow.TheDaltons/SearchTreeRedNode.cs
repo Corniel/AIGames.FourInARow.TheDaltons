@@ -15,18 +15,7 @@ namespace AIGames.FourInARow.TheDaltons
 		public int CompareTo(SearchTreeRedNode other)
 		{
 			// Lower scores first, it is Yellow that may choose.
-			var compare = Score.CompareTo(other.Score);
-			if (compare == 0)
-			{
-				// Less children first. More forcing.			
-				compare = Count.CompareTo(other.Count);
-			}
-			// lower discs first.
-			if (compare == 0)
-			{
-				compare = Field.Occupied.CompareTo(other.Field.Occupied);
-			}
-			return compare;
+			return Score.CompareTo(other.Score);
 		}
 
 		protected override int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta)

@@ -24,6 +24,8 @@ namespace AIGames.FourInARow.TheDaltons
 		public Stopwatch Sw { get; protected set; }
 		public StringBuilder Logger { get; protected set; }
 
+		public SearchTreeNode Root { get; set; }
+
 		public byte GetMove(Field field, int ply, TimeSpan min, TimeSpan max)
 		{
 			var redToMove = (ply & 1) == 1;
@@ -43,16 +45,16 @@ namespace AIGames.FourInARow.TheDaltons
 					return lookup[key];
 				}
 			}
-			var root = GetNode(field, (byte)ply);
+			Root = GetNode(field, (byte)ply);
 			var count = Count;
 
 			for (byte depth = (byte)(ply + 1); TimeLeft && depth < 43; depth++)
 			{
-				root.Apply(depth, this, int.MinValue, int.MaxValue);
+				Root.Apply(depth, this, int.MinValue, int.MaxValue);
 
-				move = GetMove(root, lookup);
+				move = GetMove(Root, lookup);
 
-				var log = new PlyLog(ply, move, root.Score, depth, Sw.Elapsed);
+				var log = new PlyLog(ply, move, Root.Score, depth, Sw.Elapsed);
 				Logger.Append(log).AppendLine();
 
 				// Don't spoil time.

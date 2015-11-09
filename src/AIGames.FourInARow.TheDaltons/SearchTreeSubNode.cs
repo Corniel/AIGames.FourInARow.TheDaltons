@@ -14,7 +14,7 @@ namespace AIGames.FourInARow.TheDaltons
 		public abstract int WinningScore { get; }
 		public override int Count { get { return children == null ? -1 : children.Count; } }
 
-		public override IEnumerable<SearchTreeNode> GetChildren() 
+		public override IEnumerable<SearchTreeNode> GetChildren()
 		{
 			return children == null ? Enumerable.Empty<SearchTreeNode>() : children;
 		}
@@ -23,15 +23,15 @@ namespace AIGames.FourInARow.TheDaltons
 		public override int Apply(byte depth, SearchTree tree, int alpha, int beta)
 		{
 			if (depth < Depth || !tree.TimeLeft) { return Score; }
-			
+
 			// If no children, get moves.
 			if (children == null)
 			{
 				var items = tree.Generator.GetMoves(Field, (Depth & 1) == 1);
 				var childDepth = (byte)(Depth + 1);
-				
+
 				children = new List<T>();
-				
+
 				foreach (var item in items.Where(e => e != Field.Empty))
 				{
 					var child = tree.GetNode(item, childDepth);
@@ -40,23 +40,24 @@ namespace AIGames.FourInARow.TheDaltons
 						children.Add((T)child);
 					}
 					// one of the responses is losing. So this tree is losing.
-					else if (child is SearchTreeEndNode) 
+					else if (child is SearchTreeEndNode)
 					{
 						children.Clear();
 						Score = child.Score;
 						return Score;
 					}
 				}
-				Score = 7-children.Count;
+				Score = 7 - children.Count;
 			}
-			
+
 			// This node is final. return its score.
-			if (children.Count < 2) 
+			if (children.Count < 2)
 			{
-				return Score; 
+				return Score;
 			}
-			
+
 			Score = ApplyChildren(depth, tree, alpha, beta);
+			children.Sort();
 			return Score;
 		}
 		protected abstract int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta);
@@ -84,10 +85,10 @@ namespace AIGames.FourInARow.TheDaltons
 			get
 			{
 				return string.Format("{3} Depth: {0}, Score: {1}, Children: {2}, {4}",
-					Depth, 
-					Score, 
+					Depth,
+					Scores.GetFormatted(Score),
 					children == null ? 0 : children.Count,
-					IsMax ? "Red": "Yellow",
+					IsMax ? "Red" : "Yellow",
 					Field);
 			}
 		}
