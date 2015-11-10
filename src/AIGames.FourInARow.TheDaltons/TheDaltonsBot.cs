@@ -38,6 +38,7 @@ namespace AIGames.FourInARow.TheDaltons
 
 			var col = Tree.GetMove(State.Field, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
 
+			if (State.Ply == 1) { col = 3; }
 			var move = new MoveInstruction(col);
 
 			var response = new BotResponse()
