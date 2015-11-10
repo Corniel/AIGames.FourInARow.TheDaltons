@@ -58,7 +58,11 @@
     <Compile Include="Evaluator.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Field.Masks.cs" />
-    <Compile Include="LastBookNode.cs" />
+    <Compile Include="ISearchTree.cs" />
+    <Compile Include="ISearchTreeNode.cs" />
+    <Compile Include="SearchTreeBookNode.cs" />
+    <Compile Include="MoveCandidate.cs" />
+    <Compile Include="MoveCandidates.cs" />
     <Compile Include="MoveGenerator.cs" />
     <Compile Include="PlyLog.cs" />
     <Compile Include="Scores.cs" />

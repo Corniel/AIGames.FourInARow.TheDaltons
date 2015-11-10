@@ -2,24 +2,23 @@
 
 namespace AIGames.FourInARow.TheDaltons
 {
-	public class SearchTreeYellowNode : SearchTreeSubNode<SearchTreeRedNode>, IComparable<SearchTreeYellowNode>
+	public class SearchTreeYellowNode : SearchTreeSubNode
 	{
 		public SearchTreeYellowNode(Field field, byte depth, int value) : base(field, depth, value) { }
 
-		public override bool IsMax { get { return false; } }
-		public override int LosingScore { get { return Scores.Red; } }
-		public override int WinningScore { get { return Scores.Yel; } }
+		public override bool IsWinning(int score) { return score < Scores.YelWin; }
+		public override bool IsLosing(int score) { return score > Scores.RedWin; }
 
 		/// <summary>Sort nodes on score.</summary>
-		public int CompareTo(SearchTreeYellowNode other)
+		public override int Compare(ISearchTreeNode x, ISearchTreeNode y)
 		{
-			// Higher scores first, it is Red that may choose.
-			return other.Score.CompareTo(Score);
+			// Lower scores first.
+			return x.Score.CompareTo(y.Score);
 		}
 
-		protected override int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta)
+		protected override int ApplyChildren(byte depth, ISearchTree tree, int alpha, int beta)
 		{
-			Score = int.MaxValue;
+			Score = Scores.RedWins(Depth);
 			foreach (var child in LoopChildren())
 			{
 				var test = child.Apply(depth, tree, alpha, beta);

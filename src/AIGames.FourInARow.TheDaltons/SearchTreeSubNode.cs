@@ -5,78 +5,87 @@ using System.Linq;
 namespace AIGames.FourInARow.TheDaltons
 {
 	[DebuggerDisplay("{DebuggerDisplay}")]
-	public abstract class SearchTreeSubNode<T> : SearchTreeNode where T : SearchTreeNode
+	public abstract class SearchTreeSubNode : SearchTreeNode, IComparer<ISearchTreeNode>
 	{
+		public static readonly byte[] TakeCount = GetTakeCount();
+
+		private static byte[] GetTakeCount()
+		{
+			var takes = new byte[43];
+
+			var index = 0;
+			while (index < 11) { takes[index++] = 7; }
+			while (index < 15) { takes[index++] = 5; }
+			while (index < 20) { takes[index++] = 4; }
+			while (index < 43) { takes[index++] = 3; }
+			return takes;
+		}
+
 		public SearchTreeSubNode(Field field, byte depth, int value) : base(field, depth, value) { }
 
-		public abstract bool IsMax { get; }
-		public abstract int LosingScore { get; }
-		public abstract int WinningScore { get; }
-		public override int Count { get { return children == null ? -1 : children.Count; } }
+		public abstract bool IsWinning(int score);
+		public abstract bool IsLosing(int score);
 
-		public override IEnumerable<SearchTreeNode> GetChildren()
-		{
-			return children == null ? Enumerable.Empty<SearchTreeNode>() : children;
-		}
-		protected List<T> children;
+		public List<ISearchTreeNode> Children { get; protected set; }
+		protected byte LastDepth { get; set; }
 
-		public override int Apply(byte depth, SearchTree tree, int alpha, int beta)
+		public abstract int Compare(ISearchTreeNode x, ISearchTreeNode y);
+
+		public override int Apply(byte depth, ISearchTree tree, int alpha, int beta)
 		{
-			if (depth < Depth || !tree.TimeLeft) { return Score; }
+			if (IsFinal || depth < Depth || depth == LastDepth || !tree.TimeLeft) { return Score; }
+			
+			// We don't want to do this more than once per depth.
+			LastDepth = depth;
 
 			// If no children, get moves.
-			if (children == null)
+			if (Children == null)
 			{
-				var items = tree.Generator.GetMoves(Field, (Depth & 1) == 1);
+				var items = tree.GetMoves(Field, (Depth & 1) == 1);
 				var childDepth = (byte)(Depth + 1);
 
-				children = new List<T>();
+				Children = new List<ISearchTreeNode>();
 
 				foreach (var item in items.Where(e => e != Field.Empty))
 				{
 					var child = tree.GetNode(item, childDepth);
-					if (child is T)
-					{
-						children.Add((T)child);
-					}
-					// one of the responses is losing. So this tree is losing.
-					else if (child is SearchTreeEndNode)
-					{
-						children.Clear();
-						Score = child.Score;
-						return Score;
-					}
+					Children.Add(child);
 				}
 			}
-
-			// This node is final. return its score.
-			if (children.Count < 2)
-			{
-				return Score;
-			}
-
 			Score = ApplyChildren(depth, tree, alpha, beta);
-			children.Sort();
+			Children.Sort(this);
+			if (IsWinning(Score))
+			{
+				IsFinal = true;
+				for (var i = Children.Count - 1; i > 0; i--)
+				{
+					var child = Children[i];
+					if (!IsWinning(child.Score))
+					{
+						Children.RemoveAt(i);
+					}
+					else { break; }
+				}
+			}
+			else
+			{
+				for (var i = Children.Count - 1; i > 0; i--)
+				{
+					var child = Children[i];
+					if (IsLosing(child.Score))
+					{
+						Children.RemoveAt(i);
+					}
+					else { break; }
+				}
+				IsFinal = Children.Count == 1 || Children.All(ch => ch.IsFinal);
+			}
 			return Score;
 		}
-		protected abstract int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta);
-		protected virtual IEnumerable<SearchTreeNode> LoopChildren()
+		protected abstract int ApplyChildren(byte depth, ISearchTree tree, int alpha, int beta);
+		protected virtual IEnumerable<ISearchTreeNode> LoopChildren()
 		{
-			var prev = int.MinValue;
-			var count = 0;
-			var max = Depth < 12 ? 7 : 3;
-			foreach (var child in children)
-			{
-				if (count++ < max || child.Score == prev)
-				{
-					yield return child;
-					prev = child.Score;
-				}
-				else
-				{
-					yield break;
-				}
-			}
+			return Children.Take(TakeCount[Depth]);
 		}
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -87,8 +96,8 @@ namespace AIGames.FourInARow.TheDaltons
 				return string.Format("{3} Depth: {0}, Score: {1}, Children: {2}, {4}",
 					Depth,
 					Scores.GetFormatted(Score),
-					children == null ? 0 : children.Count,
-					IsMax ? "Red" : "Yellow",
+					Children == null ? 0 : Children.Count,
+					GetType().Name.Substring("SearchTree".Length),
 					Field);
 			}
 		}

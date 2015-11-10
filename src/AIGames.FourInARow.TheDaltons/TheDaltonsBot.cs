@@ -44,7 +44,7 @@ namespace AIGames.FourInARow.TheDaltons
 			
 			Tree.Clear(State.Ply);
 
-			var col = Tree.GetMove(State.Field, State.Ply, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
+			var col = Tree.GetMove(State.Field, (byte)State.Ply, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
 
 			var move = new MoveInstruction(col);
 

@@ -3,24 +3,23 @@ using System.Linq;
 
 namespace AIGames.FourInARow.TheDaltons
 {
-	public class SearchTreeRedNode : SearchTreeSubNode<SearchTreeYellowNode>, IComparable<SearchTreeRedNode>
+	public class SearchTreeRedNode : SearchTreeSubNode
 	{
 		public SearchTreeRedNode(Field field, byte depth, int value) : base(field, depth, value) { }
 
-		public override bool IsMax { get { return true; } }
-		public override int LosingScore { get { return Scores.Yel; } }
-		public override int WinningScore { get { return Scores.Red; } }
-
+		public override bool IsWinning(int score) { return score > Scores.RedWin; }
+		public override bool IsLosing(int score) { return score < Scores.YelWin; }
+		
 		/// <summary>Sort nodes on score.</summary>
-		public int CompareTo(SearchTreeRedNode other)
+		public override int Compare(ISearchTreeNode x, ISearchTreeNode y)
 		{
-			// Lower scores first, it is Yellow that may choose.
-			return Score.CompareTo(other.Score);
+			// Higher scores first.
+			return y.Score.CompareTo(x.Score);
 		}
 
-		protected override int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta)
+		protected override int ApplyChildren(byte depth, ISearchTree tree, int alpha, int beta)
 		{
-			Score = int.MinValue;
+			Score = Scores.YelWins(Depth);
 			foreach (var child in LoopChildren())
 			{
 				var test = child.Apply(depth, tree, alpha, beta);

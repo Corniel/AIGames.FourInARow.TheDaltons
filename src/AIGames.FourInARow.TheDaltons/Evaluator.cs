@@ -16,10 +16,10 @@
 			foreach (var mask in Field.Scores)
 			{
 				var matchRed = red & mask;
-				if (matchRed == mask) { return Scores.Red - ply; }
+				if (matchRed == mask) { return Scores.RedWins(ply); }
 				
 				var matchYel= yel & mask;
-				if (matchYel == mask) { return Scores.Yel +ply; }
+				if (matchYel == mask) { return Scores.YelWins(ply); }
 
 				var countRed = Bits.Count(matchRed);
 				var countYel = Bits.Count(matchYel);

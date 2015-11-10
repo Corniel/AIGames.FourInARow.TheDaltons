@@ -5,20 +5,27 @@ namespace AIGames.FourInARow.TheDaltons
 {
 	public static class Scores
 	{
+		public const int InitialAlpha = int.MinValue;
+		public const int InitialBeta = int.MaxValue;
+
 		public const int Draw = 0;
-		public const int Red = 1000000;
-		public const int Yel = -1000000;
-		public const int RedMin = Red - 42;
-		public const int YelMin = Yel + 42;
+		private const int Red = 1000000;
+		private const int Yel = -1000000;
+
+		public static readonly int RedWin = RedWins(42);
+		public static readonly int YelWin = YelWins(42);
+
+		public static int RedWins(int ply) { return Red - ply; }
+		public static int YelWins(int ply) { return Yel + ply; }
 
 		public static string GetFormatted(int score)
 		{
-			if (score >= Scores.RedMin)
+			if (score >= Scores.RedWin)
 			{
 				var ply = (Scores.Red - score);
 				return String.Format(CultureInfo.InvariantCulture, "+oo {0}", ply);
 			}
-			if (score <= Scores.YelMin)
+			if (score <= Scores.YelWin)
 			{
 				var ply = (score - Scores.Yel);
 				return String.Format(CultureInfo.InvariantCulture, "-oo {0}", ply);
@@ -31,6 +38,6 @@ namespace AIGames.FourInARow.TheDaltons
 			return str;
 		}
 
-		
+
 	}
 }

@@ -50,10 +50,15 @@
     <Compile Include="Deployoment\Deployer.cs" />
     <Compile Include="Deployoment\DeployerTest.cs" />
     <Compile Include="FieldTest.cs" />
+    <Compile Include="Mocking\SearchTreeNodeStub.cs" />
+    <Compile Include="Mocking\SearchTreeStub.cs" />
     <Compile Include="MoveGeneratorTest.cs" />
     <Compile Include="PlyLogTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchTreeTest.cs" />
+    <Compile Include="SearchTreeRedNodeTest.cs" />
+    <Compile Include="SearchTreeYellowNodeTest.cs" />
+    <Compile Include="TestData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

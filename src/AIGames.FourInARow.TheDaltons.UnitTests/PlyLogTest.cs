@@ -31,7 +31,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		[Test]
 		public void ToString_RedWins_FormattedString()
 		{
-			var act = new PlyLog(13, 5, Scores.Red -20, 23, TimeSpan.FromSeconds(0.987));
+			var act = new PlyLog(13, 5, Scores.RedWins(20), 23, TimeSpan.FromSeconds(0.987));
 			var exp = "13/23. +oo 20: {5} 0.987s";
 			Assert.AreEqual(exp, act.ToString());
 		}
@@ -39,7 +39,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		[Test]
 		public void ToString_YellowdWins_FormattedString()
 		{
-			var act = new PlyLog(13, 5, Scores.Yel + 17, 23, TimeSpan.FromSeconds(0.987));
+			var act = new PlyLog(13, 5, Scores.YelWins(17), 23, TimeSpan.FromSeconds(0.987));
 			var exp = "13/23. -oo 17: {5} 0.987s";
 			Assert.AreEqual(exp, act.ToString());
 		}

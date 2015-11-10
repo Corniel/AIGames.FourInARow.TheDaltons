@@ -1,26 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 
 namespace AIGames.FourInARow.TheDaltons
 {
 	[DebuggerDisplay("{DebuggerDisplay}")]
 	public class SearchTreeEndNode : SearchTreeNode
 	{
-		public SearchTreeEndNode(Field field, byte depth, int value) : base(field, depth, value) { }
+		public SearchTreeEndNode(Field field, byte depth, int value) : base(field, depth, value)
+		{
+			IsFinal = true;
+		}
 
-		public override int Count { get { return 0; } }
-	
-		public override IEnumerable<SearchTreeNode> GetChildren() { return Enumerable.Empty<SearchTreeNode>(); }
-
-		public override int Apply(byte depth, SearchTree tree, int alpha, int beta) { return Score; }
+		public override int Apply(byte depth, ISearchTree tree, int alpha, int beta) { return Score; }
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay
 		{
 			get
 			{
-				return string.Format("Depth: {0}, Score: {1}", Depth, Score);
+				return string.Format("Depth: {0}, Score: {1}", Depth,Scores.GetFormatted( Score));
 			}
 		}
 	}

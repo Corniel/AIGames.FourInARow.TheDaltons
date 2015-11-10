@@ -10,7 +10,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		public void GetMove_Initial_Performance()
 		{
 			var tree = new SearchTree();
-			var act = tree.GetMove(Field.Empty, 1, TimeSpan.MaxValue, TimeSpan.FromSeconds(40));
+			var act = tree.GetMove(Field.Empty, 1, TimeSpan.MaxValue, TimeSpan.FromSeconds(5));
 			Console.WriteLine(tree.Logger);
 
 			var exp = (byte)3;
@@ -28,7 +28,37 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				0,0,0,0,0,0,0;
 				0,0,0,1,2,0,0");
 			var tree = new SearchTree();
-			var act = tree.GetMove(field, 3, TimeSpan.MaxValue, TimeSpan.FromSeconds(40));
+			var act = tree.GetMove(field, 3, TimeSpan.MaxValue, TimeSpan.FromSeconds(10));
+			Console.WriteLine(tree.Logger);
+		}
+
+		[Test, Category(Category.IntegrationTest)]
+		public void GetMove_ResponseOnCol2_Performance()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,1,0,0");
+			var tree = new SearchTree();
+			var act = tree.GetMove(field, 2, TimeSpan.MaxValue, TimeSpan.FromSeconds(10));
+			Console.WriteLine(tree.Logger);
+		}
+
+		[Test, Category(Category.IntegrationTest)]
+		public void GetMove_3MovesDone_Performance()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,1,0,0;
+				0,0,0,1,2,0,0");
+			var tree = new SearchTree();
+			var act = tree.GetMove(field, 4, TimeSpan.MaxValue, TimeSpan.FromSeconds(10));
 			Console.WriteLine(tree.Logger);
 		}
 
@@ -61,7 +91,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				0,0,1,1,1,0,0;
 				2,0,2,1,2,2,2");
 			var tree = new SearchTree();
-			var act = tree.GetMove(field, 19, TimeSpan.MaxValue, TimeSpan.FromSeconds(2000));
+			var act = tree.GetMove(field, 19, TimeSpan.MaxValue, TimeSpan.FromSeconds(0.1));
 			Console.WriteLine(tree.Logger);
 
 			var exp = (byte)1;

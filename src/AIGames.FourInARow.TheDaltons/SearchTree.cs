@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AIGames.FourInARow.TheDaltons
 {
-	public class SearchTree
+	public class SearchTree : ISearchTree
 	{
 		public SearchTree()
 		{
@@ -21,11 +21,11 @@ namespace AIGames.FourInARow.TheDaltons
 		{
 			foreach (var field in Book.GetLoss())
 			{
-				tree[9][field] = new LastBookNode(field, Scores.YelMin);
+				tree[9][field] = new SearchTreeBookNode(field, Scores.YelWin);
 			}
 			foreach (var field in Book.GetDraws())
 			{
-				tree[9][field] = new LastBookNode(field, Scores.Draw);
+				tree[9][field] = new SearchTreeBookNode(field, Scores.Draw);
 			}
 		}
 
@@ -37,80 +37,38 @@ namespace AIGames.FourInARow.TheDaltons
 		public Stopwatch Sw { get; protected set; }
 		public StringBuilder Logger { get; protected set; }
 
-		public SearchTreeNode Root { get; set; }
+		public ISearchTreeNode Root { get; set; }
 
-		public byte GetMove(Field field, int ply, TimeSpan min, TimeSpan max)
+		public byte GetMove(Field field, byte ply, TimeSpan min, TimeSpan max)
 		{
-			var maxDepth = ply < 10 ? 9 : 43;
-			byte minDepth = (byte)Math.Max(8, ply + 1);
 			var redToMove = (ply & 1) == 1;
 
+			byte maxDepth = 43;
+			byte minDepth = (byte)(ply + 1);
+			
 			Sw.Restart();
 			Logger.Clear();
 			Max = max;
 
-			byte move = 3;
+			var candidates = new MoveCandidates(redToMove);
+			candidates.Add(field, ply, this);
+			var move = candidates.GetMove();
+			
+			Root = GetNode(field, ply);
 
-			var lookup = CreateLookup(field, ply);
-			// Instant winning is not handled properly elsewhere.
-			foreach (var key in lookup.Keys)
+			for (byte depth = minDepth; depth < maxDepth; depth++)
 			{
-				if(lookup.Count == 1 || (redToMove ? key.IsScoreRed() : key.IsScoreYellow()))
-				{
-					return lookup[key];
-				}
-			}
+				Root.Apply(depth, this, Scores.InitialAlpha, Scores.InitialBeta);
 
-			Root = GetNode(field, (byte)ply);
-
-			for (byte depth = minDepth; TimeLeft && depth < maxDepth; depth++)
-			{
-				Root.Apply(depth, this, SearchTreeNode.InitialAlpha, SearchTreeNode.InitialBeta);
-
-				move = GetMove(Root, lookup);
+				move = candidates.GetMove();
 
 				var log = new PlyLog(ply, move, Root.Score, depth, Sw.Elapsed);
 				Logger.Append(log).AppendLine();
 
 				// Don't spoil time.
-				if (Sw.Elapsed > min) { break; }
+				if (Root.IsFinal || Sw.Elapsed > min || !TimeLeft) { break; }
 			}
 			return move;
-		}
-
-		public static byte GetMove(SearchTreeNode node, Dictionary<Field, byte> lookup)
-		{
-			var max = node.Score;
-			var children = node.GetChildren()
-				.Where(ch => ch.Score == max)
-				.Select(ch => ch.Field)
-				.ToList();
-
-			var moves = lookup.Where(kvp => children.Contains(kvp.Key))
-				.Select(kvp => kvp.Value)
-				.ToArray();
-
-			if (moves.Length > 0)
-			{
-				// with multiple options choose the middle one.
-				return moves[moves.Length >> 1];
-			}
-			return 3;
-		}
-
-		private Dictionary<Field, byte> CreateLookup(Field field, int ply)
-		{
-			var lookup = new Dictionary<Field, byte>();
-			var moves = Generator.GetMoves(field, (ply & 1) == 1);
-			for (byte col = 0; col < moves.Length; col++)
-			{
-				var child = moves[col];
-				if (child != Field.Empty)
-				{
-					lookup[child] = col;
-				}
-			}
-			return lookup;
 		}
 
 		public void Clear(int round)
@@ -132,9 +90,9 @@ namespace AIGames.FourInARow.TheDaltons
 		/// <returns>
 		/// An existing node if already existing, otherwise a new one.
 		/// </returns>
-		public SearchTreeNode GetNode(Field search, byte ply)
+		public ISearchTreeNode GetNode(Field search, byte ply)
 		{
-			SearchTreeNode node;
+			ISearchTreeNode node;
 
 			var redToMove = (ply & 1) == 1;
 
@@ -145,11 +103,11 @@ namespace AIGames.FourInARow.TheDaltons
 				{
 					if (search.IsScoreYellow())
 					{
-						node = new SearchTreeEndNode(search, 9, Scores.Yel + 9);
+						node = new SearchTreeEndNode(search, 9, Scores.YelWins(9));
 					}
 					else
 					{
-						node = new LastBookNode(search, Scores.RedMin);
+						node = new SearchTreeBookNode(search, Scores.RedWin);
 					}
 				}
 				else
@@ -157,10 +115,11 @@ namespace AIGames.FourInARow.TheDaltons
 					var score = Evaluator.GetScore(search, ply);
 
 					// If the node is final for the other color, no need to search deeper.
-					if (score >= Scores.RedMin || score <= Scores.YelMin)
+					if (score >= Scores.RedWin || score <= Scores.YelWin)
 					{
 						node = new SearchTreeEndNode(search, ply, score);
 					}
+					// Game is done.
 					else if (ply == 42)
 					{
 						node = new SearchTreeEndNode(search, 42, 0);
@@ -183,14 +142,19 @@ namespace AIGames.FourInARow.TheDaltons
 			return node;
 		}
 
-		private Dictionary<Field, SearchTreeNode>[] tree = GetTree();
-		private int[] trans = new int[43];
-		private static Dictionary<Field, SearchTreeNode>[] GetTree()
+		public Field[] GetMoves(Field field, bool IsRed)
 		{
-			var tree = new Dictionary<Field, SearchTreeNode>[43];
+			return Generator.GetMoves(field, IsRed);
+		}
+
+		private Dictionary<Field, ISearchTreeNode>[] tree = GetTree();
+		private int[] trans = new int[43];
+		private static Dictionary<Field, ISearchTreeNode>[] GetTree()
+		{
+			var tree = new Dictionary<Field, ISearchTreeNode>[43];
 			for (var ply = 0; ply < 43; ply++)
 			{
-				tree[ply] = new Dictionary<Field, SearchTreeNode>();
+				tree[ply] = new Dictionary<Field, ISearchTreeNode>();
 			}
 			return tree;
 		}

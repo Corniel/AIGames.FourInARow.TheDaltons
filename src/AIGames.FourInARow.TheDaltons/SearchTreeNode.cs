@@ -3,11 +3,8 @@ using System.Collections.Generic;
 
 namespace AIGames.FourInARow.TheDaltons
 {
-	public abstract class SearchTreeNode : IEquatable<SearchTreeNode>
+	public abstract class SearchTreeNode : ISearchTreeNode
 	{
-		public const int InitialAlpha = int.MinValue;
-		public const int InitialBeta = int.MaxValue;
-
 		protected SearchTreeNode(Field field, byte depth, int value)
 		{
 			Field = field;
@@ -15,19 +12,17 @@ namespace AIGames.FourInARow.TheDaltons
 			Value = value;
 			Score = value;
 		}
-		public readonly Field Field;
-		public readonly byte Depth;
+		public Field Field { get; private set; }
+		public byte Depth { get; private set; }
 
-		public abstract int Count { get; }
 		public int Score { get; protected set; }
 		public int Value { get; protected set; }
+		public bool IsFinal { get; protected set; }
 
-		public abstract int Apply(byte depth, SearchTree tree, int alpha, int beta);
-
-		public abstract IEnumerable<SearchTreeNode> GetChildren();
+		public abstract int Apply(byte depth, ISearchTree tree, int alpha, int beta);
 
 		public override int GetHashCode() { return Field.GetHashCode(); }
-		public override bool Equals(object obj) { return Equals((SearchTreeNode)obj); }
-		public bool Equals(SearchTreeNode other) { return Field.Equals(other.Field); }
+		public override bool Equals(object obj) { return Equals((ISearchTreeNode)obj); }
+		public bool Equals(ISearchTreeNode other) { return Field.Equals(other.Field); }
 	}
 }
