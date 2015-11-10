@@ -29,14 +29,6 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public BotResponse GetResponse(TimeSpan time)
 		{
-			if (State.Ply == 1)
-			{
-				return new BotResponse()
-				{
-					Move = new MoveInstruction(3)
-				};
-			}
-
 			// Take 2/3 of the thinking time up to 6 seconds.
 			var max = Math.Min(2 * time.TotalMilliseconds / 3, 6000);
 			// Take 5 seconds or if you're really getting out of time 1/2 of the max.
