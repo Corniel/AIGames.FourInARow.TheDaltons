@@ -9,7 +9,9 @@ namespace AIGames.FourInARow.TheDaltons
 		public override int Apply(byte depth, ISearchTree tree, int alpha, int beta)
 		{
 			base.Apply(depth, tree, alpha, beta);
-			if (Value > Score)
+
+			// Those nodes are important.
+			if (Value == Scores.RedWin || Value == Scores.YelWin)
 			{
 				Score = Value;
 			}

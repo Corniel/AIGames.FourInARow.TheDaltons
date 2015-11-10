@@ -33,6 +33,21 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		}
 
 		[Test, Category(Category.IntegrationTest)]
+		public void GetMove_ResponseOnCol0_Performance()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,1");
+			var tree = new SearchTree();
+			var act = tree.GetMove(field, 2, TimeSpan.MaxValue, TimeSpan.FromSeconds(2));
+			Console.WriteLine(tree.Logger);
+			Assert.AreEqual(Scores.YelWin, tree.Root.Score);
+		}
+		[Test, Category(Category.IntegrationTest)]
 		public void GetMove_ResponseOnCol2_Performance()
 		{
 			var field = Field.Parse(@"
@@ -43,8 +58,24 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				0,0,0,0,0,0,0;
 				0,0,0,0,1,0,0");
 			var tree = new SearchTree();
-			var act = tree.GetMove(field, 2, TimeSpan.MaxValue, TimeSpan.FromSeconds(10));
+			var act = tree.GetMove(field, 2, TimeSpan.MaxValue, TimeSpan.FromSeconds(2));
 			Console.WriteLine(tree.Logger);
+			Assert.AreNotEqual(Scores.RedWin, tree.Root.Score);
+		}
+		[Test, Category(Category.IntegrationTest)]
+		public void GetMove_ResponseOnCol3_Performance()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,1,0,0,0");
+			var tree = new SearchTree();
+			var act = tree.GetMove(field, 2, TimeSpan.MaxValue, TimeSpan.FromSeconds(2));
+			Console.WriteLine(tree.Logger);
+			Assert.AreEqual(Scores.RedWin, tree.Root.Score);
 		}
 
 		[Test, Category(Category.IntegrationTest)]

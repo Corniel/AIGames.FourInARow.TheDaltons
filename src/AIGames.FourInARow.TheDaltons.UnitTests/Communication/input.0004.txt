@@ -5,6 +5,7 @@ settings your_bot player1
 settings your_botid 1
 settings field_columns 7
 settings field_rows 6
+
 Round 1
 update game round 1
 update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0
@@ -13,24 +14,103 @@ Output from your bot: "place_disc 3"
 update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,1,0,0,0
 Round 2
 update game round 2
-update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,1,2,0,0
-action move 10000
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,2,0,0,0;0,0,0,1,0,0,0
+action move 7259
 Output from your bot: "place_disc 4"
-update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,1,0,0;0,0,0,1,2,0,0
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,2,0,0,0;0,0,0,1,1,0,0
 Round 3
 update game round 3
-update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,2,0,0;0,0,0,0,1,0,0;0,0,0,1,2,0,0
-action move 9744
-Output from your bot: "place_disc 0"
-update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,2,0,0;0,0,0,0,1,0,0;1,0,0,1,2,0,0
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,2,0,0,0;0,0,2,1,1,0,0
+action move 7756
+Output from your bot: "place_disc 3"
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,1,0,0,0;0,0,0,2,0,0,0;0,0,2,1,1,0,0
 Round 4
 update game round 4
-update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,0,2,0,0;0,0,0,0,2,0,0;0,0,0,0,1,0,0;1,0,0,1,2,0,0
-action move 9639
-Output from your bot: "place_disc 4"
-update game field 0,0,0,0,0,0,0;0,0,0,0,1,0,0;0,0,0,0,2,0,0;0,0,0,0,2,0,0;0,0,0,0,1,0,0;1,0,0,1,2,0,0
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,2,0,0,0;0,0,0,1,0,0,0;0,0,0,2,0,0,0;0,0,2,1,1,0,0
+action move 3621
+Output from your bot: "place_disc 2"
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,2,0,0,0;0,0,0,1,0,0,0;0,0,1,2,0,0,0;0,0,2,1,1,0,0
 Round 5
 update game round 5
-update game field 0,0,0,0,2,0,0;0,0,0,0,1,0,0;0,0,0,0,2,0,0;0,0,0,0,2,0,0;0,0,0,0,1,0,0;1,0,0,1,2,0,0
-action move 9099
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,2,0,0,0;0,0,2,1,0,0,0;0,0,1,2,0,0,0;0,0,2,1,1,0,0
+action move 1706
 Output from your bot: "place_disc 4"
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,0,2,0,0,0;0,0,2,1,0,0,0;0,0,1,2,1,0,0;0,0,2,1,1,0,0
+Round 6
+update game round 6
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,2,2,0,0,0;0,0,2,1,0,0,0;0,0,1,2,1,0,0;0,0,2,1,1,0,0
+action move 2203
+Output from your bot: "place_disc 5"
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,2,2,0,0,0;0,0,2,1,0,0,0;0,0,1,2,1,0,0;0,0,2,1,1,1,0
+Round 7
+update game round 7
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,2,2,0,0,0;0,0,2,1,0,0,0;0,0,1,2,1,0,0;0,0,2,1,1,1,2
+action move 2698
+Output from your bot: "place_disc 4"
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,2,2,0,0,0;0,0,2,1,1,0,0;0,0,1,2,1,0,0;0,0,2,1,1,1,2
+Round 8
+update game round 8
+update game field 0,0,0,0,0,0,0;0,0,0,0,0,0,0;0,0,2,2,2,0,0;0,0,2,1,1,0,0;0,0,1,2,1,0,0;0,0,2,1,1,1,2
+action move 3181
+Output from your bot: "place_disc 3"
+update game field 0,0,0,0,0,0,0;0,0,0,1,0,0,0;0,0,2,2,2,0,0;0,0,2,1,1,0,0;0,0,1,2,1,0,0;0,0,2,1,1,1,2
+Round 9
+update game round 9
+update game field 0,0,0,0,0,0,0;0,0,2,1,0,0,0;0,0,2,2,2,0,0;0,0,2,1,1,0,0;0,0,1,2,1,0,0;0,0,2,1,1,1,2
+action move 2397
+Output from your bot: "place_disc 2"
+update game field 0,0,1,0,0,0,0;0,0,2,1,0,0,0;0,0,2,2,2,0,0;0,0,2,1,1,0,0;0,0,1,2,1,0,0;0,0,2,1,1,1,2
+Round 10
+update game round 10
+update game field 0,0,1,0,0,0,0;0,0,2,1,2,0,0;0,0,2,2,2,0,0;0,0,2,1,1,0,0;0,0,1,2,1,0,0;0,0,2,1,1,1,2
+action move 2888
+Output from your bot: "place_disc 3"
+update game field 0,0,1,1,0,0,0;0,0,2,1,2,0,0;0,0,2,2,2,0,0;0,0,2,1,1,0,0;0,0,1,2,1,0,0;0,0,2,1,1,1,2
+Round 11
+update game round 11
+update game field 0,0,1,1,2,0,0;0,0,2,1,2,0,0;0,0,2,2,2,0,0;0,0,2,1,1,0,0;0,0,1,2,1,0,0;0,0,2,1,1,1,2
+action move 2338
+Output from your bot: "place_disc 0"
+update game field 0,0,1,1,2,0,0;0,0,2,1,2,0,0;0,0,2,2,2,0,0;0,0,2,1,1,0,0;0,0,1,2,1,0,0;1,0,2,1,1,1,2
+Round 12
+update game round 12
+update game field 0,0,1,1,2,0,0;0,0,2,1,2,0,0;0,0,2,2,2,0,0;0,0,2,1,1,0,0;0,0,1,2,1,2,0;1,0,2,1,1,1,2
+action move 2831
+Output from your bot: "place_disc 6"
+update game field 0,0,1,1,2,0,0;0,0,2,1,2,0,0;0,0,2,2,2,0,0;0,0,2,1,1,0,0;0,0,1,2,1,2,1;1,0,2,1,1,1,2
+Round 13
+update game round 13
+update game field 0,0,1,1,2,0,0;0,0,2,1,2,0,0;0,0,2,2,2,0,0;0,0,2,1,1,2,0;0,0,1,2,1,2,1;1,0,2,1,1,1,2
+action move 3328
+Output from your bot: "place_disc 5"
+update game field 0,0,1,1,2,0,0;0,0,2,1,2,0,0;0,0,2,2,2,1,0;0,0,2,1,1,2,0;0,0,1,2,1,2,1;1,0,2,1,1,1,2
+Round 14
+update game round 14
+update game field 0,0,1,1,2,0,0;0,0,2,1,2,0,0;0,0,2,2,2,1,0;0,0,2,1,1,2,2;0,0,1,2,1,2,1;1,0,2,1,1,1,2
+action move 3826
+Output from your bot: "place_disc 6"
+update game field 0,0,1,1,2,0,0;0,0,2,1,2,0,0;0,0,2,2,2,1,1;0,0,2,1,1,2,2;0,0,1,2,1,2,1;1,0,2,1,1,1,2
+Round 15
+update game round 15
+update game field 0,0,1,1,2,0,0;0,0,2,1,2,0,0;0,0,2,2,2,1,1;0,0,2,1,1,2,2;2,0,1,2,1,2,1;1,0,2,1,1,1,2
+action move 4320
+Output from your bot: "place_disc 6"
+update game field 0,0,1,1,2,0,0;0,0,2,1,2,0,1;0,0,2,2,2,1,1;0,0,2,1,1,2,2;2,0,1,2,1,2,1;1,0,2,1,1,1,2
+Round 16
+update game round 16
+update game field 0,0,1,1,2,0,2;0,0,2,1,2,0,1;0,0,2,2,2,1,1;0,0,2,1,1,2,2;2,0,1,2,1,2,1;1,0,2,1,1,1,2
+action move 4801
+Output from your bot: "place_disc 0"
+update game field 0,0,1,1,2,0,2;0,0,2,1,2,0,1;0,0,2,2,2,1,1;1,0,2,1,1,2,2;2,0,1,2,1,2,1;1,0,2,1,1,1,2
+Round 17
+update game round 17
+update game field 0,0,1,1,2,0,2;0,0,2,1,2,0,1;2,0,2,2,2,1,1;1,0,2,1,1,2,2;2,0,1,2,1,2,1;1,0,2,1,1,1,2
+action move 5294
+Output from your bot: "place_disc 0"
+update game field 0,0,1,1,2,0,2;1,0,2,1,2,0,1;2,0,2,2,2,1,1;1,0,2,1,1,2,2;2,0,1,2,1,2,1;1,0,2,1,1,1,2
+Round 18
+update game round 18
+update game field 2,0,1,1,2,0,2;1,0,2,1,2,0,1;2,0,2,2,2,1,1;1,0,2,1,1,2,2;2,0,1,2,1,2,1;1,0,2,1,1,1,2
+action move 5789
+Output from your bot: "place_disc 5"
+update game field 2,0,1,1,2,0,2;1,0,2,1,2,1,1;2,0,2,2,2,1,1;1,0,2,1,1,2,2;2,0,1,2,1,2,1;1,0,2,1,1,1,2

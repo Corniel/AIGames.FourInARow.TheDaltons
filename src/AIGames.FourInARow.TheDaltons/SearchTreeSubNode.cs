@@ -54,34 +54,11 @@ namespace AIGames.FourInARow.TheDaltons
 			}
 			Score = ApplyChildren(depth, tree, alpha, beta);
 			Children.Sort(this);
-			if (IsWinning(Score))
-			{
-				IsFinal = true;
-				for (var i = Children.Count - 1; i > 0; i--)
-				{
-					var child = Children[i];
-					if (!IsWinning(child.Score))
-					{
-						Children.RemoveAt(i);
-					}
-					else { break; }
-				}
-			}
-			else
-			{
-				for (var i = Children.Count - 1; i > 0; i--)
-				{
-					var child = Children[i];
-					if (IsLosing(child.Score))
-					{
-						Children.RemoveAt(i);
-					}
-					else { break; }
-				}
-				IsFinal = Children.Count == 1 || Children.All(ch => ch.IsFinal);
-			}
+			IsFinal = Children.Count == 1 || Children.All(ch => ch.IsFinal);
+		
 			return Score;
 		}
+
 		protected abstract int ApplyChildren(byte depth, ISearchTree tree, int alpha, int beta);
 		protected virtual IEnumerable<ISearchTreeNode> LoopChildren()
 		{
