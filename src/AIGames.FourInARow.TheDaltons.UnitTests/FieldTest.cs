@@ -139,5 +139,22 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			
 			Assert.AreEqual(exp, act.ToString());
 		}
+
+		[Test]
+		public void GetBytes_RoundTrip_AreEqual()
+		{
+			var field = Field.Parse(@"
+				2,2,1,1,2,1,0
+				1,1,2,1,2,1,0
+				2,2,1,2,2,1,0
+				1,2,1,1,1,2,0
+				2,1,2,2,2,1,0
+				1,2,2,1,1,2,0");
+
+			var bytes = field.GetBytes();
+			var act = Field.FromBytes(bytes);
+
+			Assert.AreEqual(field, act);
+		}
 	}
 }

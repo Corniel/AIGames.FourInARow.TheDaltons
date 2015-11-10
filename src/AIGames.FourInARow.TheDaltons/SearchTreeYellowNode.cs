@@ -36,7 +36,7 @@ namespace AIGames.FourInARow.TheDaltons
 					break;
 				}
 			}
-			return Score;
+			return Depth == 9 ? Value : Score;
 		}
 	}
 }

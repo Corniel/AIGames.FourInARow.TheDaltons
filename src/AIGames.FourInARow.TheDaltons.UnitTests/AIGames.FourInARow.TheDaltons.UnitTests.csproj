@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitsTest.cs" />
+    <Compile Include="Book\BookGenerator.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Communication\ConsolePlatformTest.cs" />
     <Compile Include="Communication\ConsolePlatformTester.cs" />
@@ -72,6 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Communication\input.0004.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Book\db.dat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

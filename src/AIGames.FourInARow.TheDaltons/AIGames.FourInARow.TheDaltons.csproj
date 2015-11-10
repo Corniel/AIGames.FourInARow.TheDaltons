@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Bits.cs" />
     <Compile Include="Book.cs" />
+    <Compile Include="Book.GetLossString.cs" />
     <Compile Include="Communication\BotResponse.cs" />
     <Compile Include="Communication\ConsolePlatform.cs" />
     <Compile Include="Communication\GameState.cs" />
@@ -69,6 +70,9 @@
     <Compile Include="TheDaltonsBot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Book.GetDrawString.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

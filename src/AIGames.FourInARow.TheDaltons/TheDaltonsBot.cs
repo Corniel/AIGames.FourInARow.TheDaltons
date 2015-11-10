@@ -11,12 +11,10 @@ namespace AIGames.FourInARow.TheDaltons
 		public Settings Settings { get; set; }
 		public GameState State { get; set; }
 		public SearchTree Tree { get; set; }
-		public Book Book { get; set; }
 
 		public TheDaltonsBot()
 		{
 			Tree = new SearchTree();
-			Book = new Book();
 		}
 
 		public void ApplySettings(Settings settings)
@@ -31,12 +29,11 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public BotResponse GetResponse(TimeSpan time)
 		{
-			var col = Book.GetMove(State.Field, State.Ply);
-			if (col != Book.NoMove)
+			if (State.Ply == 1)
 			{
 				return new BotResponse()
 				{
-					Move = new MoveInstruction(col),
+					Move = new MoveInstruction(3)
 				};
 			}
 
@@ -47,7 +44,7 @@ namespace AIGames.FourInARow.TheDaltons
 			
 			Tree.Clear(State.Ply);
 
-			col = Tree.GetMove(State.Field, State.Ply, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
+			var col = Tree.GetMove(State.Field, State.Ply, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
 
 			var move = new MoveInstruction(col);
 

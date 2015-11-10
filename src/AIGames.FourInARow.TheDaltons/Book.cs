@@ -1,26 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AIGames.FourInARow.TheDaltons
 {
-	public class Book
+	public static partial class Book
 	{
-		public const byte NoMove = byte.MaxValue;
-
-		public Book() : this(unchecked((int)DateTime.UtcNow.Ticks)) { }
-		
-		public Book(int seed)
+		public static IEnumerable<Field> GetDraws()
 		{
-			Console.Error.WriteLine("Seed: {0}", seed);
-			Rnd = new Random(seed);
+			return GetFields(GetDrawString());
 		}
-		public Random Rnd { get; protected set; }
-
-		public byte GetMove(Field field, int ply)
+		public static IEnumerable<Field> GetLoss()
 		{
-			if (ply == 1) { return 3; }
-			if (ply < 4) { return Rnd.Next(0, 2) == 0 ? (byte)2 : (byte)4; }
+			return GetFields(GetLossString());
+		}
 
-			return Book.NoMove;
+		private static IEnumerable<Field> GetFields(string str)
+		{
+			var bytes = Convert.FromBase64String(str);
+
+			for (var i = 0; i < bytes.Length; i += 16)
+			{
+				var subset = new byte[16];
+				Array.Copy(bytes, i, subset, 0, 16);
+
+				var field = Field.FromBytes(subset);
+				yield return field;
+				yield return field.Flip();
+			}
 		}
 	}
 }

@@ -6,12 +6,15 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 	[TestFixture]
 	public class SearchTreeTest
 	{
-		[Test, Category(Category.IntegrationTest)]
+		[Test]
 		public void GetMove_Initial_Performance()
 		{
 			var tree = new SearchTree();
 			var act = tree.GetMove(Field.Empty, 1, TimeSpan.MaxValue, TimeSpan.FromSeconds(40));
 			Console.WriteLine(tree.Logger);
+
+			var exp = (byte)3;
+			Assert.AreEqual(exp, act);
 		}
 
 		[Test, Category(Category.IntegrationTest)]

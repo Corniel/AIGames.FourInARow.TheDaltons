@@ -5,6 +5,7 @@ namespace AIGames.FourInARow.TheDaltons
 {
 	public static class Scores
 	{
+		public const int Draw = 0;
 		public const int Red = 1000000;
 		public const int Yel = -1000000;
 		public const int RedMin = Red - 42;
@@ -29,5 +30,7 @@ namespace AIGames.FourInARow.TheDaltons
 			str += (score / 100m).ToString("0.00", CultureInfo.InvariantCulture);
 			return str;
 		}
+
+		
 	}
 }

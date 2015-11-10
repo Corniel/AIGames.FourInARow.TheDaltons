@@ -14,6 +14,39 @@ namespace AIGames.FourInARow.TheDaltons
 			Logger = new StringBuilder();
 			Generator = new MoveGenerator();
 			Rnd = new Random();
+			Init();
+		}
+
+		private void Init()
+		{
+			foreach (var field in Book.GetLoss())
+			{
+				var ply = field.Count + 1;
+				var redToMove = (ply & 1) == 1;
+
+				if (redToMove)
+				{
+					tree[ply][field] = new SearchTreeRedNode(field, (byte)ply, Scores.YelMin);
+				}
+				else
+				{
+					tree[ply][field] = new SearchTreeRedNode(field, (byte)ply, Scores.YelMin);
+				}
+			}
+			foreach (var field in Book.GetDraws())
+			{
+				var ply = field.Count + 1;
+				var redToMove = (ply & 1) == 1;
+
+				if (redToMove)
+				{
+					tree[ply][field] = new SearchTreeRedNode(field, (byte)ply, Scores.Draw);
+				}
+				else
+				{
+					tree[ply][field] = new SearchTreeRedNode(field, (byte)ply, Scores.Draw);
+				}
+			}
 		}
 
 		public MoveGenerator Generator { get; set; }
@@ -28,6 +61,7 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public byte GetMove(Field field, int ply, TimeSpan min, TimeSpan max)
 		{
+			var maxDepth = ply < 10 ? 9 : 43;
 			var redToMove = (ply & 1) == 1;
 
 			Sw.Restart();
@@ -49,7 +83,7 @@ namespace AIGames.FourInARow.TheDaltons
 			Root = GetNode(field, (byte)ply);
 			var count = Count;
 
-			for (byte depth = (byte)(ply + 1); TimeLeft && depth < 43; depth++)
+			for (byte depth = (byte)(ply + 1); TimeLeft && depth < maxDepth; depth++)
 			{
 				Root.Apply(depth, this, int.MinValue, int.MaxValue);
 
@@ -127,26 +161,41 @@ namespace AIGames.FourInARow.TheDaltons
 
 			if (!tree[ply].TryGetValue(search, out node))
 			{
-				var score = Evaluator.GetScore(search, ply);
-
-				// If the node is final for the other color, no need to search deeper.
-				if (score >= Scores.RedMin || score <= Scores.YelMin)
+				// Losses and draws are already added, so the missings a wins.
+				if (ply == 9)
 				{
-					node = new SearchTreeEndNode(search, ply, score);
-				}
-				else if (ply == 42)
-				{
-					node = new SearchTreeEndNode(search, 42, 0);
-				}
-				else if (redToMove)
-				{
-					node = new SearchTreeRedNode(search, ply, score);
+					if (redToMove)
+					{
+						tree[ply][search] = new SearchTreeRedNode(search, ply, Scores.RedMin);
+					}
+					else
+					{
+						tree[ply][search] = new SearchTreeRedNode(search, ply, Scores.RedMin);
+					}
 				}
 				else
 				{
-					node = new SearchTreeYellowNode(search, ply, score);
+					var score = Evaluator.GetScore(search, ply);
+
+					// If the node is final for the other color, no need to search deeper.
+					if (score >= Scores.RedMin || score <= Scores.YelMin)
+					{
+						node = new SearchTreeEndNode(search, ply, score);
+					}
+					else if (ply == 42)
+					{
+						node = new SearchTreeEndNode(search, 42, 0);
+					}
+					else if (redToMove)
+					{
+						node = new SearchTreeRedNode(search, ply, score);
+					}
+					else
+					{
+						node = new SearchTreeYellowNode(search, ply, score);
+					}
+					tree[ply][search] = node;
 				}
-				tree[ply][search] = node;
 			}
 			else
 			{

@@ -50,6 +50,25 @@ namespace AIGames.FourInARow.TheDaltons
 			return false;
 		}
 
+		public Field Flip()
+		{
+			var r = Flip(red);
+			var y = Flip(yel);
+			return new Field(r | GetHashCode(r), y | GetHashCode(y));
+		}
+		public static ulong Flip(ulong color)
+		{
+			var flipped =
+				((color & 0x010101010101) << 6) |
+				((color & 0x020202020202) << 4) |
+				((color & 0x040404040404) << 2) |
+				((color & 0x080808080808) << 0) |
+				((color & 0x101010101010) >> 2) |
+				((color & 0x202020202020) >> 4) |
+				((color & 0x404040404040) >> 6);
+			return flipped;
+		}
+
 		/// <summary>Gets the hash code for the field.</summary>
 		/// <remarks>
 		/// The hash per color is stored at the end of their ulong value.
@@ -138,7 +157,7 @@ namespace AIGames.FourInARow.TheDaltons
 
 			return sb.ToString();
 		}
-		
+
 		/// <summary>Debugger helper to read the field.</summary>
 		private string[] Rows
 		{
@@ -192,6 +211,26 @@ namespace AIGames.FourInARow.TheDaltons
 				dict[key] = (ulong)i;
 			}
 			return dict;
+		}
+
+		public byte[] GetBytes()
+		{
+			var bytes = new byte[16];
+	
+			var r = BitConverter.GetBytes(red);
+			var y = BitConverter.GetBytes(yel);
+
+			Array.Copy(r, 0, bytes, 0, 8);
+			Array.Copy(y, 0, bytes, 8, 8);
+
+			return bytes;
+		}
+
+		public static Field FromBytes(byte[] bytes)
+		{
+			var r = BitConverter.ToUInt64(bytes, 0);
+			var y = BitConverter.ToUInt64(bytes, 8);
+			return new Field(r, y);
 		}
 	}
 }

@@ -47,7 +47,6 @@ namespace AIGames.FourInARow.TheDaltons
 						return Score;
 					}
 				}
-				Score = 7 - children.Count;
 			}
 
 			// This node is final. return its score.
