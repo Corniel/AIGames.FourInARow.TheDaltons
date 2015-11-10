@@ -44,7 +44,6 @@
     <Compile Include="Category.cs" />
     <Compile Include="Communication\ConsolePlatformTest.cs" />
     <Compile Include="Communication\ConsolePlatformTester.cs" />
-    <Compile Include="Communication\GameStateTest.cs" />
     <Compile Include="Communication\InstructionTest.cs" />
     <Compile Include="Communication\MoveInstructionTest.cs" />
     <Compile Include="Deployoment\Deployer.cs" />

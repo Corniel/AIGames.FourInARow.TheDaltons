@@ -57,8 +57,6 @@ namespace AIGames.FourInARow.TheDaltons.Communication
 				if (settings.Apply(instruction))
 				{
 					bot.ApplySettings(settings);
-					// The state also needs to know.
-					state.YourBot = settings.YourBot;
 				}
 				else if (state.Apply(instruction)){ }
 				else if (instruction is RequestMoveInstruction)

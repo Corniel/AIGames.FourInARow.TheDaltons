@@ -39,8 +39,9 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public ISearchTreeNode Root { get; set; }
 
-		public byte GetMove(Field field, byte ply, TimeSpan min, TimeSpan max)
+		public byte GetMove(Field field, TimeSpan min, TimeSpan max)
 		{
+			byte ply = (byte)(field.Count + 1);
 			var redToMove = (ply & 1) == 1;
 
 			byte maxDepth = (byte)(ply < 10 ? 9 : 43);
