@@ -6,7 +6,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 	[TestFixture]
 	public class SearchTreeTest
 	{
-		[Test]
+		[Test, Category(Category.IntegrationTest)]
 		public void GetMove_Initial_Performance()
 		{
 			var tree = new SearchTree();

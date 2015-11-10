@@ -21,31 +21,11 @@ namespace AIGames.FourInARow.TheDaltons
 		{
 			foreach (var field in Book.GetLoss())
 			{
-				var ply = field.Count + 1;
-				var redToMove = (ply & 1) == 1;
-
-				if (redToMove)
-				{
-					tree[ply][field] = new SearchTreeRedNode(field, (byte)ply, Scores.YelMin);
-				}
-				else
-				{
-					tree[ply][field] = new SearchTreeRedNode(field, (byte)ply, Scores.YelMin);
-				}
+				tree[9][field] = new LastBookNode(field, Scores.YelMin);
 			}
 			foreach (var field in Book.GetDraws())
 			{
-				var ply = field.Count + 1;
-				var redToMove = (ply & 1) == 1;
-
-				if (redToMove)
-				{
-					tree[ply][field] = new SearchTreeRedNode(field, (byte)ply, Scores.Draw);
-				}
-				else
-				{
-					tree[ply][field] = new SearchTreeRedNode(field, (byte)ply, Scores.Draw);
-				}
+				tree[9][field] = new LastBookNode(field, Scores.Draw);
 			}
 		}
 
@@ -62,6 +42,7 @@ namespace AIGames.FourInARow.TheDaltons
 		public byte GetMove(Field field, int ply, TimeSpan min, TimeSpan max)
 		{
 			var maxDepth = ply < 10 ? 9 : 43;
+			byte minDepth = (byte)Math.Max(8, ply + 1);
 			var redToMove = (ply & 1) == 1;
 
 			Sw.Restart();
@@ -71,7 +52,7 @@ namespace AIGames.FourInARow.TheDaltons
 			byte move = 3;
 
 			var lookup = CreateLookup(field, ply);
-			// Instant winning is not handled properly eslewhere.
+			// Instant winning is not handled properly elsewhere.
 			foreach (var key in lookup.Keys)
 			{
 				if(lookup.Count == 1 || (redToMove ? key.IsScoreRed() : key.IsScoreYellow()))
@@ -81,11 +62,10 @@ namespace AIGames.FourInARow.TheDaltons
 			}
 
 			Root = GetNode(field, (byte)ply);
-			var count = Count;
 
-			for (byte depth = (byte)(ply + 1); TimeLeft && depth < maxDepth; depth++)
+			for (byte depth = minDepth; TimeLeft && depth < maxDepth; depth++)
 			{
-				Root.Apply(depth, this, int.MinValue, int.MaxValue);
+				Root.Apply(depth, this, SearchTreeNode.InitialAlpha, SearchTreeNode.InitialBeta);
 
 				move = GetMove(Root, lookup);
 
@@ -93,8 +73,7 @@ namespace AIGames.FourInARow.TheDaltons
 				Logger.Append(log).AppendLine();
 
 				// Don't spoil time.
-				if (Sw.Elapsed > min || Count == count) { break; }
-				count = Count;
+				if (Sw.Elapsed > min) { break; }
 			}
 			return move;
 		}
@@ -161,16 +140,16 @@ namespace AIGames.FourInARow.TheDaltons
 
 			if (!tree[ply].TryGetValue(search, out node))
 			{
-				// Losses and draws are already added, so the missings a wins.
+				// Losses and draws are already added, so the missing a wins.
 				if (ply == 9)
 				{
-					if (redToMove)
+					if (search.IsScoreYellow())
 					{
-						tree[ply][search] = new SearchTreeRedNode(search, ply, Scores.RedMin);
+						node = new SearchTreeEndNode(search, 9, Scores.Yel + 9);
 					}
 					else
 					{
-						tree[ply][search] = new SearchTreeRedNode(search, ply, Scores.RedMin);
+						node = new LastBookNode(search, Scores.RedMin);
 					}
 				}
 				else

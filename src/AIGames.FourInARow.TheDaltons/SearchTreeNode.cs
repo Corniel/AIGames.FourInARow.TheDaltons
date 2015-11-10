@@ -5,6 +5,9 @@ namespace AIGames.FourInARow.TheDaltons
 {
 	public abstract class SearchTreeNode : IEquatable<SearchTreeNode>
 	{
+		public const int InitialAlpha = int.MinValue;
+		public const int InitialBeta = int.MaxValue;
+
 		protected SearchTreeNode(Field field, byte depth, int value)
 		{
 			Field = field;

@@ -60,13 +60,14 @@ namespace AIGames.FourInARow.TheDaltons
 			return Score;
 		}
 		protected abstract int ApplyChildren(byte depth, SearchTree tree, int alpha, int beta);
-		protected IEnumerable<SearchTreeNode> LoopChildren()
+		protected virtual IEnumerable<SearchTreeNode> LoopChildren()
 		{
 			var prev = int.MinValue;
 			var count = 0;
+			var max = Depth < 12 ? 7 : 3;
 			foreach (var child in children)
 			{
-				if (count++ < 3 || child.Score == prev)
+				if (count++ < max || child.Score == prev)
 				{
 					yield return child;
 					prev = child.Score;
