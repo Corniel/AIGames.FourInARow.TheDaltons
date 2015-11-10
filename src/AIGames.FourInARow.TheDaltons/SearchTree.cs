@@ -43,7 +43,7 @@ namespace AIGames.FourInARow.TheDaltons
 		{
 			var redToMove = (ply & 1) == 1;
 
-			byte maxDepth = 43;
+			byte maxDepth = (byte)(ply < 10 ? 9 : 43);
 			byte minDepth = (byte)(ply + 1);
 			
 			Sw.Restart();

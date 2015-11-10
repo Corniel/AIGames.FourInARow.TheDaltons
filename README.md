@@ -3,6 +3,10 @@ The Daltons
 
 The Daltons is an AI trying to play Four-in-a-Row.
 
+Version 19
+----------
+Don't look beond ply 9 until we are there.
+
 Version 18
 ----------
 Also keep losing nodes.

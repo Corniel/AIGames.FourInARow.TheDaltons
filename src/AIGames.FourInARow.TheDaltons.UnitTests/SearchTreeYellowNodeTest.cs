@@ -25,7 +25,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			node.Apply(2, tree, Scores.InitialAlpha, Scores.InitialBeta);
 
 			var act = node.Children.Select(ch => ch.Field).ToArray();
-			var exp = new Field[] { TestData.Fields[1], TestData.Fields[2], TestData.Fields[0] };
+			var exp = new Field[] { TestData.Fields[1], TestData.Fields[2], TestData.Fields[0], TestData.Fields[3] };
 
 			CollectionAssert.AreEqual(exp, act);
 		}
@@ -47,7 +47,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			node.Apply(2, tree, Scores.InitialAlpha, Scores.InitialBeta);
 
 			var act = node.Children.Select(ch => ch.Field).ToArray();
-			var exp = new Field[] { TestData.Fields[1], TestData.Fields[2], TestData.Fields[0] };
+			var exp = new Field[] { TestData.Fields[1], TestData.Fields[2], TestData.Fields[0], TestData.Fields[3] };
 
 			CollectionAssert.AreEqual(exp, act);
 		}
