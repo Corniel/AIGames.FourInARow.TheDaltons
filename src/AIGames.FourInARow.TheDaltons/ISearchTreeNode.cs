@@ -10,6 +10,7 @@ namespace AIGames.FourInARow.TheDaltons
 		int Score { get; }
 		int Value { get; }
 
+		void Add(MoveCandidates candidates);
 		int Apply(byte depth, ISearchTree tree, int alpha, int beta);
 	}
 }

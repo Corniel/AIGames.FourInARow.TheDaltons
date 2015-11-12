@@ -14,9 +14,8 @@ namespace AIGames.FourInARow.TheDaltons
 			var takes = new byte[43];
 
 			var index = 0;
-			while (index < 11) { takes[index++] = 7; }
-			while (index < 15) { takes[index++] = 5; }
-			while (index < 20) { takes[index++] = 4; }
+			while (index < 10) { takes[index++] = 2; }
+			while (index < 15) { takes[index++] = 4; }
 			while (index < 43) { takes[index++] = 3; }
 			return takes;
 		}
@@ -31,6 +30,11 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public abstract int Compare(ISearchTreeNode x, ISearchTreeNode y);
 
+		public override void Add(MoveCandidates candidates)
+		{
+			// Just set.
+			Children = candidates.Select(candidate => candidate.Node).ToList();
+		}
 		public override int Apply(byte depth, ISearchTree tree, int alpha, int beta)
 		{
 			if (IsFinal || depth < Depth || depth == LastDepth || !tree.TimeLeft) { return Score; }

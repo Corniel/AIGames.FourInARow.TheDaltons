@@ -21,7 +21,7 @@ namespace AIGames.FourInARow.TheDaltons
 		{
 			foreach (var field in Book.GetLoss())
 			{
-				tree[9][field] = new SearchTreeBookNode(field, Scores.YelWin);
+				tree[9][field] = new SearchTreeBookNode(field, Scores.YelWin >> 3);
 			}
 			foreach (var field in Book.GetDraws())
 			{
@@ -44,7 +44,7 @@ namespace AIGames.FourInARow.TheDaltons
 			byte ply = (byte)(field.Count + 1);
 			var redToMove = (ply & 1) == 1;
 
-			byte maxDepth = (byte)(ply < 10 ? 9 : 43);
+			byte maxDepth = 43;
 			byte minDepth = (byte)(ply + 1);
 			
 			Sw.Restart();
@@ -56,6 +56,7 @@ namespace AIGames.FourInARow.TheDaltons
 			var move = candidates.GetMove();
 			
 			Root = GetNode(field, ply);
+			Root.Add(candidates);
 
 			for (byte depth = minDepth; depth < maxDepth; depth++)
 			{
@@ -108,7 +109,7 @@ namespace AIGames.FourInARow.TheDaltons
 					}
 					else
 					{
-						node = new SearchTreeBookNode(search, Scores.RedWin);
+						node = new SearchTreeBookNode(search, Scores.RedWin >> 3);
 					}
 				}
 				else

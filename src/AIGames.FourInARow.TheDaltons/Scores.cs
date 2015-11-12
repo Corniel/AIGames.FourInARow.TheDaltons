@@ -18,6 +18,12 @@ namespace AIGames.FourInARow.TheDaltons
 		public static int RedWins(int ply) { return Red - ply; }
 		public static int YelWins(int ply) { return Yel + ply; }
 
+		/// <summary>Return true if the score indicates a winning (or losing) position.</summary>
+		public static bool IsWinning(int score)
+		{
+			return score >= RedWin || score <= YelWin;
+		}
+
 		public static string GetFormatted(int score)
 		{
 			if (score >= Scores.RedWin)
@@ -37,7 +43,5 @@ namespace AIGames.FourInARow.TheDaltons
 			str += (score / 100m).ToString("0.00", CultureInfo.InvariantCulture);
 			return str;
 		}
-
-
 	}
 }

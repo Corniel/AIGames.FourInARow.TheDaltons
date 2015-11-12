@@ -19,6 +19,7 @@ namespace AIGames.FourInARow.TheDaltons
 		public int Value { get; protected set; }
 		public bool IsFinal { get; protected set; }
 
+		public abstract void Add(MoveCandidates candidates);
 		public abstract int Apply(byte depth, ISearchTree tree, int alpha, int beta);
 
 		public override int GetHashCode() { return Field.GetHashCode(); }
