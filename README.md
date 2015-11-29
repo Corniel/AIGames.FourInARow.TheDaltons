@@ -3,6 +3,10 @@ The Daltons
 
 The Daltons is an AI trying to play Four-in-a-Row.
 
+Version 22
+----------
+Added double threat-detection and huge speed improvements.
+
 Version 21
 ----------
 Made book moves less forcing.
@@ -13,7 +17,7 @@ Just play 3 at the start.
 
 Version 19
 ----------
-Don't look beond ply 9 until we are there.
+Don't look beyond ply 9 until we are there.
 
 Version 18
 ----------
