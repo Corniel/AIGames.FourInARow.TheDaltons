@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AIGames.FourInARow.TheDaltons
+﻿namespace AIGames.FourInARow.TheDaltons
 {
 	public abstract class SearchTreeNode : ISearchTreeNode
 	{

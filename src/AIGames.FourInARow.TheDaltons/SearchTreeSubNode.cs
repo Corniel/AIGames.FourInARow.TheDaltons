@@ -64,10 +64,6 @@ namespace AIGames.FourInARow.TheDaltons
 		}
 
 		protected abstract int ApplyChildren(byte depth, ISearchTree tree, int alpha, int beta);
-		protected virtual IEnumerable<ISearchTreeNode> LoopChildren()
-		{
-			return Children.Take(TakeCount[Depth]);
-		}
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay

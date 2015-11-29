@@ -14,15 +14,19 @@ namespace AIGames.FourInARow.TheDaltons
 		public override int Compare(ISearchTreeNode x, ISearchTreeNode y)
 		{
 			// Higher scores first.
-			return y.Score.CompareTo(x.Score);
+			return unchecked(y.Score - x.Score);
 		}
 
 		protected override int ApplyChildren(byte depth, ISearchTree tree, int alpha, int beta)
 		{
 			Score = Scores.YelWins(Depth);
-			foreach (var child in LoopChildren())
+			for (var i = 0; i < Children.Count; i++)
 			{
-				var test = child.Apply(depth, tree, alpha, beta);
+				var child = Children[i];
+
+				var sdepth = depth > 6 ? (byte)unchecked(depth - i) : depth;
+
+				var test = child.Apply(sdepth, tree, alpha, beta);
 				if (test > Score)
 				{
 					Score = test;
