@@ -85,20 +85,6 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		}
 
 		[Test]
-		public void GetScores_None_AllUnique()
-		{
-			var actual = Field.GetScores();
-
-			Assert.AreEqual(69, actual.Length, "69 items");
-
-			foreach (var score in actual)
-			{
-				Console.WriteLine(Field.ToString(score));
-				Console.WriteLine();
-			}
-		}
-
-		[Test]
 		public void IsScoreRed_FieldWithScore_IsTrue()
 		{
 			var field = Field.Parse(@"
@@ -155,6 +141,17 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			var act = Field.FromBytes(bytes);
 
 			Assert.AreEqual(field, act);
+		}
+
+		[Test]
+		public void GetConnect4_None_AllUnique()
+		{
+			var actual = new FieldConnect4Generator();
+
+			Assert.AreEqual(69, actual.Connect4.Length, "69 items");
+			
+			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect4));
+			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect3Out4));
 		}
 	}
 }

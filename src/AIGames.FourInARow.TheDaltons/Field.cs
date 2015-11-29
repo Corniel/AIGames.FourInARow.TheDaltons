@@ -43,7 +43,7 @@ namespace AIGames.FourInARow.TheDaltons
 
 		private static bool IsScore(ulong color)
 		{
-			foreach (var mask in Scores)
+			foreach (var mask in Field.Connect4)
 			{
 				if ((mask & color) == mask) { return true; }
 			}

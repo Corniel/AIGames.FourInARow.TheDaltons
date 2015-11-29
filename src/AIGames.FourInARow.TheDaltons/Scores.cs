@@ -43,5 +43,6 @@ namespace AIGames.FourInARow.TheDaltons
 			str += (score / 100m).ToString("0.00", CultureInfo.InvariantCulture);
 			return str;
 		}
+	
 	}
 }

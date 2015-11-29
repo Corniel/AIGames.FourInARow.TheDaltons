@@ -93,6 +93,21 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			Console.WriteLine(tree.Logger);
 		}
 
+		[Test, Category(Category.IntegrationTest)]
+		public void GetMove_NinePlayed_Performance()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0
+				0,0,0,0,0,0,0
+				0,0,0,0,0,0,0
+				0,0,0,0,1,0,0
+				0,0,2,1,1,0,0
+				0,2,1,1,2,2,0");
+			var tree = new SearchTree();
+			var act = tree.GetMove(field, TimeSpan.MaxValue, TimeSpan.FromSeconds(10));
+			Console.WriteLine(tree.Logger);
+		}
+
 		[Test]
 		public void GetMove_OneOption_3()
 		{
