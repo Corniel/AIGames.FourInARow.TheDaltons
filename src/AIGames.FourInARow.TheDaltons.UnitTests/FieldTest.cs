@@ -152,6 +152,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			
 			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect4));
 			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect3Out4));
+			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect4Thread));
 		}
 	}
 }
