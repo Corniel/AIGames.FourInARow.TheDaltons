@@ -78,7 +78,7 @@ namespace AIGames.FourInARow.TheDaltons
 			unchecked
 			{
 				var hash = red >> 48;
-				hash|=(yel >> 32) & 0xFFFF0000;
+				hash |= (yel >> 32) & 0xFFFF0000;
 				return (int)hash;
 			}
 		}

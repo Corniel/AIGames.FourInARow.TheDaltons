@@ -10,7 +10,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		{
 			Connect4 = new ulong[69];
 			Connect3Out4 = new ulong[69 << 2];
-			Connect4Thread = new ulong[69 << 2];
+			Connect4Threat = new ulong[69 << 2];
 
 			SetConnect4();
 			SetConnect3Out4();
@@ -18,7 +18,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 
 		public readonly ulong[] Connect4;
 		public readonly ulong[] Connect3Out4;
-		public readonly ulong[] Connect4Thread;
+		public readonly ulong[] Connect4Threat;
 
 		private void SetConnect4()
 		{
@@ -78,7 +78,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				for (var p = 0; p < 4; p++)
 				{
 					Connect3Out4[(i << 2) | p] = matches[p];
-					Connect4Thread[(i << 2) | p] = mask - matches[p];
+					Connect4Threat[(i << 2) | p] = mask - matches[p];
 				}
 			}
 		}
