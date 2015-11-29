@@ -48,6 +48,7 @@
     <Compile Include="Communication\MoveInstructionTest.cs" />
     <Compile Include="Deployoment\Deployer.cs" />
     <Compile Include="Deployoment\DeployerTest.cs" />
+    <Compile Include="EvaluatorTest.cs" />
     <Compile Include="FieldConnect4Generator.cs" />
     <Compile Include="FieldTest.cs" />
     <Compile Include="Mocking\SearchTreeNodeStub.cs" />
