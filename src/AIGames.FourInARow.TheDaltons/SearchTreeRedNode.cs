@@ -24,7 +24,7 @@ namespace AIGames.FourInARow.TheDaltons
 			{
 				var child = Children[i];
 
-				var sdepth = depth > 6 ? (byte)unchecked(depth - i) : depth;
+				var sdepth = i > 1 && depth > 6 ? (byte)unchecked(1+ depth - i) : depth;
 
 				var test = child.Apply(sdepth, tree, alpha, beta);
 				if (test > Score)

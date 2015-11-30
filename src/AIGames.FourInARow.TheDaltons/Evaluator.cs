@@ -22,6 +22,7 @@
 			unchecked
 			{
 #endif
+				var score = 0;
 				var redToMove = (ply & 1) == 1;
 
 				ulong red = field.GetRed();
@@ -185,14 +186,16 @@
 				{
 					if (lowestRed < lowestYel)
 					{
-						return Scores.RedWins(42 - 5 + lowestRed);
+						//return Scores.RedWins(42 - 5 + lowestRed);
+						score += 1000;
 					}
 					else
 					{
-						return Scores.YelWins(42 - 5 + lowestYel);
+						//return Scores.YelWins(42 - 5 + lowestYel);
+						score -= 1000;
 					}
 				}
-				return Pow2[redTri] - Pow2[yelTri];
+				return  score+Pow2[redTri] - Pow2[yelTri];
 #if !DEBUG
 			}
 #endif
