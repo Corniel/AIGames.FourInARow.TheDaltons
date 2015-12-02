@@ -38,6 +38,8 @@
 				var forcedYel = NotSet;
 				var lowestRed = NotSet;
 				var lowestYel = NotSet;
+				var lowestRedCol = NotSet;
+				var lowestYelCol = NotSet;
 
 				for (var index = 0; index < 69; index++)
 				{
@@ -126,6 +128,7 @@
 										rowR = row;
 										if ((row & 1) == 0 && row < lowestRed)
 										{
+											lowestRedCol = col;
 											lowestRed = row;
 										}
 										leftRed--;
@@ -145,6 +148,7 @@
 										// Zero based: s
 										if ((row & 1) == 1 && row < lowestYel)
 										{
+											lowestYelCol = col;
 											lowestYel = row;
 										}
 										leftYel--;
@@ -184,7 +188,9 @@
 
 				if (lowestRed != NotSet || lowestYel != NotSet)
 				{
-					if (lowestRed < lowestYel)
+					// if both have a strong threat, but in different columns, 
+					// the yellow one is useless.
+					if (lowestRed < lowestYel || lowestRedCol != lowestYelCol)
 					{
 						score += 1000;
 					}
