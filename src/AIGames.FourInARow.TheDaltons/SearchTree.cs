@@ -39,14 +39,15 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public ISearchTreeNode Root { get; set; }
 
+		private byte depth = 9;
+
 		public byte GetMove(Field field, TimeSpan min, TimeSpan max)
 		{
 			byte ply = (byte)(field.Count + 1);
 			var redToMove = (ply & 1) == 1;
 
 			byte maxDepth = 43;
-			byte minDepth = (byte)(ply + 1);
-			
+				
 			Sw.Restart();
 			Logger.Clear();
 			Max = max;
@@ -58,7 +59,9 @@ namespace AIGames.FourInARow.TheDaltons
 			Root = GetNode(field, ply);
 			Root.Add(candidates);
 
-			for (byte depth = minDepth; depth < maxDepth; depth++)
+			depth -= 4;
+			
+			for (/**/; depth < maxDepth; depth++)
 			{
 				Root.Apply(depth, this, Scores.InitialAlpha, Scores.InitialBeta);
 
@@ -75,7 +78,7 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public void Clear(int round)
 		{
-			for (var i = 1; i < round; i++)
+			for (var i = 1; i < round ; i++)
 			{
 				tree[i].Clear();
 				trans[i] = 0;
@@ -153,8 +156,8 @@ namespace AIGames.FourInARow.TheDaltons
 		private int[] trans = new int[43];
 		private static Dictionary<Field, ISearchTreeNode>[] GetTree()
 		{
-			var tree = new Dictionary<Field, ISearchTreeNode>[43];
-			for (var ply = 0; ply < 43; ply++)
+			var tree = new Dictionary<Field, ISearchTreeNode>[44];
+			for (var ply = 0; ply <= 43; ply++)
 			{
 				tree[ply] = new Dictionary<Field, ISearchTreeNode>();
 			}

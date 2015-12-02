@@ -84,5 +84,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Book\db.dat" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Communication\input.0024.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

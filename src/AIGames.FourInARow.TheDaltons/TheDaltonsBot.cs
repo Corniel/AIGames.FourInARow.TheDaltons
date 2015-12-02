@@ -33,7 +33,16 @@ namespace AIGames.FourInARow.TheDaltons
 			var max = Math.Min(2 * time.TotalMilliseconds / 3, 6000);
 			// Take 5 seconds or if you're really getting out of time 1/2 of the max.
 			var min = Math.Min(5000, max / 2);
-			
+
+			if (State.Ply < MinTime.Length)
+			{
+				min = MinTime[State.Ply];
+				if (min > max)
+				{
+					max = min;
+				}
+			}
+
 			Tree.Clear(State.Ply);
 
 			var col = Tree.GetMove(State.Field, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
@@ -49,6 +58,22 @@ namespace AIGames.FourInARow.TheDaltons
 			};
 			return response;
 		}
+
+		private static readonly int[] MinTime =
+		{
+			/* 00 */ 0, 
+			/* 01 */ 500,
+			/* 02 */ 1000,
+			/* 03 */ 500,
+			/* 04 */ 1000,
+			/* 05 */ 500,
+			/* 06 */ 1000,
+			/* 07 */ 500,
+			/* 08 */ 2000,
+			/* 09 */ 1000,
+			/* 10 */ 5000,
+			/* 11 */ 5000,
+		};
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never), ExcludeFromCodeCoverage]
 		private string DebuggerDisplay
