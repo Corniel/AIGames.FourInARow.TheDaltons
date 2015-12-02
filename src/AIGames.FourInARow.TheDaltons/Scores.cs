@@ -12,8 +12,8 @@ namespace AIGames.FourInARow.TheDaltons
 		private const int Red = 1000000;
 		private const int Yel = -1000000;
 
-		public static readonly int RedWin = RedWins(42);
-		public static readonly int YelWin = YelWins(42);
+		public static readonly int RedWin = RedWins(SearchTree.MaximumDepth);
+		public static readonly int YelWin = YelWins(SearchTree.MaximumDepth);
 
 		public static int RedWins(int ply) { return Red - ply; }
 		public static int YelWins(int ply) { return Yel + ply; }
@@ -43,6 +43,5 @@ namespace AIGames.FourInARow.TheDaltons
 			str += (score / 100m).ToString("0.00", CultureInfo.InvariantCulture);
 			return str;
 		}
-	
 	}
 }

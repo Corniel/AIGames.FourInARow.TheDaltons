@@ -8,6 +8,8 @@ namespace AIGames.FourInARow.TheDaltons
 {
 	public class SearchTree : ISearchTree
 	{
+		public const int MaximumDepth = 43;
+
 		public SearchTree()
 		{
 			Sw = new Stopwatch();
@@ -46,7 +48,7 @@ namespace AIGames.FourInARow.TheDaltons
 			byte ply = (byte)(field.Count + 1);
 			var redToMove = (ply & 1) == 1;
 
-			byte maxDepth = 43;
+			byte maxDepth = MaximumDepth;
 				
 			Sw.Restart();
 			Logger.Clear();
@@ -61,7 +63,7 @@ namespace AIGames.FourInARow.TheDaltons
 
 			depth -= 4;
 			
-			for (/**/; depth < maxDepth; depth++)
+			for (/**/; depth <= maxDepth; depth++)
 			{
 				Root.Apply(depth, this, Scores.InitialAlpha, Scores.InitialBeta);
 
@@ -125,9 +127,9 @@ namespace AIGames.FourInARow.TheDaltons
 						node = new SearchTreeEndNode(search, ply, score);
 					}
 					// Game is done.
-					else if (ply == 42)
+					else if (ply == MaximumDepth)
 					{
-						node = new SearchTreeEndNode(search, 42, 0);
+						node = new SearchTreeEndNode(search, MaximumDepth, 0);
 					}
 					else if (redToMove)
 					{
@@ -153,11 +155,11 @@ namespace AIGames.FourInARow.TheDaltons
 		}
 
 		private Dictionary<Field, ISearchTreeNode>[] tree = GetTree();
-		private int[] trans = new int[43];
+		private int[] trans = new int[MaximumDepth + 1];
 		private static Dictionary<Field, ISearchTreeNode>[] GetTree()
 		{
-			var tree = new Dictionary<Field, ISearchTreeNode>[44];
-			for (var ply = 0; ply <= 43; ply++)
+			var tree = new Dictionary<Field, ISearchTreeNode>[MaximumDepth + 1];
+			for (var ply = 0; ply <= MaximumDepth; ply++)
 			{
 				tree[ply] = new Dictionary<Field, ISearchTreeNode>();
 			}

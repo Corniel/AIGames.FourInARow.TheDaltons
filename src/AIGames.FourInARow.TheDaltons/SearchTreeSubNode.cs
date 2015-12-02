@@ -7,19 +7,6 @@ namespace AIGames.FourInARow.TheDaltons
 	[DebuggerDisplay("{DebuggerDisplay}")]
 	public abstract class SearchTreeSubNode : SearchTreeNode, IComparer<ISearchTreeNode>
 	{
-		public static readonly byte[] TakeCount = GetTakeCount();
-
-		private static byte[] GetTakeCount()
-		{
-			var takes = new byte[43];
-
-			var index = 0;
-			while (index < 10) { takes[index++] = 2; }
-			while (index < 15) { takes[index++] = 4; }
-			while (index < 43) { takes[index++] = 3; }
-			return takes;
-		}
-
 		public SearchTreeSubNode(Field field, byte depth, int value) : base(field, depth, value) { }
 
 		public abstract bool IsWinning(int score);

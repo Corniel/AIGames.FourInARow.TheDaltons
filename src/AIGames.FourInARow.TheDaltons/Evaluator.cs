@@ -186,12 +186,10 @@
 				{
 					if (lowestRed < lowestYel)
 					{
-						//return Scores.RedWins(42 - 5 + lowestRed);
 						score += 1000;
 					}
 					else
 					{
-						//return Scores.YelWins(42 - 5 + lowestYel);
 						score -= 1000;
 					}
 				}
