@@ -37,10 +37,14 @@ namespace AIGames.FourInARow.TheDaltons
 
 				Children = new List<ISearchTreeNode>();
 
-				foreach (var item in items.Where(e => e != Field.Empty))
+				for (var i = 0; i < items.Length; i++)
 				{
-					var child = tree.GetNode(item, childDepth);
-					Children.Add(child);
+					var item = items[i];
+					if (item != Field.Empty)
+					{
+						var child = tree.GetNode(item, childDepth);
+						Children.Add(child);
+					}
 				}
 			}
 			Score = ApplyChildren(depth, tree, alpha, beta);
