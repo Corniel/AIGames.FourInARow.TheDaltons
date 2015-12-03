@@ -37,9 +37,12 @@ namespace AIGames.FourInARow.TheDaltons
 			if (State.Ply < MinTime.Length)
 			{
 				min = MinTime[State.Ply];
-				if (min > max)
+			}
+			if (State.Ply < MaxTime.Length)
+			{
+				if (MaxTime[State.Ply] > 0)
 				{
-					max = min;
+					max = MaxTime[State.Ply];
 				}
 			}
 
@@ -73,6 +76,21 @@ namespace AIGames.FourInARow.TheDaltons
 			/* 09 */ 1000,
 			/* 10 */ 5000,
 			/* 11 */ 5000,
+		};
+
+		private static readonly int[] MaxTime =
+		{
+			/* 00 */ 0, 
+			/* 01 */ 600,
+			/* 02 */ 1500,
+			/* 03 */ 600,
+			/* 04 */ 1500,
+			/* 05 */ 600,
+			/* 06 */ 1500,
+			/* 07 */ 600,
+			/* 08 */ 1500,
+			/* 09 */ 1500,
+			/* 10 */ 0,
 		};
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never), ExcludeFromCodeCoverage]
