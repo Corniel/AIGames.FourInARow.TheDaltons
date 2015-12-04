@@ -3,6 +3,10 @@ The Daltons
 
 The Daltons is an AI trying to play Four-in-a-Row.
 
+Version 28
+----------
+Speed improvement with different sorting.
+
 Version 27
 ----------
 Further tweaking of time consumption.
