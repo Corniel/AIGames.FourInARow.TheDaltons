@@ -45,13 +45,13 @@ namespace AIGames.FourInARow.TheDaltons
 					max = MaxTime[State.Ply];
 				}
 			}
-
 			Tree.Clear(State.Ply);
 
 			var col = Tree.GetMove(State.Field, TimeSpan.FromMilliseconds(min), TimeSpan.FromMilliseconds(max));
 
 			// Just to be sure.
 			if (State.Ply == 1) { col = 3; }
+
 			var move = new MoveInstruction(col);
 
 			var response = new BotResponse()

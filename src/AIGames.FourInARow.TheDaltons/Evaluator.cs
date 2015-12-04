@@ -87,10 +87,7 @@
 
 					var leftRed = redTri;
 					var leftYel = yelTri;
-#if DEBUG
-					var strR = Field.ToString(threatRed);
-					var strY = Field.ToString(threatYel);
-#endif
+
 					for (var col = 0; col < 7; col++)
 					{
 						var colRed = threatRed & Field.ColumnMasks[col];

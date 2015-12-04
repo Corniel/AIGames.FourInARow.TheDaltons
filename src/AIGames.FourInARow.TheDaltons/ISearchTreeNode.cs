@@ -6,7 +6,6 @@ namespace AIGames.FourInARow.TheDaltons
 	{
 		Field Field { get; }
 		byte Depth { get;  }
-		bool IsFinal { get; }
 		int Score { get; }
 		int Value { get; }
 

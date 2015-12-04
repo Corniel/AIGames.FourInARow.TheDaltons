@@ -69,6 +69,7 @@
     <Compile Include="SearchTree.cs" />
     <Compile Include="SearchTreeEndNode.cs" />
     <Compile Include="SearchTreeNode.cs" />
+    <Compile Include="SearchTreeNodes.cs" />
     <Compile Include="SearchTreeYellowNode.cs" />
     <Compile Include="SearchTreeRedNode.cs" />
     <Compile Include="SearchTreeSubNode.cs" />

@@ -2,9 +2,9 @@
 
 namespace AIGames.FourInARow.TheDaltons
 {
-	public class SearchTreeBookNode: SearchTreeRedNode
+	public class SearchTreeBookNode : SearchTreeRedNode
 	{
-		public SearchTreeBookNode(Field field, int value) : base(field, 9, value) { }
+		public SearchTreeBookNode(Field field, byte ply, int value) : base(field, ply, value) { }
 
 		public override int Apply(byte depth, ISearchTree tree, int alpha, int beta)
 		{

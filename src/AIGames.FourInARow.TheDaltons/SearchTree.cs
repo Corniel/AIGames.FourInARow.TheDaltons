@@ -23,12 +23,22 @@ namespace AIGames.FourInARow.TheDaltons
 		{
 			foreach (var field in Book.GetLoss())
 			{
-				tree[9][field] = new SearchTreeBookNode(field, Scores.YelWin >> 3);
+				tree[9][field] = new SearchTreeBookNode(field, 9, Scores.YelWin >> 3);
 			}
 			foreach (var field in Book.GetDraws())
 			{
-				tree[9][field] = new SearchTreeBookNode(field, Scores.Draw);
+				tree[9][field] = new SearchTreeBookNode(field, 9, Scores.Draw);
 			}
+
+			var ply1 = Generator.GetMoves(Field.Empty, true);
+
+			tree[1][ply1[0]] = new SearchTreeBookNode(ply1[0], 1, Scores.YelWin >> 3);
+			tree[1][ply1[1]] = new SearchTreeBookNode(ply1[1], 1, Scores.YelWin >> 3);
+			tree[1][ply1[2]] = new SearchTreeBookNode(ply1[2], 1, Scores.Draw);
+			tree[1][ply1[3]] = new SearchTreeBookNode(ply1[3], 1, Scores.RedWin >> 3);
+			tree[1][ply1[4]] = new SearchTreeBookNode(ply1[4], 1, Scores.Draw);
+			tree[1][ply1[5]] = new SearchTreeBookNode(ply1[5], 1, Scores.YelWin >> 3);
+			tree[1][ply1[6]] = new SearchTreeBookNode(ply1[6], 1, Scores.YelWin >> 3);
 		}
 
 		public MoveGenerator Generator { get; set; }
@@ -41,15 +51,16 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public ISearchTreeNode Root { get; set; }
 
-		private byte depth = 9;
+		private byte depth = 1;
 
 		public byte GetMove(Field field, TimeSpan min, TimeSpan max)
 		{
 			byte ply = (byte)(field.Count + 1);
+			if (depth <= ply) { depth = (byte)(ply + 1); }
 			var redToMove = (ply & 1) == 1;
 
-			byte maxDepth = MaximumDepth;
-				
+			if (depth > MaximumDepth) { depth = MaximumDepth; }
+
 			Sw.Restart();
 			Logger.Clear();
 			Max = max;
@@ -61,9 +72,7 @@ namespace AIGames.FourInARow.TheDaltons
 			Root = GetNode(field, ply);
 			Root.Add(candidates);
 
-			depth -= 4;
-			
-			for (/**/; depth <= maxDepth; depth++)
+			for (/**/; depth <= MaximumDepth; depth++)
 			{
 				Root.Apply(depth, this, Scores.InitialAlpha, Scores.InitialBeta);
 
@@ -73,7 +82,7 @@ namespace AIGames.FourInARow.TheDaltons
 				Logger.Append(log).AppendLine();
 
 				// Don't spoil time.
-				if (Root.IsFinal || Sw.Elapsed > min || !TimeLeft) { break; }
+				if (Sw.Elapsed > min || !TimeLeft) { break; }
 			}
 			return move;
 		}
@@ -114,7 +123,7 @@ namespace AIGames.FourInARow.TheDaltons
 					}
 					else
 					{
-						node = new SearchTreeBookNode(search, Scores.RedWin >> 3);
+						node = new SearchTreeBookNode(search, 9, Scores.RedWin >> 3);
 					}
 				}
 				else
