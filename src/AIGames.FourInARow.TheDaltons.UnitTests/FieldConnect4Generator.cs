@@ -9,14 +9,17 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		public FieldConnect4Generator()
 		{
 			Connect4 = new ulong[69];
+			Connect2Out4 = new ulong[69 << 3];
 			Connect3Out4 = new ulong[69 << 2];
 			Connect4Threat = new ulong[69 << 2];
 
 			SetConnect4();
+			SetConnect2Out4();
 			SetConnect3Out4();
 		}
 
 		public readonly ulong[] Connect4;
+		public readonly ulong[] Connect2Out4;
 		public readonly ulong[] Connect3Out4;
 		public readonly ulong[] Connect4Threat;
 
@@ -82,6 +85,21 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				}
 			}
 		}
+		private void SetConnect2Out4()
+		{
+			var lookup = new ulong[69 << 3];
+
+			for (var i = 0; i < 69; i++)
+			{
+				var mask = Connect4[i];
+
+				var matches = GetMatch2(mask);
+				for (var p = 0; p < 6; p++)
+				{
+					Connect2Out4[(i << 3) | p] = matches[p];
+				}
+			}
+		}
 
 		private static ulong[] GetMatch3(ulong mask)
 		{
@@ -104,6 +122,32 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			matches[1] = (1UL << indexes[0]) | (1UL << indexes[1]) | (1UL << indexes[3]);
 			matches[2] = (1UL << indexes[0]) | (1UL << indexes[2]) | (1UL << indexes[3]);
 			matches[3] = (1UL << indexes[1]) | (1UL << indexes[2]) | (1UL << indexes[3]);
+			return matches;
+		}
+
+		private static ulong[] GetMatch2(ulong mask)
+		{
+			var matches = new ulong[8];
+
+			var pos = 0;
+			var indexes = new int[4];
+
+			for (var i = 0; i < 64; i++)
+			{
+				var flag = 1UL << i;
+
+				if ((flag & mask) != 0)
+				{
+					indexes[pos++] = i;
+					if (pos == 4) { break; }
+				}
+			}
+			matches[0] = (1UL << indexes[0]) | (1UL << indexes[1]);
+			matches[1] = (1UL << indexes[0]) | (1UL << indexes[2]);
+			matches[2] = (1UL << indexes[0]) | (1UL << indexes[3]);
+			matches[3] = (1UL << indexes[1]) | (1UL << indexes[2]);
+			matches[4] = (1UL << indexes[1]) | (1UL << indexes[3]);
+			matches[5] = (1UL << indexes[2]) | (1UL << indexes[3]);
 			return matches;
 		}
 

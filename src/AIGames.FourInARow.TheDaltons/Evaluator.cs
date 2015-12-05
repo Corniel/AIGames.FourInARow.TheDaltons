@@ -11,7 +11,7 @@
 			var pows = new int[100];
 			for (var p = 0; p < 100; p++)
 			{
-				pows[p] = p * p;
+				pows[p] = 10 * p * p;
 			}
 			return pows;
 		}
@@ -30,6 +30,9 @@
 
 				ulong threatRed = 0;
 				ulong threatYel = 0;
+
+				var redTwo = 0;
+				var yelTwo = 0;
 
 				var redTri = 0;
 				var yelTri = 0;
@@ -55,27 +58,57 @@
 
 					if (matchRed != 0)
 					{
-						for (var i = 0; i < 4; i++)
+						var base2 = index << 3;
+
+						if (Field.Connect2Out4[base2] == matchRed ||
+							Field.Connect2Out4[base2 | 1] == matchRed ||
+							Field.Connect2Out4[base2 | 2] == matchRed ||
+							Field.Connect2Out4[base2 | 3] == matchRed ||
+							Field.Connect2Out4[base2 | 4] == matchRed ||
+							Field.Connect2Out4[base2 | 5] == matchRed)
 						{
-							var lookup = (index << 2) | i;
-							if (Field.Connect3Out4[lookup] == matchRed)
+							redTwo++;
+						}
+						else
+						{
+							var base3 = index << 2;
+							for (var i = 0; i < 4; i++)
 							{
-								redTri++;
-								threatRed |= Field.Connect4Threat[lookup];
-								break;
+								var lookup = base3 | i;
+								if (Field.Connect3Out4[lookup] == matchRed)
+								{
+									redTri++;
+									threatRed |= Field.Connect4Threat[lookup];
+									break;
+								}
 							}
 						}
 					}
 					else
 					{
-						for (var i = 0; i < 4; i++)
+						var base2 = index << 3;
+
+						if (Field.Connect2Out4[base2] == matchYel ||
+							Field.Connect2Out4[base2 | 1] == matchYel ||
+							Field.Connect2Out4[base2 | 2] == matchYel ||
+							Field.Connect2Out4[base2 | 3] == matchYel ||
+							Field.Connect2Out4[base2 | 4] == matchYel ||
+							Field.Connect2Out4[base2 | 5] == matchYel)
 						{
-							var lookup = (index << 2) | i;
-							if (Field.Connect3Out4[lookup] == matchYel)
+							yelTwo++;
+						}
+						else
+						{
+							var base3 = index << 2;
+							for (var i = 0; i < 4; i++)
 							{
-								yelTri++;
-								threatYel |= Field.Connect4Threat[lookup];
-								break;
+								var lookup = base3 | i;
+								if (Field.Connect3Out4[lookup] == matchYel)
+								{
+									yelTri++;
+									threatYel |= Field.Connect4Threat[lookup];
+									break;
+								}
 							}
 						}
 					}
@@ -101,7 +134,7 @@
 							var rowR = NotSet;
 							var rowY = NotSet;
 
-							for (var row = 0; row < 6;row++)
+							for (var row = 0; row < 6; row++)
 							{
 								var shift = row << 3 | col;
 								ulong mask = 1UL << shift;
@@ -189,14 +222,14 @@
 					// the yellow one is useless.
 					if (lowestRed < lowestYel || lowestRedCol != lowestYelCol)
 					{
-						score += 1000;
+						score += Scores.StrongThreat;
 					}
 					else
 					{
-						score -= 1000;
+						score -= Scores.StrongThreat;
 					}
 				}
-				return  score+Pow2[redTri] - Pow2[yelTri];
+				return score + Pow2[redTri] - Pow2[yelTri] + redTwo - yelTwo;
 #if !DEBUG
 			}
 #endif

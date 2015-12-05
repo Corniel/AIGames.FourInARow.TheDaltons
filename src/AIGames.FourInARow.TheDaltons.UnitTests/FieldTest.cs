@@ -143,7 +143,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			Assert.AreEqual(field, act);
 		}
 
-		[Test]
+		[Test, Category(Category.Deployment)]
 		public void GetConnect4_None_AllUnique()
 		{
 			var actual = new FieldConnect4Generator();
@@ -151,6 +151,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			Assert.AreEqual(69, actual.Connect4.Length, "69 items");
 			
 			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect4));
+			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect2Out4));
 			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect3Out4));
 			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect4Threat));
 		}
