@@ -31,9 +31,6 @@
 				ulong threatRed = 0;
 				ulong threatYel = 0;
 
-				var redTwo = 0;
-				var yelTwo = 0;
-
 				var redTri = 0;
 				var yelTri = 0;
 
@@ -58,57 +55,29 @@
 
 					if (matchRed != 0)
 					{
-						var base2 = index << 3;
-
-						if (Field.Connect2Out4[base2] == matchRed ||
-							Field.Connect2Out4[base2 | 1] == matchRed ||
-							Field.Connect2Out4[base2 | 2] == matchRed ||
-							Field.Connect2Out4[base2 | 3] == matchRed ||
-							Field.Connect2Out4[base2 | 4] == matchRed ||
-							Field.Connect2Out4[base2 | 5] == matchRed)
+						var base3 = index << 2;
+						for (var i = 0; i < 4; i++)
 						{
-							redTwo++;
-						}
-						else
-						{
-							var base3 = index << 2;
-							for (var i = 0; i < 4; i++)
+							var lookup = base3 | i;
+							if (Field.Connect3Out4[lookup] == matchRed)
 							{
-								var lookup = base3 | i;
-								if (Field.Connect3Out4[lookup] == matchRed)
-								{
-									redTri++;
-									threatRed |= Field.Connect4Threat[lookup];
-									break;
-								}
+								redTri++;
+								threatRed |= Field.Connect4Threat[lookup];
+								break;
 							}
 						}
 					}
 					else
 					{
-						var base2 = index << 3;
-
-						if (Field.Connect2Out4[base2] == matchYel ||
-							Field.Connect2Out4[base2 | 1] == matchYel ||
-							Field.Connect2Out4[base2 | 2] == matchYel ||
-							Field.Connect2Out4[base2 | 3] == matchYel ||
-							Field.Connect2Out4[base2 | 4] == matchYel ||
-							Field.Connect2Out4[base2 | 5] == matchYel)
+						var base3 = index << 2;
+						for (var i = 0; i < 4; i++)
 						{
-							yelTwo++;
-						}
-						else
-						{
-							var base3 = index << 2;
-							for (var i = 0; i < 4; i++)
+							var lookup = base3 | i;
+							if (Field.Connect3Out4[lookup] == matchYel)
 							{
-								var lookup = base3 | i;
-								if (Field.Connect3Out4[lookup] == matchYel)
-								{
-									yelTri++;
-									threatYel |= Field.Connect4Threat[lookup];
-									break;
-								}
+								yelTri++;
+								threatYel |= Field.Connect4Threat[lookup];
+								break;
 							}
 						}
 					}
@@ -216,20 +185,31 @@
 					}
 				}
 
-				if (lowestRed != NotSet || lowestYel != NotSet)
+				if (lowestRed != NotSet)
 				{
-					// if both have a strong threat, but in different columns, 
-					// the yellow one is useless.
-					if (lowestRed < lowestYel || lowestRedCol != lowestYelCol)
+					// Lowest threat is red
+					if (lowestRed < lowestYel)
 					{
 						score += Scores.StrongThreat;
 					}
-					else
+					// Lowest threat in same column for yellow.
+					else if (lowestRedCol == lowestYelCol)
 					{
 						score -= Scores.StrongThreat;
+						
+					}
+					// Lowest threat for yellow but different column.
+					else
+					{
+						score += Scores.StrongThreat >> 1;
 					}
 				}
-				return score + Pow2[redTri] - Pow2[yelTri] + redTwo - yelTwo;
+				// Only yellow has a strong threat.
+				else if(lowestYel != NotSet)
+				{
+					score -= Scores.StrongThreat;
+				}
+				return score + Pow2[redTri] - Pow2[yelTri] ;
 #if !DEBUG
 			}
 #endif

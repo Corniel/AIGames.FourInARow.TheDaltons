@@ -3,9 +3,13 @@ The Daltons
 
 The Daltons is an AI trying to play Four-in-a-Row.
 
+Version 30
+----------
+Fixed strong threat bug, and skipped 2 out 4 now.
+
 Version 29
 ----------
-Tweaked evaluation to also tak 2 out 4 into account.
+Tweaked evaluation to also take 2 out 4 into account.
 
 Version 28
 ----------
