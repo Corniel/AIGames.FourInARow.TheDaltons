@@ -4,25 +4,13 @@
 	public static class Evaluator
 	{
 		private const int NotSet = short.MaxValue;
-		private static readonly int[] Pow2 = GetPow2();
-
-		private static int[] GetPow2()
-		{
-			var pows = new int[100];
-			for (var p = 0; p < 100; p++)
-			{
-				pows[p] = 10 * p * p;
-			}
-			return pows;
-		}
-
+		
 		public static int GetScore(Field field, byte ply)
 		{
 #if !DEBUG
 			unchecked
 			{
 #endif
-				var score = 0;
 				var redToMove = (ply & 1) == 1;
 
 				ulong red = field.GetRed();
@@ -31,6 +19,7 @@
 				ulong threatRed = 0;
 				ulong threatYel = 0;
 
+				var score = 0;
 				var redTri = 0;
 				var yelTri = 0;
 
@@ -62,6 +51,7 @@
 							if (Field.Connect3Out4[lookup] == matchRed)
 							{
 								redTri++;
+								score += Scores.Threat3[index];
 								threatRed |= Field.Connect4Threat[lookup];
 								break;
 							}
@@ -76,6 +66,7 @@
 							if (Field.Connect3Out4[lookup] == matchYel)
 							{
 								yelTri++;
+								score -= Scores.Threat3[index];
 								threatYel |= Field.Connect4Threat[lookup];
 								break;
 							}
@@ -209,7 +200,7 @@
 				{
 					score -= Scores.StrongThreat;
 				}
-				return score + Pow2[redTri] - Pow2[yelTri] ;
+				return score;
 #if !DEBUG
 			}
 #endif

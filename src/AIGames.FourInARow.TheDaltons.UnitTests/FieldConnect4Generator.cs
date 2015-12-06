@@ -9,6 +9,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		public FieldConnect4Generator()
 		{
 			Connect4 = new ulong[69];
+			Connect4Scores = new int[69];
 			Connect2Out4 = new ulong[69 << 3];
 			Connect3Out4 = new ulong[69 << 2];
 			Connect4Threat = new ulong[69 << 2];
@@ -19,13 +20,14 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		}
 
 		public readonly ulong[] Connect4;
+		public readonly int[] Connect4Scores;
 		public readonly ulong[] Connect2Out4;
 		public readonly ulong[] Connect3Out4;
 		public readonly ulong[] Connect4Threat;
 
 		private void SetConnect4()
 		{
-			var scores = new HashSet<ulong>();
+			var index = 0;
 
 			// row scores.
 			for (var col = 0; col < 4; col++)
@@ -34,7 +36,9 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				{
 					ulong line = 0x0F;
 					line <<= col + (row << 3);
-					scores.Add(line);
+					Connect4Scores[index] = Scores.Horizontal3;
+					Connect4[index++] = line;
+
 				}
 			}
 
@@ -45,7 +49,8 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				{
 					ulong line = 0x01010101;
 					line <<= col + (row << 3);
-					scores.Add(line);
+					Connect4Scores[index] = row == 0 ? Scores.Horizontal3 : Scores.Vertical3;
+					Connect4[index++] = line;
 				}
 			}
 			// diagonal scores.
@@ -57,16 +62,12 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 					ulong dig1 = 0x01020408;
 					dig0 <<= col + (row << 3);
 					dig1 <<= col + (row << 3);
-					scores.Add(dig0);
-					scores.Add(dig1);
+					Connect4Scores[index] = Scores.Diagonal3;
+					Connect4[index++] = dig0;
+					Connect4Scores[index] = Scores.Diagonal3;
+					Connect4[index++] = dig1;
 				}
 			}
-			var index = 0;
-			foreach (var score in scores.OrderBy(s => s))
-			{
-				Connect4[index++] = score;
-			};
-
 		}
 
 		private void SetConnect3Out4()
@@ -160,6 +161,23 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			{
 				sb.Append("0x").Append(patterns[i].ToString("X").ToLowerInvariant());
 				if (i != patterns.Length - 1)
+				{
+					sb.Append(", ");
+				}
+			}
+			sb.Append("};");
+
+			return sb.ToString();
+		}
+		public static string ToString(int[] scores)
+		{
+			var sb = new StringBuilder();
+			sb.Append("{");
+
+			for (var i = 0; i < scores.Length; i++)
+			{
+				sb.Append(scores[i]);
+				if (i != scores.Length - 1)
 				{
 					sb.Append(", ");
 				}

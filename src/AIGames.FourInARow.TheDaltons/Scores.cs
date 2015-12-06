@@ -5,10 +5,15 @@ namespace AIGames.FourInARow.TheDaltons
 {
 	public static class Scores
 	{
+		public static readonly int[] Threat3 = { 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 10, 10, 80, 10, 10, 80, 10, 10, 80, 10, 10, 80, 10, 10, 80, 10, 10, 80, 10, 10, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+
 		public const int InitialAlpha = int.MinValue;
 		public const int InitialBeta = int.MaxValue;
 
 		public const int StrongThreat = 10000;
+		public const int Vertical3 = 10;
+		public const int Horizontal3 = 80;
+		public const int Diagonal3 = 100;
 		public const int Draw = 0;
 		private const int Red = 10000000;
 		private const int Yel = -10000000;
