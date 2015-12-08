@@ -196,9 +196,9 @@
 							// the lowest of the two is exclusive for red.
 							else if (
 								threatLowestColumnRed + 1 == row &&
-								threatLowestColumnYel >= threatLowestColumnRed)
+								threatLowestColumnRed <= threatLowestColumnYel)
 							{
-								var turns = (row - colHighestFilled) << 1;
+								var turns = (threatLowestColumnRed - colHighestFilled) << 1;
 								var forced = (ply | 1) + turns;
 
 								// We found potentially a quick win.
@@ -272,10 +272,10 @@
 							// Two connected threats in the same column and
 							// the lowest of the two is exclusive for red.
 							else if (
-								threatLowestColumnRed + 1 == row &&
-								threatLowestColumnYel >= threatLowestColumnRed)
+								threatLowestColumnYel + 1 == row &&
+								threatLowestColumnYel <= threatLowestColumnRed)
 							{
-								var turns = (row - colHighestFilled) << 1;
+								var turns = (threatLowestColumnYel - colHighestFilled) << 1;
 								var forced = (ply & ~1) + turns;
 
 								// We found potentially a quick win.

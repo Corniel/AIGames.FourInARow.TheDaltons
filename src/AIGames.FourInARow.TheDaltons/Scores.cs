@@ -10,10 +10,10 @@ namespace AIGames.FourInARow.TheDaltons
 		public const int InitialAlpha = int.MinValue;
 		public const int InitialBeta = int.MaxValue;
 
-		public const int StrongThreat = 10000;
+		public const int StrongThreat = 1000;
 		public const int Draw = 0;
-		private const int Red = 10000000;
-		private const int Yel = -10000000;
+		private const int Red = 1000000;
+		private const int Yel = -1000000;
 
 		public static readonly int[] RedWins = GetRedWins();
 		public static readonly int[] YelWins = GetYelWins();
@@ -65,7 +65,7 @@ namespace AIGames.FourInARow.TheDaltons
 			var str = "";
 			if (score > 0) { str = "+"; }
 			else if (score == 0) { str = "="; }
-			str += (score / 1000m).ToString("0.000", CultureInfo.InvariantCulture);
+			str += (score / 100m).ToString("0.00", CultureInfo.InvariantCulture);
 			return str;
 		}
 	}
