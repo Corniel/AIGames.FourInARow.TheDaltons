@@ -10,7 +10,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests.Deployoment
 		[Test]
 		public void Deploy_Bot_CompileAndZip()
 		{
-			var collectDir = new DirectoryInfo(@"AIGames.FourInARow.TheDaltons");
+			var collectDir = new DirectoryInfo(@"C:\Code\AIGames.FourInARow.TheDaltons\src\AIGames.FourInARow.TheDaltons");
 			var full = collectDir.FullName;
 			var version = typeof(TheDaltonsBot).Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
 			var nr = int.Parse(version.Split('.')[0]);

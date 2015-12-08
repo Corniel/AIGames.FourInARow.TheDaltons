@@ -104,8 +104,10 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				0,0,2,1,1,0,0
 				0,2,1,1,2,2,0");
 			var tree = new SearchTree();
-			var act = tree.GetMove(field, TimeSpan.MaxValue, TimeSpan.FromSeconds(10));
+			var time = TimeSpan.FromSeconds(10);
+			var act = tree.GetMove(field, TimeSpan.MaxValue, time);
 			Console.WriteLine(tree.Logger);
+			Console.WriteLine(String.Format("{0:0.00}MNod, {1:0.00}kNod/s {2:0.00}M-trans", tree.Count/1000000d, tree.Count/ time.TotalMilliseconds, tree.Transpositions/1000000d));
 		}
 
 		[Test]

@@ -11,19 +11,37 @@ namespace AIGames.FourInARow.TheDaltons
 		public const int InitialBeta = int.MaxValue;
 
 		public const int StrongThreat = 10000;
-		public const int Vertical3 = 10;
-		public const int Horizontal3 = 80;
-		public const int Diagonal3 = 100;
 		public const int Draw = 0;
 		private const int Red = 10000000;
 		private const int Yel = -10000000;
 
-		public static readonly int RedWin = RedWins(SearchTree.MaximumDepth);
-		public static readonly int YelWin = YelWins(SearchTree.MaximumDepth);
-		
+		public static readonly int[] RedWins = GetRedWins();
+		public static readonly int[] YelWins = GetYelWins();
 
-		public static int RedWins(int ply) { return Red - ply; }
-		public static int YelWins(int ply) { return Yel + ply; }
+		public const int RedWin = Red - SearchTree.MaximumDepth;
+		public const int YelWin = Yel + SearchTree.MaximumDepth - 1;
+
+		private static int[] GetRedWins()
+		{
+			var sc = new int[SearchTree.MaximumDepth + 1];
+
+			for (var ply = 0; ply < sc.Length; ply++)
+			{
+				sc[ply] = Red - ply;
+			}
+			return sc;
+
+		}
+		private static int[] GetYelWins()
+		{
+			var sc = new int[SearchTree.MaximumDepth];
+
+			for (var ply = 0; ply < sc.Length; ply++)
+			{
+				sc[ply] = Yel + ply;
+			}
+			return sc;
+		}
 
 		/// <summary>Return true if the score indicates a winning (or losing) position.</summary>
 		public static bool IsWinning(int score)

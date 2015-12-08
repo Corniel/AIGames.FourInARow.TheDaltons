@@ -4,7 +4,48 @@
 	public static class Evaluator
 	{
 		private const int NotSet = short.MaxValue;
-		
+
+		/// <summary>Gets the score for a field.</summary>
+		/// <param name="field">
+		/// The field to evaluate.
+		/// </param>
+		/// <param name="ply">
+		/// The current ply.
+		/// </param>
+		/// <returns>
+		/// A integer representing the score.
+		/// </returns>
+		/// <remarks>
+		/// 
+		/// Winning positions
+		/// 
+		/// 1. Two instant threats
+		/// 
+		///    0,0,0,0,0,0,0
+		///    0,0,0,0,0,0,0
+		///    0,0,0,0,0,0,0
+		///    0,0,0,2,0,0,0
+		///    0,0,0,2,0,0,0
+		///    0,*,1,1,1,*,0
+		///    
+		/// 2. Two connected threats
+		/// 
+		///    0,0,0,0,0,0,0
+		///    0,0,0,0,0,0,0
+		///    0,0,2,1,0,0,0
+		///    0,0,2,2,1,0,0
+		///    0,0,2,1,1,1,*
+		///    0,2,1,1,2,2,*
+		/// 
+		/// 3. Two 'lowest' treats in different columns
+		/// 
+		///    0,0,0,0,0,0,0
+		///    0,0,0,0,0,0,0
+		///    0,0,2,1,1,0,0
+		///    1,*,2,2,2,*,1
+		///    1,0,1,1,2,0,1
+		///    2,0,1,1,2,0,2
+		/// </remarks>
 		public static int GetScore(Field field, byte ply)
 		{
 #if !DEBUG
@@ -13,181 +54,294 @@
 #endif
 				var redToMove = (ply & 1) == 1;
 
-				ulong red = field.GetRed();
-				ulong yel = field.GetYellow();
+				ulong fieldRed = field.GetRed();
+				ulong fieldYel = field.GetYellow();
 
 				ulong threatRed = 0;
 				ulong threatYel = 0;
 
-				var score = 0;
-				var redTri = 0;
-				var yelTri = 0;
+				var trippleRed = 0;
+				var tripplYel = 0;
 
-				var forcedRed = NotSet;
-				var forcedYel = NotSet;
-				var lowestRed = NotSet;
-				var lowestYel = NotSet;
-				var lowestRedCol = NotSet;
-				var lowestYelCol = NotSet;
+				#region Detect threats
 
 				for (var index = 0; index < 69; index++)
 				{
 					var mask = Field.Connect4[index];
-					var matchRed = red & mask;
-					if (matchRed == mask) { return Scores.RedWins(ply); }
+					var matchRed = fieldRed & mask;
+					if (matchRed == mask) { return Scores.RedWins[ply - 1]; }
 
-					var matchYel = yel & mask;
-					if (matchYel == mask) { return Scores.YelWins(ply); }
-
-					// Both have a match. Skip it.
-					if (matchRed != 0 && matchYel != 0) { continue; }
+					var matchYel = fieldYel & mask;
+					if (matchYel == mask) { return Scores.YelWins[ply - 1]; }
 
 					if (matchRed != 0)
 					{
+						// Both have a match. Skip it.
+						if (matchYel != 0) { continue; }
+
 						var base3 = index << 2;
-						for (var i = 0; i < 4; i++)
+
+						// 3 out of 4, so add threat.
+						if (matchRed == Field.Connect3Out4[base3] ||
+							matchRed == Field.Connect3Out4[base3 | 1] ||
+							matchRed == Field.Connect3Out4[base3 | 2] ||
+							matchRed == Field.Connect3Out4[base3 | 3])
 						{
-							var lookup = base3 | i;
-							if (Field.Connect3Out4[lookup] == matchRed)
-							{
-								redTri++;
-								score += Scores.Threat3[index];
-								threatRed |= Field.Connect4Threat[lookup];
-								break;
-							}
+							trippleRed++;
+							threatRed |= mask;
 						}
 					}
 					else
 					{
 						var base3 = index << 2;
-						for (var i = 0; i < 4; i++)
+
+						// 3 out of 4, so add threat.
+						if (matchYel == Field.Connect3Out4[base3] ||
+							matchYel == Field.Connect3Out4[base3 | 1] ||
+							matchYel == Field.Connect3Out4[base3 | 2] ||
+							matchYel == Field.Connect3Out4[base3 | 3])
 						{
-							var lookup = base3 | i;
-							if (Field.Connect3Out4[lookup] == matchYel)
-							{
-								yelTri++;
-								score -= Scores.Threat3[index];
-								threatYel |= Field.Connect4Threat[lookup];
-								break;
-							}
+							tripplYel++;
+							threatYel |= mask;
 						}
 					}
 				}
+				#endregion
 
-				if (redTri > 0 || yelTri > 0)
+				// No threats, so no score.
+				if (trippleRed == 0 && tripplYel == 0) { return 0; }
+
+				var fieldMix = fieldRed | fieldYel;
+
+				// filled cells can not be threats, so clean that.
+				threatRed &= ~fieldMix;
+				threatYel &= ~fieldMix;
+
+				// predicted forced wins based on double threat.
+				var forcedWinRed = NotSet;
+				var forcedWinYel = NotSet;
+
+				// number of direct threats.
+				var threatInstantRed = 0;
+				var threatInstantYel = 0;
+
+				// The row of the strongest single threat.
+				var threatStrongRowRed = NotSet;
+				var threatStrongRowYel = NotSet;
+
+				// The column of the strongest single threat.
+				var threatStrongColRed = NotSet;
+				var threatStrongColYel = NotSet;
+
+				var threatRedLowerYel = 0;
+				var threatYelLowerRed = 0;
+				var threatLowerRow0 = NotSet;
+				var threatLowerRow1 = NotSet;
+
+				for (var col = 0; col < 7; col++)
 				{
-					var mixed = red | yel;
+					var colRed = threatRed & Field.ColumnMasks[col];
+					var colYel = threatYel & Field.ColumnMasks[col];
 
-					var leftRed = redTri;
-					var leftYel = yelTri;
+					// Column without threats.
+					if (colRed == 0 && colYel == 0) { continue; }
 
-					for (var col = 0; col < 7; col++)
+					var colMix = fieldMix & Field.ColumnMasks[col];
+
+					var colHighestFilled = -1;
+					var threatLowestColumnRed = NotSet;
+					var threatLowestColumnYel = NotSet;
+
+					for (var row = 0; row < 6; row++)
 					{
-						var colRed = threatRed & Field.ColumnMasks[col];
-						var colYel = threatYel & Field.ColumnMasks[col];
+						ulong mask = 1UL << ((row << 3) | col);
 
-						if (colRed != 0 || colYel != 0)
+						// The cell is already filled, so no threat.
+						if ((colMix & mask) != 0)
 						{
-							var colMix = mixed & Field.ColumnMasks[col];
+							colHighestFilled = row;
+							continue;
+						}
 
-							var min = 0;
-							var rowR = NotSet;
-							var rowY = NotSet;
+						var gap = row - colHighestFilled;
 
-							for (var row = 0; row < 6; row++)
+						// A red threat in the cell.
+						if ((colRed & mask) != 0)
+						{
+							// Instant threat.
+							if (gap == 1)
 							{
-								var shift = row << 3 | col;
-								ulong mask = 1UL << shift;
-								if /**/ ((colMix & mask) != 0)
+								if (redToMove)
 								{
-									min = row;
+									return Scores.RedWins[ply];
 								}
 								else
 								{
-									if ((colRed & mask) != 0)
-									{
-										if (rowR + 1 == row)
-										{
-											var forced = row - min;
-											if (rowY >= rowR && forced < forcedRed)
-											{
-												forcedRed = forced;
-												break;
-											}
-										}
-										rowR = row;
-										if ((row & 1) == 0 && row < lowestRed)
-										{
-											lowestRedCol = col;
-											lowestRed = row;
-										}
-										leftRed--;
-									}
-									if ((colYel & mask) != 0)
-									{
-										if (rowY + 1 == row)
-										{
-											var forced = row - min;
-											if (rowR >= row && forced < forcedYel)
-											{
-												forcedYel = forced;
-												break;
-											}
-										}
-										rowY = row;
-										// Zero based: s
-										if ((row & 1) == 1 && row < lowestYel)
-										{
-											lowestYelCol = col;
-											lowestYel = row;
-										}
-										leftYel--;
-									}
-									if (leftRed == 0 && leftYel == 0) { break; }
+									threatInstantRed++;
 								}
+							}
+							// we found the first threat in this column.
+							if (threatLowestColumnRed == NotSet)
+							{
+								threatLowestColumnRed = row;
+
+								// Strong odd-row threat (zero based).
+								if ((row & 1) == 0 && row < threatStrongRowRed)
+								{
+									threatStrongRowRed = row;
+									threatStrongColRed = col;
+								}
+							}
+							// Two connected threats in the same column and
+							// the lowest of the two is exclusive for red.
+							else if (
+								threatLowestColumnRed + 1 == row &&
+								threatLowestColumnYel >= threatLowestColumnRed)
+							{
+								var turns = (row - colHighestFilled) << 1;
+								var forced = (ply | 1) + turns;
+
+								// We found potentially a quick win.
+								if (forced < forcedWinRed)
+								{
+									forcedWinRed = forced;
+									break;
+								}
+							}
+							// further searching is meaningless.
+							else if (row >= threatStrongRowRed)
+							{
+								// This column is for red.
+								if (gap > 1 && threatLowestColumnRed < threatLowestColumnYel)
+								{
+									threatRedLowerYel++;
+									if (row < threatLowerRow0)
+									{
+										threatLowerRow1 = threatLowerRow0;
+										threatLowerRow0 = row;
+									}
+									else if (row < threatLowerRow1)
+									{
+										threatLowerRow1 = row;
+									}
+								}
+								break;
+							}
+						}
+						// A yellow threat in the cell.
+						if ((colYel & mask) != 0)
+						{
+							// Instant threat.
+							if (gap == 1)
+							{
+								if (redToMove)
+								{
+									threatInstantYel++;
+								}
+								else
+								{
+									return Scores.YelWins[ply];
+								}
+							}
+							// we found the first threat in this column.
+							if (threatLowestColumnYel == NotSet)
+							{
+								threatLowestColumnYel = row;
+
+								// Strong even-row threat (zero based).
+								if ((row & 1) == 1 && row < threatStrongRowYel)
+								{
+									threatStrongRowYel = row;
+									threatStrongColYel = col;
+								}
+								// This column is for yellow.
+								if (gap > 1 && threatLowestColumnYel < threatLowestColumnRed)
+								{
+									threatYelLowerRed++;
+									if (row < threatLowerRow0)
+									{
+										threatLowerRow1 = threatLowerRow0;
+										threatLowerRow0 = row;
+									}
+									else if (row < threatLowerRow1)
+									{
+										threatLowerRow1 = row;
+									}
+								}
+							}
+							// Two connected threats in the same column and
+							// the lowest of the two is exclusive for red.
+							else if (
+								threatLowestColumnRed + 1 == row &&
+								threatLowestColumnYel >= threatLowestColumnRed)
+							{
+								var turns = (row - colHighestFilled) << 1;
+								var forced = (ply & ~1) + turns;
+
+								// We found potentially a quick win.
+								if (forced < forcedWinYel)
+								{
+									forcedWinYel = forced;
+									break;
+								}
+							}
+							// further searching is meaningless.
+							else if (row >= threatStrongRowYel)
+							{
+								break;
 							}
 						}
 					}
 				}
 
-				if (forcedRed != NotSet || forcedYel != NotSet)
+				// Two spots to claim victory
+				if (threatInstantRed > 1 && threatInstantYel == 0)
 				{
-					if (redToMove)
+					return Scores.RedWins[ply + 1];
+				}
+				if (threatInstantYel > 1 && threatInstantRed == 0)
+				{
+					return Scores.YelWins[ply + 1];
+				}
+
+				if (forcedWinRed != NotSet || forcedWinYel != NotSet)
+				{
+					if (forcedWinRed < forcedWinYel)
 					{
-						if (forcedRed <= forcedYel)
-						{
-							return Scores.RedWins(ply + forcedRed + 1);
-						}
-						else
-						{
-							return Scores.YelWins(ply + forcedYel + 2);
-						}
+						return Scores.RedWins[forcedWinRed];
 					}
 					else
 					{
-						if (forcedRed < forcedYel)
-						{
-							return Scores.RedWins(ply + forcedRed + 2);
-						}
-						else
-						{
-							return Scores.YelWins(ply + forcedYel + 1);
-						}
+						return Scores.YelWins[forcedWinYel];
 					}
 				}
 
-				if (lowestRed != NotSet)
+				// Double lower threat for red.
+				if (threatRedLowerYel > 1 && threatYelLowerRed == 0)
+				{
+					var turn = SearchTree.MaximumDepth - 12 + threatLowerRow0 + threatLowerRow1;
+					return Scores.RedWins[turn | 1];
+				}
+				// Double lower threat for yel.
+				if (threatYelLowerRed > 1 && threatRedLowerYel == 0)
+				{
+					var turn = SearchTree.MaximumDepth - 12 + threatLowerRow0 + threatLowerRow1;
+					return Scores.RedWins[turn & ~1];
+				}
+				var score = 0;
+
+				if (threatStrongRowRed != NotSet)
 				{
 					// Lowest threat is red
-					if (lowestRed < lowestYel)
+					if (threatStrongRowRed < threatStrongRowYel)
 					{
 						score += Scores.StrongThreat;
 					}
 					// Lowest threat in same column for yellow.
-					else if (lowestRedCol == lowestYelCol)
+					else if (threatStrongColYel == threatStrongColRed)
 					{
 						score -= Scores.StrongThreat;
-						
+
 					}
 					// Lowest threat for yellow but different column.
 					else
@@ -196,10 +350,12 @@
 					}
 				}
 				// Only yellow has a strong threat.
-				else if(lowestYel != NotSet)
+				else if (threatStrongRowYel != NotSet)
 				{
 					score -= Scores.StrongThreat;
 				}
+				score += trippleRed;
+				score -= tripplYel;
 				return score;
 #if !DEBUG
 			}

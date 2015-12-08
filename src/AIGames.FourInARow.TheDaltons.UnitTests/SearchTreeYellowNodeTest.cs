@@ -16,7 +16,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				new SearchTreeNodeStub(){ Field = TestData.Fields[0], Score = 30},
 				new SearchTreeNodeStub(){ Field = TestData.Fields[1], Score = -3},
 				new SearchTreeNodeStub(){ Field = TestData.Fields[2], Score = 10},
-				new SearchTreeNodeStub(){ Field = TestData.Fields[3], Score = Scores.RedWins(3)},
+				new SearchTreeNodeStub(){ Field = TestData.Fields[3], Score = Scores.RedWins[3]},
 			};
 			var tree = new SearchTreeStub();
 			tree.Add(nodes);
@@ -35,9 +35,9 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		{
 			var nodes = new List<ISearchTreeNode>()
 			{
-				new SearchTreeNodeStub(){ Field = TestData.Fields[0], Score = Scores.YelWins(5)},
-				new SearchTreeNodeStub(){ Field = TestData.Fields[1], Score = Scores.YelWins(4)},
-				new SearchTreeNodeStub(){ Field = TestData.Fields[2], Score = Scores.YelWins(4)},
+				new SearchTreeNodeStub(){ Field = TestData.Fields[0], Score = Scores.YelWins[5]},
+				new SearchTreeNodeStub(){ Field = TestData.Fields[1], Score = Scores.YelWins[4]},
+				new SearchTreeNodeStub(){ Field = TestData.Fields[2], Score = Scores.YelWins[4]},
 				new SearchTreeNodeStub(){ Field = TestData.Fields[3], Score = 15},
 			};
 			var tree = new SearchTreeStub();
@@ -47,7 +47,13 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			node.Apply(2, tree, Scores.InitialAlpha, Scores.InitialBeta);
 
 			var act = node.Children.Select(ch => ch.Field).ToArray();
-			var exp = new Field[] { TestData.Fields[1], TestData.Fields[2], TestData.Fields[0], TestData.Fields[3] };
+			var exp = new Field[] 
+			{ 
+				TestData.Fields[1], 
+				TestData.Fields[2], 
+				TestData.Fields[0], 
+				TestData.Fields[3]
+			};
 
 			CollectionAssert.AreEqual(exp, act);
 		}

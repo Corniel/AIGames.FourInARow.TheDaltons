@@ -151,10 +151,9 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			Assert.AreEqual(69, actual.Connect4.Length, "69 items");
 			
 			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect4));
-			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect4Scores));
-			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect2Out4));
+			//Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect2Out4));
 			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect3Out4));
-			Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect4Threat));
+			//Console.WriteLine(FieldConnect4Generator.ToString(actual.Connect4Threat));
 		}
 	}
 }

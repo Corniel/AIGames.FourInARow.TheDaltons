@@ -11,7 +11,7 @@ namespace AIGames.FourInARow.TheDaltons
 
 		protected override int ApplyChildren(byte depth, ISearchTree tree, int alpha, int beta)
 		{
-			Score = Scores.RedWins(Depth);
+			Score = Scores.RedWins[Depth];
 			var i = 0;
 			var count = Children.Count - 1;
 			for (/**/; i <= count; i++)

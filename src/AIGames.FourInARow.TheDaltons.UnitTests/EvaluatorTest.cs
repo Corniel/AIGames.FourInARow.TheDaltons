@@ -22,7 +22,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				0,2,2,1,2,0,2");
 
 			var act = Evaluator.GetScore(field, 17);
-			var exp = Scores.RedWins(21);
+			var exp = Scores.RedWins[21];
 			Assert.AreEqual(Scores.GetFormatted(exp), Scores.GetFormatted(act));
 		}
 
@@ -38,7 +38,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				0,0,1,2,1,0,1");
 
 			var act = Evaluator.GetScore(field, 16);
-			var exp = Scores.YelWins(20);
+			var exp = Scores.YelWins[20];
 			Assert.AreEqual(Scores.GetFormatted(exp), Scores.GetFormatted(act));
 		}
 
@@ -54,7 +54,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				1,1,0,2,1,0,0");
 
 			var act = Evaluator.GetScore(field, 9);
-			var exp = Scores.YelWins(38);
+			var exp = Scores.YelWins[38];
 			Assert.AreEqual(Scores.GetFormatted(exp), Scores.GetFormatted(act));
 		}
 
@@ -70,7 +70,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				1,1,0,2,1,2,2");
 
 			var act = Evaluator.GetScore(field, 16);
-			var exp = Scores.RedWins(39);
+			var exp = Scores.RedWins[39];
 			Assert.AreEqual(Scores.GetFormatted(exp), Scores.GetFormatted(act));
 		}
 	}

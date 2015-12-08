@@ -16,7 +16,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				new SearchTreeNodeStub(){ Field = TestData.Fields[0], Score = -30},
 				new SearchTreeNodeStub(){ Field = TestData.Fields[1], Score = +3},
 				new SearchTreeNodeStub(){ Field = TestData.Fields[2], Score = -10},
-				new SearchTreeNodeStub(){ Field = TestData.Fields[3], Score = Scores.YelWins(3)},
+				new SearchTreeNodeStub(){ Field = TestData.Fields[3], Score = Scores.YelWins[3]},
 			};
 			var tree = new SearchTreeStub();
 			tree.Add(nodes);
@@ -35,9 +35,9 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		{
 			var nodes = new List<ISearchTreeNode>()
 			{
-				new SearchTreeNodeStub(){ Field = TestData.Fields[0], Score = Scores.RedWins(5)},
-				new SearchTreeNodeStub(){ Field = TestData.Fields[1], Score = Scores.RedWins(4)},
-				new SearchTreeNodeStub(){ Field = TestData.Fields[2], Score = Scores.RedWins(4)},
+				new SearchTreeNodeStub(){ Field = TestData.Fields[0], Score = Scores.RedWins[5]},
+				new SearchTreeNodeStub(){ Field = TestData.Fields[1], Score = Scores.RedWins[4]},
+				new SearchTreeNodeStub(){ Field = TestData.Fields[2], Score = Scores.RedWins[4]},
 				new SearchTreeNodeStub(){ Field = TestData.Fields[3], Score = -15},
 			};
 			var tree = new SearchTreeStub();

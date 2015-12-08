@@ -9,7 +9,6 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 		public FieldConnect4Generator()
 		{
 			Connect4 = new ulong[69];
-			Connect4Scores = new int[69];
 			Connect2Out4 = new ulong[69 << 3];
 			Connect3Out4 = new ulong[69 << 2];
 			Connect4Threat = new ulong[69 << 2];
@@ -19,15 +18,14 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			SetConnect3Out4();
 		}
 
-		public readonly ulong[] Connect4;
-		public readonly int[] Connect4Scores;
-		public readonly ulong[] Connect2Out4;
-		public readonly ulong[] Connect3Out4;
-		public readonly ulong[] Connect4Threat;
+		public ulong[] Connect4;
+		public ulong[] Connect2Out4;
+		public ulong[] Connect3Out4;
+		public ulong[] Connect4Threat;
 
 		private void SetConnect4()
 		{
-			var index = 0;
+			var items = new List<ulong>();
 
 			// row scores.
 			for (var col = 0; col < 4; col++)
@@ -36,8 +34,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				{
 					ulong line = 0x0F;
 					line <<= col + (row << 3);
-					Connect4Scores[index] = Scores.Horizontal3;
-					Connect4[index++] = line;
+					items.Add(line);
 
 				}
 			}
@@ -49,8 +46,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 				{
 					ulong line = 0x01010101;
 					line <<= col + (row << 3);
-					Connect4Scores[index] = row == 0 ? Scores.Horizontal3 : Scores.Vertical3;
-					Connect4[index++] = line;
+					items.Add(line);
 				}
 			}
 			// diagonal scores.
@@ -62,12 +58,15 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 					ulong dig1 = 0x01020408;
 					dig0 <<= col + (row << 3);
 					dig1 <<= col + (row << 3);
-					Connect4Scores[index] = Scores.Diagonal3;
-					Connect4[index++] = dig0;
-					Connect4Scores[index] = Scores.Diagonal3;
-					Connect4[index++] = dig1;
+					items.Add(dig0);
+					items.Add(dig1);
 				}
 			}
+
+			items.Sort();
+
+			Connect4 = items.ToArray();
+
 		}
 
 		private void SetConnect3Out4()
@@ -102,9 +101,9 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			}
 		}
 
-		private static ulong[] GetMatch3(ulong mask)
+		private static List<ulong> GetMatch3(ulong mask)
 		{
-			var matches = new ulong[4];
+			var matches = new List<ulong>(4);
 
 			var pos = 0;
 			var indexes = new int[4];
@@ -119,10 +118,12 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 					if (pos == 4) { break; }
 				}
 			}
-			matches[0] = (1UL << indexes[0]) | (1UL << indexes[1]) | (1UL << indexes[2]);
-			matches[1] = (1UL << indexes[0]) | (1UL << indexes[1]) | (1UL << indexes[3]);
-			matches[2] = (1UL << indexes[0]) | (1UL << indexes[2]) | (1UL << indexes[3]);
-			matches[3] = (1UL << indexes[1]) | (1UL << indexes[2]) | (1UL << indexes[3]);
+			matches.Add((1UL << indexes[0]) | (1UL << indexes[1]) | (1UL << indexes[2]));
+			matches.Add((1UL << indexes[0]) | (1UL << indexes[1]) | (1UL << indexes[3]));
+			matches.Add((1UL << indexes[0]) | (1UL << indexes[2]) | (1UL << indexes[3]));
+			matches.Add((1UL << indexes[1]) | (1UL << indexes[2]) | (1UL << indexes[3]));
+
+			matches.Sort();
 			return matches;
 		}
 
