@@ -9,9 +9,6 @@ namespace AIGames.FourInARow.TheDaltons
 	{
 		public SearchTreeSubNode(Field field, byte depth, int value) : base(field, depth, value) { }
 
-		public abstract bool IsWinning(int score);
-		public abstract bool IsLosing(int score);
-
 		public SearchTreeNodes Children { get; protected set; }
 
 		public override void Add(MoveCandidates candidates)

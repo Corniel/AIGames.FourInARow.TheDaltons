@@ -2,12 +2,11 @@
 
 namespace AIGames.FourInARow.TheDaltons
 {
-	public interface ISearchTreeNode: IEquatable<ISearchTreeNode>
+	public interface ISearchTreeNode
 	{
 		Field Field { get; }
 		byte Depth { get;  }
 		int Score { get; }
-		int Value { get; }
 
 		void Add(MoveCandidates candidates);
 		int Apply(byte depth, ISearchTree tree, int alpha, int beta);

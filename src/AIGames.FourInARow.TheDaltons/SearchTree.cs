@@ -119,7 +119,7 @@ namespace AIGames.FourInARow.TheDaltons
 				{
 					if (search.IsScoreYellow())
 					{
-						node = new SearchTreeEndNode(search, 9, Scores.YelWins[9]);
+						node = new SearchTreeEndNode(9, Scores.YelWins[9]);
 					}
 					else
 					{
@@ -134,12 +134,12 @@ namespace AIGames.FourInARow.TheDaltons
 					if ((!redToMove && score == Scores.RedWins[ply -1]) ||
 						(redToMove && score == Scores.YelWins[ply -1]))
 					{
-						node = new SearchTreeEndNode(search, ply, score);
+						node = new SearchTreeEndNode(ply, score);
 					}
 					// Game is done.
 					else if (ply == MaximumDepth)
 					{
-						node = new SearchTreeEndNode(search, MaximumDepth, 0);
+						node = new SearchTreeEndNode(MaximumDepth, 0);
 					}
 					else if (redToMove)
 					{

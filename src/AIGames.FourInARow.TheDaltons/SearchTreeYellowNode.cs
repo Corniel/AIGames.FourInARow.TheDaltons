@@ -6,9 +6,6 @@ namespace AIGames.FourInARow.TheDaltons
 	{
 		public SearchTreeYellowNode(Field field, byte depth, int value) : base(field, depth, value) { }
 
-		public override bool IsWinning(int score) { return score < Scores.YelWin; }
-		public override bool IsLosing(int score) { return score > Scores.RedWin; }
-
 		protected override int ApplyChildren(byte depth, ISearchTree tree, int alpha, int beta)
 		{
 			Score = Scores.RedWins[Depth];

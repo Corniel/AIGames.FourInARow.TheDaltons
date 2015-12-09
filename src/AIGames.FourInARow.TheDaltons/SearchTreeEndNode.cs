@@ -4,25 +4,33 @@ using System.Diagnostics;
 namespace AIGames.FourInARow.TheDaltons
 {
 	[DebuggerDisplay("{DebuggerDisplay}")]
-	public class SearchTreeEndNode : SearchTreeNode
+	public class SearchTreeEndNode : ISearchTreeNode
 	{
-		public SearchTreeEndNode(Field field, byte depth, int value) : base(field, depth, value)
+		private byte m_depth;
+		private int m_score;
+
+		public SearchTreeEndNode(byte depth, int score)
 		{
-			IsFinal = true;
+			m_depth = depth;
+			m_score = score;
 		}
 
-		public override void Add(MoveCandidates candidates) { throw new NotSupportedException(); }
-		public override int Apply(byte depth, ISearchTree tree, int alpha, int beta) { return Score; }
+		public Field Field { get { return Field.Empty; } }
+		public byte Depth { get { return m_depth; } }
+		public int Score { get { return m_score; } }
+
+
+		public int Apply(byte depth, ISearchTree tree, int alpha, int beta) { return Score; }
 
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay
 		{
 			get
 			{
-				return string.Format("Depth: {0}, Score: {1}", Depth,Scores.GetFormatted( Score));
+				return string.Format("Depth: {0}, Score: {1} (final)", Depth, Scores.GetFormatted(Score));
 			}
 		}
 
-		
+		public void Add(MoveCandidates candidates) { throw new NotImplementedException(); }
 	}
 }
