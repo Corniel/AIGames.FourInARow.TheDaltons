@@ -6,6 +6,23 @@ namespace AIGames.FourInARow.TheDaltons
 	{
 		private const int NotSet = short.MaxValue;
 
+		/// <summary>The delay to score with a double threat.</summary>
+		/// <remarks>
+		/// <code>
+		/// var delay = DoubleThreatDelay[distance | Math.Min(5, otherOptions) << 3];
+		/// </code>
+		/// </remarks>
+		private static readonly byte[] DoubleThreatDelay = new byte[]
+		{
+			//      0,  1,  2,  3,  4,  5,
+			/* 0 */ 0,  2,  2,  4,  4,  6,   0,0,
+			/* 1 */	0,  2,  4,  4,  6,  6,   0,0,
+			/* 2 */	0,  2,  4,  6,  6,  8,   0,0,
+			/* 3 */	0,  2,  4,  6,  8,  8,   0,0,
+			/* 4 */	0,  2,  4,  6,  8, 10,   0,0,
+			/* 5 */	0,  2,  4,  6,  8, 10,   0,0,
+		};
+
 		/// <summary>Gets the score for a field.</summary>
 		/// <param name="field">
 		/// The field to evaluate.
@@ -200,18 +217,21 @@ namespace AIGames.FourInARow.TheDaltons
 								threatLowestColumnRed <= threatLowestColumnYel)
 							{
 								// the cells to fill in the turns to come.
-								var distance = threatLowestColumnRed - colHighestFilled - 1;
-								// the delay is based on the options in other columns.
+								var delay = 0;
+								var distance = threatLowestColumnRed - colHighestFilled;
 								var otherOptions = SearchTree.MaximumDepth - (5 - colHighestFilled) - ply;
-								var delay = Math.Min(distance, otherOptions);
-
-								var forced = ply + distance + delay;
-
-
-								if (forced % 2 == 0)
+								if (redToMove)
 								{
+									distance--;
+									delay = DoubleThreatDelay[distance | (Math.Min(5, otherOptions) << 3)];
+								}
+								else
+								{
+									delay = DoubleThreatDelay[distance | (Math.Min(5, otherOptions) << 3)];
+									delay--;
 								}
 
+								var forced = ply + delay;
 
 								// We found potentially a quick win.
 								if (forced < forcedWinRed)
@@ -288,16 +308,21 @@ namespace AIGames.FourInARow.TheDaltons
 								threatLowestColumnYel <= threatLowestColumnRed)
 							{
 								// the cells to fill in the turns to come.
-								var distance = threatLowestColumnYel - colHighestFilled - 1;
-								// the delay is based on the options in other columns.
+								var delay = 0;
+								var distance = threatLowestColumnYel - colHighestFilled;
 								var otherOptions = SearchTree.MaximumDepth - (5 - colHighestFilled) - ply;
-								var delay = Math.Min(distance, otherOptions);
-
-								var forced = ply + distance + delay;
-
-								if (forced % 2 == 1)
+								if (!redToMove)
 								{
+									distance--;
+									delay = DoubleThreatDelay[distance | (Math.Min(5, otherOptions) << 3)];
 								}
+								else
+								{
+									delay = DoubleThreatDelay[distance | (Math.Min(5, otherOptions) << 3)];
+									delay--;
+								}
+
+								var forced = ply + delay;
 
 								// We found potentially a quick win.
 								if (forced < forcedWinYel)
