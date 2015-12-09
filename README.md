@@ -3,6 +3,12 @@ The Daltons
 
 The Daltons is an AI trying to play Four-in-a-Row.
 
+Version 32
+----------
+Hugh improvement on speed (benchmark on 10 ply: 3.4 seconds to 25 ply instead
+of 7.5). Also added detection on direct winning multiple threats and threats on
+two different columns.
+
 Version 31
 ----------
 Different values for different threats.
