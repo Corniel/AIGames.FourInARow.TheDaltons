@@ -130,10 +130,9 @@ namespace AIGames.FourInARow.TheDaltons
 				{
 					var score = Evaluator.GetScore(search, ply);
 
-					
 					// If the node is final for the other color, no need to search deeper.
-					if ((redToMove && score == Scores.RedWins[ply - 1]) ||
-						(!redToMove && score == Scores.YelWins[ply - 1]))
+					if ((!redToMove && score == Scores.RedWins[ply -1]) ||
+						(redToMove && score == Scores.YelWins[ply -1]))
 					{
 						node = new SearchTreeEndNode(search, ply, score);
 					}

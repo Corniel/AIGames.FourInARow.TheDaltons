@@ -1,4 +1,5 @@
-﻿namespace AIGames.FourInARow.TheDaltons
+﻿using System;
+namespace AIGames.FourInARow.TheDaltons
 {
 	/// <summary>Gets a score for the board.</summary>
 	public static class Evaluator
@@ -72,7 +73,7 @@
 					if (matchRed == mask) { return Scores.RedWins[ply - 1]; }
 
 					var matchYel = fieldYel & mask;
-					if (matchYel == mask) { return Scores.YelWins[ply - 1]; }
+					if (matchYel == mask) { return Scores.YelWins[ply & ~1]; }
 
 					if (matchRed != 0)
 					{
@@ -198,8 +199,19 @@
 								threatLowestColumnRed + 1 == row &&
 								threatLowestColumnRed <= threatLowestColumnYel)
 							{
-								var turns = (threatLowestColumnRed - colHighestFilled) << 1;
-								var forced = (ply | 1) + turns;
+								// the cells to fill in the turns to come.
+								var distance = threatLowestColumnRed - colHighestFilled - 1;
+								// the delay is based on the options in other columns.
+								var otherOptions = SearchTree.MaximumDepth - (5 - colHighestFilled) - ply;
+								var delay = Math.Min(distance, otherOptions);
+
+								var forced = ply + distance + delay;
+
+
+								if (forced % 2 == 0)
+								{
+								}
+
 
 								// We found potentially a quick win.
 								if (forced < forcedWinRed)
@@ -275,8 +287,17 @@
 								threatLowestColumnYel + 1 == row &&
 								threatLowestColumnYel <= threatLowestColumnRed)
 							{
-								var turns = (threatLowestColumnYel - colHighestFilled) << 1;
-								var forced = (ply & ~1) + turns;
+								// the cells to fill in the turns to come.
+								var distance = threatLowestColumnYel - colHighestFilled - 1;
+								// the delay is based on the options in other columns.
+								var otherOptions = SearchTree.MaximumDepth - (5 - colHighestFilled) - ply;
+								var delay = Math.Min(distance, otherOptions);
+
+								var forced = ply + distance + delay;
+
+								if (forced % 2 == 1)
+								{
+								}
 
 								// We found potentially a quick win.
 								if (forced < forcedWinYel)
