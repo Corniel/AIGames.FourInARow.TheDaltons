@@ -10,7 +10,7 @@ namespace AIGames.FourInARow.TheDaltons
 		public const int InitialAlpha = int.MinValue;
 		public const int InitialBeta = int.MaxValue;
 
-		public const int StrongThreat = 1000;
+		public const int StrongThreat = 4;
 		public const int Draw = 0;
 		private const int Red = 1000000;
 		private const int Yel = -1000000;

@@ -362,19 +362,23 @@ namespace AIGames.FourInARow.TheDaltons
 					}
 				}
 
+				var score = 0;
+
 				// Double lower threat for red.
 				if (threatRedLowerYel > 1 && threatYelLowerRed == 0)
 				{
-					var turn = SearchTree.MaximumDepth - 12 + threatLowerRow0 + threatLowerRow1;
-					return Scores.RedWins[turn | 1];
+					//var turn = SearchTree.MaximumDepth - 12 + threatLowerRow0 + threatLowerRow1;
+					//return Scores.RedWins[turn | 1];
+					score += Scores.StrongThreat;
+					
 				}
 				// Double lower threat for yel.
 				if (threatYelLowerRed > 1 && threatRedLowerYel == 0)
 				{
-					var turn = SearchTree.MaximumDepth - 12 + threatLowerRow0 + threatLowerRow1;
-					return Scores.RedWins[turn & ~1];
+					//var turn = SearchTree.MaximumDepth - 12 + threatLowerRow0 + threatLowerRow1;
+					//return Scores.RedWins[turn & ~1];
+					score -= Scores.StrongThreat;
 				}
-				var score = 0;
 
 				if (threatStrongRowRed != NotSet)
 				{
