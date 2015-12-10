@@ -30,15 +30,15 @@ namespace AIGames.FourInARow.TheDaltons
 				tree[9][field] = new SearchTreeBookNode(field, 9, Scores.Draw);
 			}
 
-			var ply1 = Generator.GetMoves(Field.Empty, true);
+			var ply2 = Generator.GetMoves(Field.Empty, true);
 
-			tree[1][ply1[0]] = new SearchTreeBookNode(ply1[0], 1, Scores.YelWin >> 3);
-			tree[1][ply1[1]] = new SearchTreeBookNode(ply1[1], 1, Scores.YelWin >> 3);
-			tree[1][ply1[2]] = new SearchTreeBookNode(ply1[2], 1, Scores.Draw);
-			tree[1][ply1[3]] = new SearchTreeBookNode(ply1[3], 1, Scores.RedWin >> 3);
-			tree[1][ply1[4]] = new SearchTreeBookNode(ply1[4], 1, Scores.Draw);
-			tree[1][ply1[5]] = new SearchTreeBookNode(ply1[5], 1, Scores.YelWin >> 3);
-			tree[1][ply1[6]] = new SearchTreeBookNode(ply1[6], 1, Scores.YelWin >> 3);
+			tree[2][ply2[0]] = new SearchTreeBookNode(ply2[0], 1, Scores.YelWin >> 3);
+			tree[2][ply2[1]] = new SearchTreeBookNode(ply2[1], 1, Scores.YelWin >> 3);
+			tree[2][ply2[2]] = new SearchTreeBookNode(ply2[2], 1, Scores.Draw);
+			tree[2][ply2[3]] = new SearchTreeBookNode(ply2[3], 1, Scores.RedWin >> 3);
+			tree[2][ply2[4]] = new SearchTreeBookNode(ply2[4], 1, Scores.Draw);
+			tree[2][ply2[5]] = new SearchTreeBookNode(ply2[5], 1, Scores.YelWin >> 3);
+			tree[2][ply2[6]] = new SearchTreeBookNode(ply2[6], 1, Scores.YelWin >> 3);
 		}
 
 		public MoveGenerator Generator { get; set; }
