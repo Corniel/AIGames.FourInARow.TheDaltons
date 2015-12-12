@@ -39,6 +39,7 @@
     <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyser\GameAnalyserTest.cs" />
     <Compile Include="BitsTest.cs" />
     <Compile Include="Book\BookGenerator.cs" />
     <Compile Include="Category.cs" />
@@ -64,6 +65,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AIGames.FourInARow.Analyser\AIGames.FourInARow.Analyser.csproj">
+      <Project>{1459ebe0-7d21-4efb-a404-e56cafcb3722}</Project>
+      <Name>AIGames.FourInARow.Analyser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AIGames.FourInARow.TheDaltons\AIGames.FourInARow.TheDaltons.csproj">
       <Project>{c883a5f7-78bc-4137-86d2-6ec1af71c4c0}</Project>
       <Name>AIGames.FourInARow.TheDaltons</Name>

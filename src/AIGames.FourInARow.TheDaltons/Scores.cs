@@ -12,8 +12,8 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public const int StrongThreat = 4;
 		public const int Draw = 0;
-		private const int Red = 1000000;
-		private const int Yel = -1000000;
+		public const int Red = 1000000;
+		public const int Yel = -1000000;
 
 		public static readonly int[] RedWins = GetRedWins();
 		public static readonly int[] YelWins = GetYelWins();

@@ -178,5 +178,14 @@ namespace AIGames.FourInARow.TheDaltons
 		public int Transpositions { get { return trans.Sum(); } }
 		public int NodeCount { get { return tree.Sum(item => item.Count); } }
 		public int Count { get { return NodeCount + Transpositions; } }
+
+		public void Initialize(IEnumerable<ISearchTreeNode> nodes)
+		{
+			foreach (var node in nodes)
+			{
+				var lookup = tree[node.Depth];
+				lookup[node.Field] = node;
+			}
+		}
 	}
 }

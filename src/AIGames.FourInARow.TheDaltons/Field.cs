@@ -24,6 +24,9 @@ namespace AIGames.FourInARow.TheDaltons
 		/// <summary>Get the count of played discs.</summary>
 		public int Count { get { return Bits.Count(Occupied); } }
 
+		/// <summary>Gets true if red is to move, otherwise false.</summary>
+		public bool RedToMove { get { return (Count & 1) == 0; } }
+
 		public Field MoveRed(ulong move)
 		{
 			var update = (red | move) & Mask;
