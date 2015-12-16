@@ -12,8 +12,8 @@ namespace AIGames.FourInARow.TheDaltons
 
 		public const int StrongThreat = 4;
 		public const int Draw = 0;
-		public const int Red = 1000000;
-		public const int Yel = -1000000;
+		private const int Red = 1000000;
+		private const int Yel = -1000000;
 
 		public static readonly int[] RedWins = GetRedWins();
 		public static readonly int[] YelWins = GetYelWins();
@@ -41,6 +41,23 @@ namespace AIGames.FourInARow.TheDaltons
 				sc[ply] = Yel + ply;
 			}
 			return sc;
+		}
+
+		/// <summary>Returns the required ply for winning.</summary>
+		/// <returns>
+		/// returns 255 if no win could be given else the ply required for winning.
+		/// </returns>
+		public static byte GetPlyToWinning(int score)
+		{
+			if (score >= RedWin)
+			{
+				return (byte)(Red - score);
+			}
+			if (score <= YelWin)
+			{
+				return (byte)(score - Yel);
+			}
+			return Byte.MaxValue;
 		}
 
 		/// <summary>Return true if the score indicates a winning (or losing) position.</summary>

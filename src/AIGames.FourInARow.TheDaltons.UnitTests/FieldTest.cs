@@ -126,6 +126,52 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			Assert.AreEqual(exp, act.ToString());
 		}
 
+
+		[Test]
+		public void Flip_FieldWith7Filled_EqualsFlipped()
+		{
+			var field = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,1,0,0,0;
+				0,0,0,1,0,0,0;
+				0,0,0,1,2,0,0;
+				0,0,2,1,2,0,0");
+
+			var act = field.Flip();
+			var exp = Field.Parse(@"
+				0,0,0,0,0,0,0;
+				0,0,0,0,0,0,0;
+				0,0,0,1,0,0,0;
+				0,0,0,1,0,0,0;
+				0,0,2,1,0,0,0;
+				0,0,2,1,2,0,0");
+
+			Assert.AreEqual(exp, act);
+		}
+		[Test]
+		public void Flip_FieldWith32Filled_EqualsFlipped()
+		{
+			var field = Field.Parse(@"
+				2,2,0,2,1,0,2;
+				1,2,0,1,1,0,1;
+				2,1,2,2,2,0,2;
+				1,2,2,1,1,0,1;
+				1,1,1,2,2,0,2;
+				1,1,2,1,2,1,1");
+
+			var act = field.Flip();
+			var exp = Field.Parse(@"
+				2,0,1,2,0,2,2;
+				1,0,1,1,0,2,1;
+				2,0,2,2,2,1,2;
+				1,0,1,1,2,2,1;
+				2,0,2,2,1,1,1;
+				1,1,2,1,2,1,1");
+
+			Assert.AreEqual(exp, act);
+		}
+
 		[Test]
 		public void GetBytes_RoundTrip_AreEqual()
 		{

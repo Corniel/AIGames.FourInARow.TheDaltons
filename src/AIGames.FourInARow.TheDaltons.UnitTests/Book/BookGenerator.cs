@@ -9,6 +9,24 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests.Book
 	public class BookGenerator
 	{
 		[Test, Category(Category.Deployment)]
+		public void GenerateKnown_File_WriteOutput()
+		{
+			using (var stream = new FileStream(@"C:\Code\AIGames.Challenger\games\four-in-a-row\_known_nodes.bin", FileMode.Open, FileAccess.Read))
+			{
+				var reader = new BinaryReader(stream);
+
+				var bytes = reader.ReadBytes((int)reader.BaseStream.Length);
+
+				var base64 = Convert.ToBase64String(bytes);
+
+				using (var writer = new StreamWriter("known.txt"))
+				{
+					writer.Write(base64);
+				}
+			}
+		}
+
+		[Test, Category(Category.Deployment)]
 		public void GenerateBook_8ply_WriteOutput()
 		{
 			var wins = new HashSet<Field>();

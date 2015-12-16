@@ -39,6 +39,14 @@ namespace AIGames.FourInARow.TheDaltons
 			tree[2][ply2[4]] = new SearchTreeBookNode(ply2[4], 1, Scores.Draw);
 			tree[2][ply2[5]] = new SearchTreeBookNode(ply2[5], 1, Scores.YelWin >> 3);
 			tree[2][ply2[6]] = new SearchTreeBookNode(ply2[6], 1, Scores.YelWin >> 3);
+
+			var knowns = SearchTreeKnownNodes.Get();
+
+			foreach (var known in knowns.Values)
+			{
+				tree[known.Depth][known.Field] = known;
+				tree[known.Depth][known.Field.Flip()] = known.Flip();
+			}
 		}
 
 		public MoveGenerator Generator { get; set; }

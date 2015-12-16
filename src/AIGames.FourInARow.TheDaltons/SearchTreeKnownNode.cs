@@ -5,7 +5,7 @@ namespace AIGames.FourInARow.TheDaltons
 	public class SearchTreeKnownNode : SearchTreeSubNode
 	{
 		public SearchTreeKnownNode(Field field, int score)
-			: base(field, (byte)(field.Count +1), score) { }
+			: base(field, (byte)(field.Count + 1), score) { }
 
 		/// <summary>Gets the node with a flipped position.</summary>
 		public SearchTreeKnownNode Flip()

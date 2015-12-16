@@ -12,7 +12,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests.Analyser
 		{
 			var analyser = new GameAnalyser();
 			analyser.Load(new FileInfo(@"C:\Code\AIGames.FourInARow.TheDaltons\games\game0.dat"));
-			analyser.Analyse(false);
+			analyser.Analyse();
 		}
 	}
 }

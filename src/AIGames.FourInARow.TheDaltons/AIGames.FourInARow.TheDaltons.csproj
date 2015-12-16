@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Bits.cs" />
     <Compile Include="Book.cs" />
+    <Compile Include="Book.GetKnownString.cs" />
     <Compile Include="Book.GetLossString.cs" />
     <Compile Include="Communication\BotResponse.cs" />
     <Compile Include="Communication\ConsolePlatform.cs" />
