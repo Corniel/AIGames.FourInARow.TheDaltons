@@ -51,9 +51,12 @@ namespace AIGames.FourInARow.TheDaltons
 				var turns = reader.ReadByte();
 				var buffer = reader.ReadBytes(16);
 				var field = Field.FromBytes(buffer);
-				
+
 				// Temp.
-				if (turns == 255) { continue; }
+				if (turns == 255 || turns > 42)
+				{
+					continue;
+				}
 
 				var score = field.RedToMove ? Scores.RedWins[turns] : Scores.YelWins[turns];
 				var node = new SearchTreeKnownNode(field, score);

@@ -44,8 +44,15 @@ namespace AIGames.FourInARow.TheDaltons
 
 			foreach (var known in knowns.Values)
 			{
-				tree[known.Depth][known.Field] = known;
-				tree[known.Depth][known.Field.Flip()] = known.Flip();
+				var win = Scores.GetPlyToWinning(known.Score);
+				if (win < known.Depth || win > 42)
+				{
+				}
+				if (win > known.Depth)
+				{
+					tree[known.Depth][known.Field] = known;
+					tree[known.Depth][known.Field.Flip()] = known.Flip();
+				}
 			}
 		}
 

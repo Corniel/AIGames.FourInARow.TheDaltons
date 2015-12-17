@@ -94,5 +94,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Communication\input.0024.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Communication\input.0034.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

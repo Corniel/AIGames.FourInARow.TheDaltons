@@ -102,6 +102,8 @@ namespace AIGames.FourInARow.Analyser
 		{
 			var tree = new SearchTree();
 
+			var found = false;
+
 			var last = Fields.Last();
 
 			if (!last.IsScoreRed() && !last.IsScoreYellow())
@@ -110,7 +112,7 @@ namespace AIGames.FourInARow.Analyser
 			}
 			var node = tree.GetNode(last, (byte)(last.Count + 1));
 
-			if (!Scores.IsWinning(node.Score)) { return false; }
+			if (!Scores.IsWinning(node.Score)) { return found; }
 
 			var redToMove = node.Score > 0;
 			
@@ -144,16 +146,22 @@ namespace AIGames.FourInARow.Analyser
 
 				if (loop.Elapsed >= Duration) { break; }
 				if (field.Count < 19) { break; }
-			}
-			if (!Scores.IsWinning(score)) { return false; }
 
-			Console.WriteLine("{0} [{2}] {1}", Scores.GetFormatted(score), target, target.Count + 1);
+				if (Scores.GetPlyToWinning(score) > field.Count + 1)
+				{
+					found = true;
+					Console.WriteLine("{0} [{2}] {1}", Scores.GetFormatted(score), target, target.Count + 1);
 
-			if (target.GetHashCode() > target.Flip().GetHashCode())
-			{
-				target = target.Flip();
+					if (target.GetHashCode() > target.Flip().GetHashCode())
+					{
+						target = target.Flip();
+					}
+					Nodes[target] = new SearchTreeKnownNode(target, score);
+				}
 			}
-			Nodes[target] = new SearchTreeKnownNode(target, score);
+			if (!found) { return false; }
+
+			
 
 			return true;
 		}

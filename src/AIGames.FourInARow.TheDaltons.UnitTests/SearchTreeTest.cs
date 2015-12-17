@@ -125,7 +125,7 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests
 			var act = tree.GetMove(field, TimeSpan.MaxValue, time);
 			ConsoleLog(tree, time);
 		}
-
+		
 		[Test, Category(Category.IntegrationTest)]
 		public void GetMove_OneOption_3()
 		{

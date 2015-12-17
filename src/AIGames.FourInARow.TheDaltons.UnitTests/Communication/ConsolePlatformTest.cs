@@ -31,5 +31,14 @@ namespace AIGames.FourInARow.TheDaltons.UnitTests.Communication
 				platform.DoRun(new TheDaltonsBot());
 			}
 		}
+
+		[Test]
+		public void DoRun_0034_NoExceptions()
+		{
+			using (var platform = new ConsolePlatformTester("input.0034.txt"))
+			{
+				platform.DoRun(new TheDaltonsBot());
+			}
+		}
 	}
 }
