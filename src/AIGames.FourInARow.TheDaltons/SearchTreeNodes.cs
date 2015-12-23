@@ -2,40 +2,27 @@
 
 namespace AIGames.FourInARow.TheDaltons
 {
-	public class SearchTreeNodes : List<ISearchTreeNode>
+	public class SearchTreeNodes
 	{
-		public SearchTreeNodes() : base(7) { }
+		private ISearchTreeNode[] items = new ISearchTreeNode[7];
 
-		public void SortAsc()
+		public int Count { get; private set; }
+
+		public ISearchTreeNode this[int index]
 		{
-			for (var index = Count -1; index >= 0; index--)
-			{
-				var val = this[index].Score;
-
-				for (var swap = index + 1; swap < Count; swap++)
-				{
-					var other = this[swap];
-
-					if (val >= other.Score) { break; }
-					this[swap] = this[swap - 1];
-					this[swap - 1] = other;
-				}
-			}
+			get { return items[index]; }
+			set { items[index] = value; }
 		}
-		public void SortDesc()
+
+		internal void Add(ISearchTreeNode node)
 		{
-			for (var index = Count - 1; index >= 0; index--)
+			items[Count++] = node;
+		}
+		internal void AddRange(IEnumerable<ISearchTreeNode> nodes)
+		{
+			foreach (var node in nodes)
 			{
-				var val = this[index].Score;
-
-				for (var swap = index + 1; swap < Count; swap++)
-				{
-					var other = this[swap];
-
-					if (val <= other.Score) { break; }
-					this[swap] = this[swap - 1];
-					this[swap - 1] = other;
-				}
+				items[Count++] = node;
 			}
 		}
 	}
