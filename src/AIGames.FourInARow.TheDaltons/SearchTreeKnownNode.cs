@@ -15,7 +15,7 @@ namespace AIGames.FourInARow.TheDaltons
 
 		protected override int ApplyChildren(byte depth, ISearchTree tree, int alpha, int beta)
 		{
-			for (var i = 0; i < Children.Count; i++)
+			for (var i = 0; i < Count; i++)
 			{
 				Children[i].Apply(depth, tree, alpha, beta);
 			}

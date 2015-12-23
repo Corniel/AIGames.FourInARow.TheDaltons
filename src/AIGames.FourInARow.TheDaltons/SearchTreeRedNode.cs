@@ -11,7 +11,7 @@ namespace AIGames.FourInARow.TheDaltons
 		{
 			Score = Scores.YelWins[Depth];
 			var i = 0;
-			var count = Children.Count - 1;
+			var count = Count - 1;
 			for (/**/; i <= count; i++)
 			{
 				var child = Children[i];

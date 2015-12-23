@@ -72,7 +72,6 @@
     <Compile Include="SearchTreeKnownNode.cs" />
     <Compile Include="SearchTreeKnownNodes.cs" />
     <Compile Include="SearchTreeNode.cs" />
-    <Compile Include="SearchTreeNodes.cs" />
     <Compile Include="SearchTreeYellowNode.cs" />
     <Compile Include="SearchTreeRedNode.cs" />
     <Compile Include="SearchTreeSubNode.cs" />
